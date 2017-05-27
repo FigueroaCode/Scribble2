@@ -22,14 +22,18 @@ $font-path: "../assets/fonts";
 // The "primary" color is the only required color in the map.
 
 $colors: (
-  primary:    #00003c,
-  secondary:  #f7eeee,
-  danger:     #800020,
-  light:      #ffffff,
-  dark:       #cccccc
+  primary:    #00003c, //Dark Blue
+  secondary:  #f7eeee, //Beige
+  danger:     #800020, //Dark Red
+  light:      #ffffff, //White
+  dark:       #cccccc //Grey
 );
 
 $list-md-background-color: map-get($colors, secondary);
+
+$toolbar-ios-title-text-color: map-get($colors, light);
+$toolbar-md-title-text-color: map-get($colors, light);
+
 // App iOS Variables
 // --------------------------------------------------
 // iOS only Sass variables can go here
