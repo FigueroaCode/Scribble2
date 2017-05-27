@@ -2,7 +2,7 @@ page-home {
 
   .title {
     font-family: "Blacksword";
-    font-size: "1000px";
+    font-size: 200px;
     align-self: center;
     color: map-get($colors, light);
   }
@@ -10,7 +10,7 @@ page-home {
   .box {
     vertical-align: center;
     word-wrap: normal;
-    margin: 20%
+    margin: 15%;
   }
 
   .pane {
