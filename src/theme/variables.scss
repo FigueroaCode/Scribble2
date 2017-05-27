@@ -12,9 +12,6 @@ $font-path: "../assets/fonts";
 // To view all the possible Ionic variables, see:
 // http://ionicframework.com/docs/v2/theming/overriding-ionic-variables/
 
-
-
-
 // Named Color Variables
 // --------------------------------------------------
 // Named colors makes it easy to reuse colors on various components.
@@ -24,13 +21,15 @@ $font-path: "../assets/fonts";
 // The "primary" color is the only required color in the map.
 
 $colors: (
-  primary:    #00003c,
-  secondary:  #f7eeee,
-  danger:     #800020,
-  light:      #ffffff,
-  dark:       #cccccc
+  primary:    #00003c, //Dark Blue
+  secondary:  #f7eeee, //Beige
+  danger:     #800020, //Dark Red
+  light:      #ffffff, //White
+  dark:       #cccccc //Grey
 );
 
+$toolbar-ios-title-text-color: map-get($colors, light);
+$toolbar-md-title-text-color: map-get($colors, light);
 
 // App iOS Variables
 // --------------------------------------------------

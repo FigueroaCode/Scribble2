@@ -1,9 +1,17 @@
 page-home {
+
+  .title {
+    font-family: "Blacksword";
+    font-size: "1000px";
+    align-self: center;
+    color: map-get($colors, light);
+  }
+
   .pane {
-        background: url("../assets/home_background_image.jpg") no-repeat center center fixed; 
-        -webkit-background-size: cover;
-        -moz-background-size: cover;
-        background-size: cover;
+      background: url("../assets/images/home_background_image.jpg") no-repeat center center fixed;
+      -webkit-background-size: cover;
+      -moz-background-size: cover;
+      background-size: cover;
     }
 
 }
