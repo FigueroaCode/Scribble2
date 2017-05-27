@@ -1,37 +1,39 @@
-<ion-content padding>
+<ion-header>
+  <ion-navbar color="primary">
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Sign In</ion-title>
+  </ion-navbar>
+</ion-header>
 
+<ion-content padding class="background">
     <ion-row>
-      <ion-title>Scribble</ion-title>
+        <ion-col>
+            <div  align="center">
+                <ion-item class="fixedWidth" align="center">
+                    <ion-label floating>Username</ion-label>
+                    <ion-input type="text"></ion-input>
+                </ion-item>
+            </div>
+        </ion-col>
     </ion-row>
-
-    <!-- Username input field -->
     <ion-row>
-      <ion-col col></ion-col>
-
-      <ion-col col-3>
-        <ion-item>
-          <ion-label floating>Username</ion-label>
-          <ion-input type="text"></ion-input>
-        </ion-item>
-      </ion-col>
-
-
+        <ion-col>
+            <div align="center">
+                <ion-item class="fixedWidth" align="center">
+                    <ion-label floating>Password</ion-label>
+                    <ion-input type="password"></ion-input>
+                </ion-item>
+            </div>
+        </ion-col>
     </ion-row>
-
-    <!-- Password input field -->
     <ion-row>
-      <ion-col col-3>
-        <ion-item>
-          <ion-label floating>Password</ion-label>
-          <ion-input type="text"></ion-input>
-        </ion-item>
-      </ion-col>
-    </ion-row>
-
-    <ion-row align="center">
-      <ion-col col-3>
-        <button ion-button></button>
-      </ion-col>
+        <ion-col>
+            <div align="center">
+                <button ion-button color="danger"> Sign In </button>
+            </div>
+        </ion-col>
     </ion-row>
 
 </ion-content>
