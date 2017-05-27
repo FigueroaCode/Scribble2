@@ -7,6 +7,12 @@ page-home {
     color: map-get($colors, light);
   }
 
+  .box {
+    vertical-align: center;
+    word-wrap: normal;
+    margin: 20%
+  }
+
   .pane {
       background: url("../assets/images/home_background_image.jpg") no-repeat center center fixed;
       -webkit-background-size: cover;
