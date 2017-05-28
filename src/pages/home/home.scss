@@ -2,8 +2,9 @@ page-home {
 
   .title {
     font-family: "Blacksword";
-    font-size: 200px;
+    font-size: 15vw;
     align-self: center;
+    word-wrap: normal;
     color: map-get($colors, light);
   }
 
