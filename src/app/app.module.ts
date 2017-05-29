@@ -9,6 +9,8 @@ import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
 import { SignInPage } from '../pages/sign_in/sign_in';
 import { RegisterPage} from '../pages/register/register';
+import { CoursesPage } from '../pages/courses/courses';
+import { CenterPage } from '../pages/center/center';
 
 export const firebaseConfig = {
     apiKey: "AIzaSyBigCugTwNIJnJ2HKVV4GHGzjRxBYYc0Lk",
@@ -24,7 +26,9 @@ export const firebaseConfig = {
     MyApp,
     HomePage,
     SignInPage,
-    RegisterPage
+    RegisterPage,
+    CoursesPage,
+    CenterPage
   ],
   imports: [
     BrowserModule,
@@ -36,7 +40,9 @@ export const firebaseConfig = {
     MyApp,
     HomePage,
     SignInPage,
-    RegisterPage
+    RegisterPage,
+    CoursesPage,
+    CenterPage
   ],
   providers: [
     StatusBar,
