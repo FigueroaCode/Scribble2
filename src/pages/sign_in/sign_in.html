@@ -12,8 +12,8 @@
         <ion-col>
             <div  align="center">
                 <ion-item class="fixedWidth" align="center">
-                    <ion-label floating>Username</ion-label>
-                    <ion-input type="text"></ion-input>
+                    <ion-label floating>Email</ion-label>
+                    <ion-input type="text" #email (change)="emailChanged(email)"></ion-input>
                 </ion-item>
             </div>
         </ion-col>
@@ -23,7 +23,7 @@
             <div align="center">
                 <ion-item class="fixedWidth" align="center">
                     <ion-label floating>Password</ion-label>
-                    <ion-input type="password"></ion-input>
+                    <ion-input type="password" #password (change)="passwordChanged(password)"></ion-input>
                 </ion-item>
             </div>
         </ion-col>
@@ -31,7 +31,7 @@
     <ion-row>
         <ion-col>
             <div align="center">
-                <button ion-button color="danger" (click)="openPage()"> Sign In </button>
+                <button ion-button color="danger" (click)="signInUser()"> Sign In </button>
             </div>
         </ion-col>
     </ion-row>
