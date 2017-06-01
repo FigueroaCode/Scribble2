@@ -2,29 +2,25 @@ import { Component } from '@angular/core';
 import { NavController, AlertController, LoadingController } from 'ionic-angular';
 import { AuthService } from '../../providers/auth-service';
 
-import { CenterPage } from '../center/center';
-import { ResetPasswordPage } from '../resetpassword/resetpassword';
 
 @Component({
-  selector: 'page-sign_in',
-  templateUrl: 'sign_in.html'
+  selector: 'page-resetpassword',
+  templateUrl: 'resetpassword.html'
 })
-export class SignInPage {
+export class ResetPasswordPage {
         email: string;
-        password: string;
         loading: any;
 
       constructor(public navCtrl: NavController, public authService: AuthService,
         public alertCtrl: AlertController, public loadingCtrl: LoadingController) {
         this.email = '';
-        this.password = '';
       }
-      // --  Sign In User --
-      signInUser() {
-        if(this.email != '' && this.password != ''){
-            this.authService.doLogin(this.email,this.password).then(
+      // --  Reset Password -- //
+      resetPassword() {
+        if(this.email != ''){
+            this.authService.resetPassword(this.email).then(
                 authService => {
-                    this.navCtrl.setRoot(CenterPage);
+                    //this.navCtrl.setRoot(HomePage);
                 }, error => {
                     // Handle errors
                     this.loading.dismiss().then(
@@ -56,11 +52,4 @@ export class SignInPage {
         this.email = input._value;
       }
 
-      passwordChanged(input){
-        this.password = input._value;
-      }
-
-      resetPassword(){
-        this.navCtrl.push(ResetPasswordPage);
-      }
 }

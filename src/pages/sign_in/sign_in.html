@@ -3,7 +3,7 @@
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title>Scribble</ion-title>
+    <h2 id="title">Sign In</h2>
   </ion-navbar>
 </ion-header>
 
@@ -32,6 +32,13 @@
         <ion-col>
             <div align="center">
                 <button ion-button color="danger" (click)="signInUser()"> Sign In </button>
+            </div>
+        </ion-col>
+    </ion-row>
+    <ion-row>
+        <ion-col>
+            <div align="center">
+                <p id="reset" (click)="resetPassword()"> Click here to Reset Password </p>
             </div>
         </ion-col>
     </ion-row>

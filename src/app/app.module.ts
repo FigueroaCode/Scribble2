@@ -13,6 +13,7 @@ import { SignInPage } from '../pages/sign_in/sign_in';
 import { RegisterPage} from '../pages/register/register';
 import { CoursesPage } from '../pages/courses/courses';
 import { CenterPage } from '../pages/center/center';
+import { ResetPasswordPage } from '../pages/resetpassword/resetpassword';
 
 export const firebaseConfig = {
     apiKey: "AIzaSyBigCugTwNIJnJ2HKVV4GHGzjRxBYYc0Lk",
@@ -32,7 +33,8 @@ firebase.initializeApp(firebaseConfig);
     SignInPage,
     RegisterPage,
     CoursesPage,
-    CenterPage
+    CenterPage,
+    ResetPasswordPage
   ],
   imports: [
     BrowserModule,
@@ -46,7 +48,8 @@ firebase.initializeApp(firebaseConfig);
     SignInPage,
     RegisterPage,
     CoursesPage,
-    CenterPage
+    CenterPage,
+    ResetPasswordPage
   ],
   providers: [
     StatusBar,
