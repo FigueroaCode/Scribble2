@@ -1,6 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { NavController, Nav } from 'ionic-angular';
 import { AuthService } from '../../providers/auth-service';
+import { Storage } from '@ionic/storage';
 import firebase from 'firebase';
 
 import { HomePage } from '../home/home';
@@ -19,7 +20,8 @@ export class CenterPage {
 
     pages: Array<{title: string, component: any}>;
 
-    constructor(public navCtrl: NavController, public authService: AuthService) {
+    constructor(public navCtrl: NavController, public authService: AuthService,
+    public storage: Storage) {
         firebase.auth().onAuthStateChanged(function(user) {
             if (!user) {
                 navCtrl.setRoot(HomePage);
@@ -37,6 +39,9 @@ export class CenterPage {
       // Reset the content nav to have just this page
       // we wouldn't want the back button to show in this scenario
       if(page.title == 'Sign Out'){
+        //reset storage info
+        this.storage.remove('email');
+        //Sign Out User
         this.authService.doLogout();
       }else{
         this.nav.setRoot(page.component);

@@ -6,3 +6,36 @@
     <h2 id="title"> Courses </h2>
   </ion-navbar>
 </ion-header>
+<ion-content>
+    <ion-grid>
+        <ion-row>
+            <!-- SEARCH BOX -->
+            <ion-col>
+                <ion-searchbar (ionInput)="getItems($event)"></ion-searchbar>
+            </ion-col>
+        </ion-row>
+            <!-- Display courses -->
+        <ion-row>
+            <ion-col>
+                <ion-card *ngFor="let course of courses">
+                    <ion-card-header>
+                        {{ course.title }}
+                    </ion-card-header>
+                    <ion-card-content>
+                        {{ course.content }}
+                    </ion-card-content>
+                </ion-card>
+            </ion-col>
+        </ion-row>
+        <ion-row>
+            <!-- Create Course Button -->
+            <ion-col align="left">
+                <button ion-button color="danger">Create Course</button>
+            </ion-col>
+            <!-- Join Course Button -->
+            <ion-col align="right">
+                <button ion-button color="danger">Join Course</button>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+</ion-content>
