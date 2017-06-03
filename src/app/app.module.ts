@@ -4,7 +4,10 @@ import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
 import { AngularFireModule } from 'angularfire2';
+import { AngularFireDatabaseModule } from 'angularfire2/database';
 import { AuthService } from '../providers/auth-service';
+import { FirebaseService } from '../providers/firebase-service';
+import { HttpModule } from '@angular/http';
 import { IonicStorageModule } from '@ionic/storage';
 import firebase from 'firebase';
 
@@ -39,9 +42,11 @@ firebase.initializeApp(firebaseConfig);
   ],
   imports: [
     BrowserModule,
+    HttpModule,
     IonicModule.forRoot(MyApp),
     AngularFireModule.initializeApp(firebaseConfig),
-    IonicStorageModule.forRoot()
+    IonicStorageModule.forRoot(),
+    AngularFireDatabaseModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -57,7 +62,8 @@ firebase.initializeApp(firebaseConfig);
     StatusBar,
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
-    AuthService
+    AuthService,
+    FirebaseService
   ]
 })
 export class AppModule {}

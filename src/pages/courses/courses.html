@@ -17,9 +17,12 @@
             <!-- Display courses -->
         <ion-row>
             <ion-col>
-                <ion-card *ngFor="let course of courses">
+                <ion-card *ngFor="let course of courses | async">
                     <ion-card-header>
-                        {{ course.title }}
+                            <button ion-button color="danger" (click)="deleteCourse(course.$key)">
+                                 <ion-icon name="close"></ion-icon>
+                             </button>
+                            <span id="cardTitle">{{ course.title }}</span>
                     </ion-card-header>
                     <ion-card-content>
                         {{ course.content }}
@@ -30,7 +33,7 @@
         <ion-row>
             <!-- Create Course Button -->
             <ion-col align="left">
-                <button ion-button color="danger">Create Course</button>
+                <button ion-button color="danger" (click)="createCourse()">Create Course</button>
             </ion-col>
             <!-- Join Course Button -->
             <ion-col align="right">
