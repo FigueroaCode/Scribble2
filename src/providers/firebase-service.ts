@@ -19,7 +19,7 @@ export class FirebaseService {
   }
 
   addCourse(course){
-    //course is an object with a title and content
+    //course is an object with an owner, title and content
     this.fireDB.list('/courses/').push(course);
   }
 

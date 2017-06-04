@@ -29,6 +29,10 @@ export class CenterPage {
         });
         this.pages = [
             {
+                title: 'Courses',
+                component: CoursesPage
+            },
+            {
                 title: 'Sign Out',
                 component: HomePage
             }
@@ -41,6 +45,7 @@ export class CenterPage {
       if(page.title == 'Sign Out'){
         //reset storage info
         this.storage.remove('email');
+        this.storage.remove('password');
         //Sign Out User
         this.authService.doLogout();
       }else{

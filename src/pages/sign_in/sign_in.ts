@@ -29,7 +29,7 @@ export class SignInPage {
                     // -- Save Log In info so they don't have to keep relogging --
                     // Need to encrypt information later for security
                     this.storage.set('email', this.email);
-                    //this.storage.set('password', this.password);
+                    this.storage.set('password', this.password);
                     this.navCtrl.setRoot(CenterPage);
                 }, error => {
                     // Handle errors

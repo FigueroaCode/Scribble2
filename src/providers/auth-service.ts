@@ -11,11 +11,13 @@ import firebase from 'firebase';
 @Injectable()
 export class AuthService {
     public fireAuth: any;
-    public userData: any;
 
     constructor() {
         this.fireAuth = firebase.auth();
-        this.userData = firebase.database().ref('/userData');
+    }
+
+    getFireAuth(){
+        return this.fireAuth;
     }
 
     doLogin(email: string, password: string): any {
@@ -25,7 +27,10 @@ export class AuthService {
     register(username: string, email: string, password: string): any {
         return this.fireAuth.createUserWithEmailAndPassword(email, password)
             .then((newUser) => {
-              this.userData.child(newUser.uid).set({username: username, email: email});
+                //Save username
+                newUser.updateProfile({
+                    displayName: username
+                });
             });
     }
     resetPassword(email: string): any {

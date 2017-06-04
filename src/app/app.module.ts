@@ -18,6 +18,7 @@ import { RegisterPage} from '../pages/register/register';
 import { CoursesPage } from '../pages/courses/courses';
 import { CenterPage } from '../pages/center/center';
 import { ResetPasswordPage } from '../pages/resetpassword/resetpassword';
+import { JoinCoursePage } from '../pages/joincourse/joincourse';
 
 export const firebaseConfig = {
     apiKey: "AIzaSyBigCugTwNIJnJ2HKVV4GHGzjRxBYYc0Lk",
@@ -38,7 +39,8 @@ firebase.initializeApp(firebaseConfig);
     RegisterPage,
     CoursesPage,
     CenterPage,
-    ResetPasswordPage
+    ResetPasswordPage,
+    JoinCoursePage
   ],
   imports: [
     BrowserModule,
@@ -56,7 +58,8 @@ firebase.initializeApp(firebaseConfig);
     RegisterPage,
     CoursesPage,
     CenterPage,
-    ResetPasswordPage
+    ResetPasswordPage,
+    JoinCoursePage
   ],
   providers: [
     StatusBar,

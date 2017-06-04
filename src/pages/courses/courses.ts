@@ -2,8 +2,10 @@ import { Component } from '@angular/core';
 import { NavController, AlertController } from 'ionic-angular';
 import { FirebaseService } from '../../providers/firebase-service';
 import { FirebaseListObservable } from 'angularfire2/database';
+import { AuthService } from '../../providers/auth-service';
 
 import { HomePage } from '../home/home';
+import { JoinCoursePage } from '../joincourse/joincourse';
 
 @Component({
   selector: 'page-courses',
@@ -13,14 +15,25 @@ import { HomePage } from '../home/home';
 export class CoursesPage {
 
     courses: FirebaseListObservable<any[]>;
+    displayName: string;
 
     constructor(public navCtrl: NavController, public firebaseService: FirebaseService,
-    public alertCtrl: AlertController) {
+    public authService: AuthService, public alertCtrl: AlertController) {
+        if(this.authService.getFireAuth().currentUser)
+            this.displayName = this.authService.getFireAuth().currentUser.displayName;
+
+        console.log(this.displayName);
         this.initializeCourses();
     }
 
     initializeCourses(){
-        this.courses = this.firebaseService.getCourses();
+        this.courses = this.firebaseService.getDB().list('/courses', {
+            query:
+            {
+                orderByChild: 'owner',
+                equalTo: this.displayName
+            }
+        });
     }
 
     createCourse(){
@@ -46,6 +59,7 @@ export class CoursesPage {
                     text: 'Create',
                     handler: data => {
                         this.firebaseService.addCourse({
+                            owner: this.displayName,
                             title: data.title,
                             content: data.description
                         })
@@ -55,6 +69,10 @@ export class CoursesPage {
         });
 
         prompt.present();
+    }
+
+    joinCourse(){
+        this.navCtrl.push(JoinCoursePage);
     }
 
     deleteCourse(id){
