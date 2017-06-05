@@ -2,3 +2,11 @@
     min-width: 40% !important;
     max-width: 40% !important;
 }
+
+#title{
+    color: map-get($colors, light);
+}
+
+#reset{
+    color: map-get($colors, primary);
+}

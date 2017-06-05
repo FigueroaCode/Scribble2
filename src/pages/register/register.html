@@ -3,7 +3,7 @@
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title>Scribble</ion-title>
+    <h2 id="title">Register</h2>
   </ion-navbar>
 </ion-header>
 
@@ -12,8 +12,8 @@
         <ion-col>
             <div  align="center">
                 <ion-item class="fixedWidth" align="center">
-                    <ion-label floating>Email</ion-label>
-                    <ion-input type="text"></ion-input>
+                    <ion-label floating>Username</ion-label>
+                    <ion-input type="text" #username (change)="usernameChanged(username)"></ion-input>
                 </ion-item>
             </div>
         </ion-col>
@@ -22,8 +22,8 @@
         <ion-col>
             <div  align="center">
                 <ion-item class="fixedWidth" align="center">
-                    <ion-label floating>Username</ion-label>
-                    <ion-input type="text"></ion-input>
+                    <ion-label floating>Email</ion-label>
+                    <ion-input type="text" #email (change)="emailChanged(email)"></ion-input>
                 </ion-item>
             </div>
         </ion-col>
@@ -33,7 +33,7 @@
             <div align="center">
                 <ion-item class="fixedWidth" align="center">
                     <ion-label floating>Password</ion-label>
-                    <ion-input type="password"></ion-input>
+                    <ion-input type="password" #password (change)="passwordChanged(password)"></ion-input>
                 </ion-item>
             </div>
         </ion-col>
@@ -41,7 +41,7 @@
     <ion-row>
         <ion-col>
             <div align="center">
-                <button ion-button color="danger"> Sign In </button>
+                <button ion-button color="danger" (click)="registerUser()"> Register </button>
             </div>
         </ion-col>
     </ion-row>

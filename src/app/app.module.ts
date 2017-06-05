@@ -4,6 +4,12 @@ import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
 import { AngularFireModule } from 'angularfire2';
+import { AngularFireDatabaseModule } from 'angularfire2/database';
+import { AuthService } from '../providers/auth-service';
+import { FirebaseService } from '../providers/firebase-service';
+import { HttpModule } from '@angular/http';
+import { IonicStorageModule } from '@ionic/storage';
+import firebase from 'firebase';
 
 import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
@@ -11,6 +17,8 @@ import { SignInPage } from '../pages/sign_in/sign_in';
 import { RegisterPage} from '../pages/register/register';
 import { CoursesPage } from '../pages/courses/courses';
 import { CenterPage } from '../pages/center/center';
+import { ResetPasswordPage } from '../pages/resetpassword/resetpassword';
+import { JoinCoursePage } from '../pages/joincourse/joincourse';
 
 export const firebaseConfig = {
     apiKey: "AIzaSyBigCugTwNIJnJ2HKVV4GHGzjRxBYYc0Lk",
@@ -21,6 +29,8 @@ export const firebaseConfig = {
     messagingSenderId: "317744421633"
 }
 
+firebase.initializeApp(firebaseConfig);
+
 @NgModule({
   declarations: [
     MyApp,
@@ -28,12 +38,17 @@ export const firebaseConfig = {
     SignInPage,
     RegisterPage,
     CoursesPage,
-    CenterPage
+    CenterPage,
+    ResetPasswordPage,
+    JoinCoursePage
   ],
   imports: [
     BrowserModule,
+    HttpModule,
     IonicModule.forRoot(MyApp),
-    AngularFireModule.initializeApp(firebaseConfig)
+    AngularFireModule.initializeApp(firebaseConfig),
+    IonicStorageModule.forRoot(),
+    AngularFireDatabaseModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -42,12 +57,16 @@ export const firebaseConfig = {
     SignInPage,
     RegisterPage,
     CoursesPage,
-    CenterPage
+    CenterPage,
+    ResetPasswordPage,
+    JoinCoursePage
   ],
   providers: [
     StatusBar,
     SplashScreen,
-    {provide: ErrorHandler, useClass: IonicErrorHandler}
+    {provide: ErrorHandler, useClass: IonicErrorHandler},
+    AuthService,
+    FirebaseService
   ]
 })
 export class AppModule {}
