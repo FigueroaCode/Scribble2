@@ -48,6 +48,18 @@ export class CoursesPage {
                 {
                     name: 'description',
                     placeholder: 'Course Description'
+                },
+                {
+                    name: 'id',
+                    placeholder: 'Course ID'
+                },
+                {
+                    name: 'professor',
+                    placeholder: 'Professor'
+                },
+                {
+                    name: 'university',
+                    placeholder: 'University'
                 }
             ],
             buttons: [
