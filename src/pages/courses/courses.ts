@@ -50,16 +50,16 @@ export class CoursesPage {
                     placeholder: 'Course Description'
                 },
                 {
-                    name: 'id',
-                    placeholder: 'Course ID'
+                    name: 'studentId',
+                    placeholder: 'Your Student ID'
                 },
                 {
                     name: 'professor',
-                    placeholder: 'Professor'
+                    placeholder: 'Professor of Course'
                 },
                 {
                     name: 'university',
-                    placeholder: 'University'
+                    placeholder: 'The University the course is from'
                 }
             ],
             buttons: [
@@ -73,7 +73,10 @@ export class CoursesPage {
                         this.firebaseService.addCourse({
                             owner: this.displayName,
                             title: data.title,
-                            content: data.description
+                            content: data.description,
+                            studentId: data.studentId,
+                            professor: data.professor,
+                            university: data.university
                         })
                     }
                 }
