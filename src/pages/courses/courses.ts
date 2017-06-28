@@ -55,7 +55,7 @@ export class CoursesPage {
                 },
                 {
                     name: 'professor',
-                    placeholder: 'Professor of Course'
+                    placeholder: 'Professor of the Course'
                 },
                 {
                     name: 'university',
