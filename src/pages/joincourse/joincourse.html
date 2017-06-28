@@ -6,11 +6,16 @@
     <h2 id="title"> Join a Course </h2>
   </ion-navbar>
 </ion-header>
+
 <ion-content>
     <ion-grid>
         <ion-row>
-            <ion-col col-9>
+            <!-- <ion-col col-2>
+              <h1>TEST</h1>
+            </ion-col> -->
+            <ion-col col-10>
                 <!-- Course list -->
+                <h1>Course List</h1>
                 <ion-list>
                     <ion-item *ngFor="let course of courses | async">
                         {{ course.title }}
@@ -19,6 +24,29 @@
             </ion-col>
             <ion-col col-2>
                 <!-- Filter -->
+                <h1>Search Criteria</h1>
+                <ion-list>
+                  <ion-item>
+                    <ion-label stacked>Course Name</ion-label>
+                    <ion-input type="text"></ion-input>
+                  </ion-item>
+
+                  <ion-item>
+                    <ion-label stacked>Course ID</ion-label>
+                    <ion-input type="text"></ion-input>
+                  </ion-item>
+
+                  <ion-item>
+                    <ion-label stacked>Professor</ion-label>
+                    <ion-input type="text"></ion-input>
+                  </ion-item>
+
+                  <ion-item>
+                    <ion-label stacked>University</ion-label>
+                    <ion-input type="text"></ion-input>
+                  </ion-item>
+                </ion-list>
+                <button ion-button color="danger">Apply Filter</button>
             </ion-col>
         </ion-row>
     </ion-grid>
