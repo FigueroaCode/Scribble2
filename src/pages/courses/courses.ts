@@ -19,10 +19,10 @@ export class CoursesPage {
 
     constructor(public navCtrl: NavController, public firebaseService: FirebaseService,
     public authService: AuthService, public alertCtrl: AlertController) {
+        //check that user exists
         if(this.authService.getFireAuth().currentUser)
             this.displayName = this.authService.getFireAuth().currentUser.displayName;
-
-        console.log(this.displayName);
+        //Initialize Courses
         this.initializeCourses();
     }
 

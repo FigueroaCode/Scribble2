@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { NavController, AlertController, LoadingController } from 'ionic-angular';
 import { AuthService } from '../../providers/auth-service';
 
-import { SignInPage } from '../sign_in/sign_in';
+import { CenterPage } from '../center/center';
 
 @Component({
   selector: 'page-register',
@@ -37,8 +37,7 @@ export class RegisterPage {
         if(this.email != '' && this.password != ''){
             this.authService.register(this.username,this.email,this.password).then(
                 authService => {
-                    console.log('no error');
-                    this.navCtrl.push(SignInPage);
+                    this.navCtrl.setRoot(CenterPage);
                 }, error => {
                     this.loading.dismiss().then( () => {
                         let alert = this.alertCtrl.create({

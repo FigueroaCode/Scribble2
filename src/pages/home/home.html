@@ -3,7 +3,7 @@
   <div align="center" class="box">
     <h1 class="title">Scribble</h1>
 
-    <button ion-button [navPush]="signInPage" color="danger"> Sign In</button>
-    <button ion-button [navPush]="registerPage" color="danger"> Register</button>
+    <button ion-button (click)="signIn()" color="danger"> Sign In</button>
+    <button ion-button (click)="register()" color="danger"> Register</button>
   </div>
 </ion-content>
