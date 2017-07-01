@@ -50,8 +50,8 @@ export class CoursesPage {
                     placeholder: 'Course Description'
                 },
                 {
-                    name: 'studentId',
-                    placeholder: 'Your Student ID'
+                    name: 'courseId',
+                    placeholder: 'Course ID, ex: MAC2312'
                 },
                 {
                     name: 'professor',
@@ -74,7 +74,7 @@ export class CoursesPage {
                             owner: this.displayName,
                             title: data.title,
                             content: data.description,
-                            studentId: data.studentId,
+                            courseID: data.courseId,
                             professor: data.professor,
                             university: data.university
                         })
@@ -113,20 +113,20 @@ export class CoursesPage {
 
     //Filter Items for Search Bar
     getItems(ev: any) {
-    this.initializeCourses();
-    // set val to the value of the searchbar
-    let val = ev.target.value;
+      this.initializeCourses();
+      // set val to the value of the searchbar
+      let val = ev.target.value;
 
-    // if the value is an empty string don't filter the items
-    if (val && val.trim() != '') {
-        this.courses = this.firebaseService.getDB().list('/courses', {
-            query:
-            {
-                orderByChild: 'title',
-                equalTo: val
+      // if the value is an empty string don't filter the items
+      if (val && val.trim() != '') {
+          this.courses = this.firebaseService.getDB().list('/courses', {
+              query:
+              {
+                  orderByChild: 'title',
+                  equalTo: val
 
-            }
-        });
-    }
+              }
+          });
+      }
   }
 }

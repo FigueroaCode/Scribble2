@@ -10,16 +10,42 @@
 <ion-content>
     <ion-grid>
         <ion-row>
-            <!-- <ion-col col-2>
-              <h1>TEST</h1>
-            </ion-col> -->
             <ion-col col-10>
                 <!-- Course list -->
                 <h1>Course List</h1>
                 <ion-list>
-                    <ion-item *ngFor="let course of courses | async">
-                        {{ course.title }}
-                    </ion-item>
+                  <ion-card *ngFor="let course of courses | async">
+                    <ion-card-header>{{ course.title }}</ion-card-header>
+                    <ion-card-content>
+                      <ion-row *ngIf="course.content.trim() != ''">
+                        Course ID: {{ course.courseID }}
+                      </ion-row>
+                      <ion-row *ngIf="course.content.trim() == ''">
+                        Course ID: N/A
+                      </ion-row>
+
+                      <ion-row *ngIf="course.content.trim() != ''">
+                        Professor: {{ course.professor }}
+                      </ion-row>
+                      <ion-row *ngIf="course.content.trim() == ''">
+                        Professor: N/A
+                      </ion-row>
+
+                      <ion-row *ngIf="course.content.trim() != ''">
+                        University: {{ course.university }}
+                      </ion-row>
+                      <ion-row *ngIf="course.content.trim() == ''">
+                        University: N/A
+                      </ion-row>
+
+                      <ion-row *ngIf="course.content.trim() != ''">
+                        Description: {{ course.content }}
+                      </ion-row>
+                      <ion-row *ngIf="course.content.trim() == ''">
+                        Description: N/A
+                      </ion-row>
+                    </ion-card-content>
+                  </ion-card>
                 </ion-list>
             </ion-col>
             <ion-col col-2>
@@ -27,26 +53,21 @@
                 <h1>Search Criteria</h1>
                 <ion-list>
                   <ion-item>
-                    <ion-label stacked>Course Name</ion-label>
-                    <ion-input type="text"></ion-input>
+                    <ion-input placeholder="Course Name" [(ngModel)]="courseNameInput" (change)="filterItems(courseNameInput, 'courseNameInput')" type="text"></ion-input>
                   </ion-item>
 
                   <ion-item>
-                    <ion-label stacked>Course ID</ion-label>
-                    <ion-input type="text"></ion-input>
+                    <ion-input placeholder="Course ID, ex: MAC2312" [(ngModel)]="courseID" (change)="filterItems(courseID, 'courseID')" type="text"></ion-input>
                   </ion-item>
 
                   <ion-item>
-                    <ion-label stacked>Professor</ion-label>
-                    <ion-input type="text"></ion-input>
+                    <ion-input placeholder="Professor" [(ngModel)]="professor" (change)="filterItems(professor, 'professor')" type="text"></ion-input>
                   </ion-item>
 
                   <ion-item>
-                    <ion-label stacked>University</ion-label>
-                    <ion-input type="text"></ion-input>
+                    <ion-input placeholder="University" [(ngModel)]="university" (change)="filterItems(university, 'university')" type="text"></ion-input>
                   </ion-item>
                 </ion-list>
-                <button ion-button color="danger">Apply Filter</button>
             </ion-col>
         </ion-row>
     </ion-grid>
