@@ -17,24 +17,24 @@
                   <ion-card *ngFor="let course of courses | async">
                     <ion-card-header>{{ course.title }}</ion-card-header>
                     <ion-card-content>
-                      <ion-row *ngIf="course.content.trim() != ''">
+                      <ion-row *ngIf="course.courseID.trim() != ''">
                         Course ID: {{ course.courseID }}
                       </ion-row>
-                      <ion-row *ngIf="course.content.trim() == ''">
+                      <ion-row *ngIf="course.courseID.trim() == ''">
                         Course ID: N/A
                       </ion-row>
 
-                      <ion-row *ngIf="course.content.trim() != ''">
+                      <ion-row *ngIf="course.professor.trim() != ''">
                         Professor: {{ course.professor }}
                       </ion-row>
-                      <ion-row *ngIf="course.content.trim() == ''">
+                      <ion-row *ngIf="course.professor.trim() == ''">
                         Professor: N/A
                       </ion-row>
 
-                      <ion-row *ngIf="course.content.trim() != ''">
+                      <ion-row *ngIf="course.university.trim() != ''">
                         University: {{ course.university }}
                       </ion-row>
-                      <ion-row *ngIf="course.content.trim() == ''">
+                      <ion-row *ngIf="course.university.trim() == ''">
                         University: N/A
                       </ion-row>
 
