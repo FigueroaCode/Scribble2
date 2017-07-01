@@ -21,12 +21,12 @@ import { ResetPasswordPage } from '../pages/resetpassword/resetpassword';
 import { JoinCoursePage } from '../pages/joincourse/joincourse';
 
 export const firebaseConfig = {
-    apiKey: "AIzaSyBigCugTwNIJnJ2HKVV4GHGzjRxBYYc0Lk",
-    authDomain: "scribbledb-eb51b.firebaseapp.com",
-    databaseURL: "https://scribbledb-eb51b.firebaseio.com",
-    projectId: "scribbledb-eb51b",
-    storageBucket: "scribbledb-eb51b.appspot.com",
-    messagingSenderId: "317744421633"
+    apiKey: "AIzaSyAzEAPiDw8-K235uSq_wfrNPIAZyRivsAE",
+    authDomain: "scribble-c789c.firebaseapp.com",
+    databaseURL: "https://scribble-c789c.firebaseio.com",
+    projectId: "scribble-c789c",
+    storageBucket: "",
+    messagingSenderId: "89331952725"
 }
 
 firebase.initializeApp(firebaseConfig);
