@@ -15,11 +15,10 @@ import { RegisterPage } from '../register/register';
 export class HomePage {
     zone: NgZone;
     loading: any;
-    signingIn: boolean;
 
   constructor(public navCtrl: NavController, public alertCtrl: AlertController, public loadingCtrl: LoadingController) {
         this.zone = new NgZone({});
-        this.signingIn = false;
+
         //Send User to Course Page if hes already signed in
         firebase.auth().onAuthStateChanged((user) => {
             this.zone.run( () => {
