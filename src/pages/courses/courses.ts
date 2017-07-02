@@ -1,11 +1,13 @@
 import { Component } from '@angular/core';
 import { NavController, AlertController } from 'ionic-angular';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { FirebaseService } from '../../providers/firebase-service';
 import { FirebaseListObservable } from 'angularfire2/database';
 import { AuthService } from '../../providers/auth-service';
 
 import { HomePage } from '../home/home';
 import { JoinCoursePage } from '../joincourse/joincourse';
+import { NotesPage } from '../notes/notes';
 
 @Component({
   selector: 'page-courses',
@@ -18,7 +20,7 @@ export class CoursesPage {
     displayName: string;
 
     constructor(public navCtrl: NavController, public firebaseService: FirebaseService,
-    public authService: AuthService, public alertCtrl: AlertController) {
+    public authService: AuthService, public alertCtrl: AlertController, public formBuilder: FormBuilder) {
         //check that user exists
         if(this.authService.getFireAuth().currentUser)
             this.displayName = this.authService.getFireAuth().currentUser.displayName;
@@ -70,14 +72,20 @@ export class CoursesPage {
                 {
                     text: 'Create',
                     handler: data => {
-                        this.firebaseService.addCourse({
-                            owner: this.displayName,
-                            title: data.title,
-                            content: data.description,
-                            courseID: data.courseId,
-                            professor: data.professor,
-                            university: data.university
-                        })
+                        //Make sure all the fields are not empty
+                        if(this.displayName != '' && data.title != '' && data.description != '' && data.courseId != ''
+                            && data.professor != '' && data.university != ''){
+                            this.firebaseService.addCourse({
+                                owner: this.displayName,
+                                title: data.title,
+                                content: data.description,
+                                courseID: data.courseId,
+                                professor: data.professor,
+                                university: data.university
+                            })
+                        }else{
+                            console.log("A Field is Empty");
+                        }
                     }
                 }
             ]
@@ -128,5 +136,10 @@ export class CoursesPage {
               }
           });
       }
+  }
+
+  //go to note page
+  notes(){
+    this.navCtrl.push(NotesPage);
   }
 }

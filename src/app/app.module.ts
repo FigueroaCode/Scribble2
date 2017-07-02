@@ -17,6 +17,7 @@ import { SignInPage } from '../pages/sign_in/sign_in';
 import { RegisterPage} from '../pages/register/register';
 import { CoursesPage } from '../pages/courses/courses';
 import { CenterPage } from '../pages/center/center';
+import { NotesPage } from '../pages/notes/notes';
 import { ResetPasswordPage } from '../pages/resetpassword/resetpassword';
 import { JoinCoursePage } from '../pages/joincourse/joincourse';
 
@@ -40,7 +41,8 @@ firebase.initializeApp(firebaseConfig);
     CoursesPage,
     CenterPage,
     ResetPasswordPage,
-    JoinCoursePage
+    JoinCoursePage,
+    NotesPage
   ],
   imports: [
     BrowserModule,
@@ -59,7 +61,8 @@ firebase.initializeApp(firebaseConfig);
     CoursesPage,
     CenterPage,
     ResetPasswordPage,
-    JoinCoursePage
+    JoinCoursePage,
+    NotesPage
   ],
   providers: [
     StatusBar,
