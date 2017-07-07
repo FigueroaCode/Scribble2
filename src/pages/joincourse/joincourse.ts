@@ -17,11 +17,11 @@ export class JoinCoursePage {
     constructor(public navCtrl: NavController, public firebaseService: FirebaseService,
         public authService: AuthService, public alertCtrl: AlertController) {
         this.initializeList();
-        this.name = "Lalalaa";
     }
 
     initializeList(){
         this.courses = this.firebaseService.getCourses();
+        console.log(this.courses);
     }
 
     //Filter Items for course list.

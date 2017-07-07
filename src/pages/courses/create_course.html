@@ -1,0 +1,41 @@
+<ion-toolbar color="primary">
+    <ion-title>Create a Course</ion-title>
+</ion-toolbar>
+<ion-content class="background" padding style="margin-top: 25px;">
+    <ion-grid>
+        <ion-row>
+            <ion-col>
+                <form [formGroup]="createCourse">
+                    <ion-item>
+                        <ion-label floating>Course Title</ion-label>
+                        <ion-input formControlName="courseTitle" type="text"></ion-input>
+                    </ion-item>
+                    <ion-item>
+                        <ion-label floating>Description</ion-label>
+                        <ion-input formControlName="description" type="text"></ion-input>
+                    </ion-item>
+                    <ion-item>
+                        <ion-label floating>Course ID</ion-label>
+                        <ion-input formControlName="courseID" type="text"></ion-input>
+                    </ion-item>
+                    <ion-item>
+                        <ion-label floating>Professor</ion-label>
+                        <ion-input formControlName="professor" type="text"></ion-input>
+                    </ion-item>
+                    <ion-item>
+                        <ion-label floating>University</ion-label>
+                        <ion-input formControlName="university" type="text"></ion-input>
+                    </ion-item>
+                </form>
+            </ion-col>
+        </ion-row>
+        <ion-row>
+            <ion-col>
+                <div class="buttons" align="center">
+                    <button ion-button (click)="cancel()">Cancel</button>
+                    <button ion-button (click)="createACourse()">Create</button>
+                </div>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+</ion-content>

@@ -19,15 +19,45 @@
             <ion-col>
                 <ion-scroll style="width:100%;height:65vh" scrollY="true">
                 <ion-card scroll="true"  *ngFor="let course of courses | async">
-                    <ion-card-header>
+                    <!-- <ion-card-header>
                             <button ion-button color="danger" (click)="deleteCourse(course.$key)">
                                  <ion-icon name="close"></ion-icon>
                              </button>
                             <span id="cardTitle">{{ course.title }}</span>
+                            <span align="right">Course ID: {{ course.courseID }}</span>
                     </ion-card-header>
                     <ion-card-content>
                         {{ course.content }}
-                    </ion-card-content>
+                    </ion-card-content> -->
+                    <ion-grid>
+                        <!-- Header -->
+                        <ion-row>
+                            <!-- Course Title -->
+                            <ion-col id="cardTitle">
+                                {{ course.title }}
+                            </ion-col>
+                            <ion-col id="courseID">
+                                Course ID: {{ course.courseID }}
+                            </ion-col>
+                        </ion-row>
+                        <!-- Content -->
+                        <ion-row>
+                            <ion-col col-2>
+                                <p>Professor: {{ course.professor }}</p>
+                                <p>University: {{ course.university }}</p>
+                            </ion-col>
+                            <ion-col col-4 align="right">
+                                Description: {{ course.content }}
+                            </ion-col>
+                        </ion-row>
+                        <!-- Footer -->
+                        <ion-row>
+                            <ion-col align="right">
+                                <button ion-button (click)="notes()"> Edit Notes </button>
+                                <button ion-button color="danger" (click)="deleteCourse(course.$key)">Delete Course</button>
+                            </ion-col>
+                        </ion-row>
+                    </ion-grid>
                 </ion-card>
             </ion-scroll>
             </ion-col>
