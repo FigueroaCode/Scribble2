@@ -1,8 +1,43 @@
 
 <ion-content class="pane" padding wrap>
-  <div align="center" class="box">
-    <h1 class="title">Scribble</h1>
+  <div height="10vw" class="box">
+    <ion-slides pager>
+      <ion-slide>
+        <h1 class="title">Scribble</h1>
+      </ion-slide>
 
+      <ion-slide>
+        <h2 class="slide">What is Scribble?</h2>
+      </ion-slide>
+
+      <ion-slide>
+        <h2 class="slide">How does it work?</h2>
+      </ion-slide>
+
+      <ion-slide>
+        <h2 class="slide">Give it a try!</h2>
+        <ion-grid>
+          <ion-col col-6>
+            <ion-row>
+              <h2>Enter example text into the two fields below:</h2>
+            </ion-row>
+            <ion-row height="10vw">
+              <ion-input type="text" placeholder="Paragraph One"></ion-input>
+            </ion-row>
+            <ion-row>
+              <ion-input type="text" placeholder="Paragraph Two"></ion-input>
+            </ion-row>
+          </ion-col>
+
+          <ion-col col-6>
+            <h2>Resulting text</h2>
+          </ion-col>
+        </ion-grid>
+      </ion-slide>
+    </ion-slides>
+  </div>
+
+  <div align="center">
     <button ion-button (click)="signIn()" color="danger"> Sign In</button>
     <button ion-button (click)="register()" color="danger"> Register</button>
   </div>

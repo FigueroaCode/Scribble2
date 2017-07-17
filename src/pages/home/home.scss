@@ -5,17 +5,28 @@ page-home {
     font-size: 15vw;
     align-self: center;
     word-wrap: normal;
-    color: map-get($colors, light);
+    color: map-get($colors, primary);
+  }
+
+  .slide {
+    font-family: "Blacksword";
+    font-size: 5vw;
+    align-self: center;
+    word-wrap: normal;
+    color: map-get($colors, primary);
   }
 
   .box {
+    align-self: center;
+    align-content: center;
     vertical-align: center;
     word-wrap: normal;
     margin: 15%;
   }
 
   .pane {
-      background: url("../assets/images/home_background_image.jpg") no-repeat center center fixed;
+    //Just add the background image to be used after '/images/'
+      background: url("../assets/images/") no-repeat center center fixed;
       -webkit-background-size: cover;
       -moz-background-size: cover;
       background-size: cover;
