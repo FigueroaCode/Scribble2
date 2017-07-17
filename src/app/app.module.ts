@@ -16,6 +16,7 @@ import { HomePage } from '../pages/home/home';
 import { SignInPage } from '../pages/sign_in/sign_in';
 import { RegisterPage} from '../pages/register/register';
 import { CoursesPage } from '../pages/courses/courses';
+import { CreateCoursePage } from '../pages/courses/create_course';
 import { CenterPage } from '../pages/center/center';
 import { NotesPage } from '../pages/notes/notes';
 import { ResetPasswordPage } from '../pages/resetpassword/resetpassword';
@@ -39,6 +40,7 @@ firebase.initializeApp(firebaseConfig);
     SignInPage,
     RegisterPage,
     CoursesPage,
+    CreateCoursePage,
     CenterPage,
     ResetPasswordPage,
     JoinCoursePage,
@@ -59,6 +61,7 @@ firebase.initializeApp(firebaseConfig);
     SignInPage,
     RegisterPage,
     CoursesPage,
+    CreateCoursePage,
     CenterPage,
     ResetPasswordPage,
     JoinCoursePage,

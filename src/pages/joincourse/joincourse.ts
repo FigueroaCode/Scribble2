@@ -32,11 +32,12 @@ export class JoinCoursePage {
 
     initializeList(){
         this.courses = this.firebaseService.getCourses();
+        console.log(this.courses);
     }
 
     //Filter Items for course list.
     filterItems(target: string, type: string) {
-      
+
       // if the value is an empty string don't filter the items
       if (target && target.trim() != '' && type == 'courseNameInput') {
           this.appliedFilters.title = target;
