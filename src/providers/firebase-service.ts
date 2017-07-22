@@ -3,6 +3,8 @@ import { Http } from '@angular/http';
 import 'rxjs/add/operator/map';
 import { AngularFireDatabase } from 'angularfire2/database';
 
+import { Course } from '../models/course';
+
 @Injectable()
 export class FirebaseService {
 
@@ -18,9 +20,15 @@ export class FirebaseService {
     return this.fireDB.list('/courses/');
   }
 
-  addCourse(course){
-    //course is an object with an owner, title and content
+  addCourse(course: Course){
+      //add a course object to the database
     this.fireDB.list('/courses/').push(course);
+  }
+
+  saveNotes(note){
+      //TODO: Make a Note Class
+      //If it already exists update it
+     let key = this.fireDB.list('/notes/').push(note).key;
   }
 
   removeCourse(id){

@@ -19,16 +19,6 @@
             <ion-col>
                 <ion-scroll style="width:100%;height:65vh" scrollY="true">
                 <ion-card scroll="true"  *ngFor="let course of courses | async">
-                    <!-- <ion-card-header>
-                            <button ion-button color="danger" (click)="deleteCourse(course.$key)">
-                                 <ion-icon name="close"></ion-icon>
-                             </button>
-                            <span id="cardTitle">{{ course.title }}</span>
-                            <span align="right">Course ID: {{ course.courseID }}</span>
-                    </ion-card-header>
-                    <ion-card-content>
-                        {{ course.content }}
-                    </ion-card-content> -->
                     <ion-grid>
                         <!-- Header -->
                         <ion-row>
