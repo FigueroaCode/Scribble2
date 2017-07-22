@@ -3,6 +3,8 @@ import { ViewController, NavParams } from 'ionic-angular';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { FirebaseService } from '../../providers/firebase-service';
 
+import { Course } from '../../models/course';
+
 @Component({
   selector: 'page-create_course',
   templateUrl: 'create_course.html'
@@ -27,23 +29,12 @@ export class CreateCoursePage{
 
     createACourse(){
         //Make sure all the fields are not empty
-        // console.log(this.displayName);
-        // console.log(this.createCourse.value.courseTitle);
-        // console.log(this.createCourse.courseTitle);
-        // console.log(this.createCourse.description);
-        // console.log(this.createCourse.courseID);
-        // console.log(this.createCourse.professor);
-        // console.log(this.createCourse.university);
         if(this.displayName != '' && this.createCourse.value.courseTitle != null && this.createCourse.value.description != null && this.createCourse.value.courseID != null
             && this.createCourse.value.professor != null && this.createCourse.value.university != null){
-            this.firebaseService.addCourse({
-                owner: this.displayName,
-                title: this.createCourse.value.courseTitle,
-                content: this.createCourse.value.description,
-                courseID: this.createCourse.value.courseID,
-                professor: this.createCourse.value.professor,
-                university: this.createCourse.value.university
-            })
+                let newCourse = new Course(this.displayName, this.createCourse.value.courseTitle,
+                    this.createCourse.value.description, this.createCourse.value.professor, this.createCourse.value.university,
+                    this.createCourse.value.courseID);
+            this.firebaseService.addCourse(newCourse);
             this.viewCtrl.dismiss();
         }else{
             console.log("A Field is Empty");

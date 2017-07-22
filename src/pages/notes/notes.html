@@ -7,28 +7,35 @@
   </ion-navbar>
 </ion-header>
 <ion-content>
-    <div padding>
-  <ion-segment [(ngModel)]="noteSegment">
-    <ion-segment-button value="publicNote">
-      Public Notes
-    </ion-segment-button>
-    <ion-segment-button value="privateNote">
-      Private Notes
-    </ion-segment-button>
-  </ion-segment>
-</div>
-
-<div [ngSwitch]="noteSegment">
-  <ion-list *ngSwitchCase="'publicNote'">
-    <ion-item>
-
-    </ion-item>
-  </ion-list>
-
-  <ion-list *ngSwitchCase="'privateNote'">
-    <ion-item>
-
-    </ion-item>
-  </ion-list>
-  </div>
+    <ion-grid padding>
+      <ion-segment [(ngModel)]="noteSegment">
+        <ion-segment-button value="publicNote">
+          Public Notes
+        </ion-segment-button>
+        <ion-segment-button value="privateNote">
+          Private Notes
+        </ion-segment-button>
+      </ion-segment>
+        <ion-row [ngSwitch]="noteSegment">
+                <!-- Topics Columns -->
+                <ion-col col-xs-5 col-sm-3 col-md-2 col-lg-2>
+                    <button ion-button> Add a Chapter</button>
+                </ion-col>
+                <ion-col col-xs-7 col-sm-9 col-md-10 col-lg-10 *ngSwitchCase="'publicNote'">
+                    <!-- Instructions -->
+                    <p>Enter Your notes here, and make sure to press the save button to upload your changes.</p>
+                    <ion-textarea id="noteText" autosize [(ngModel)]="text" [value]="text"></ion-textarea>
+                </ion-col>
+                <ion-col col-xs-8 col-sm-9 col-md-10 col-lg-10 *ngSwitchCase="'privateNote'">
+                    <!-- Instructions -->
+                    <p>Enter Your notes here, and make sure to press the save button to upload your changes.</p>
+                    <ion-textarea id="noteText" autosize></ion-textarea>
+                </ion-col>
+        </ion-row>
+        <ion-row>
+            <ion-col align="right">
+                <button ion-button (click)="saveNote()">Save</button>
+            </ion-col>
+        </ion-row>
+</ion-grid>
 </ion-content>

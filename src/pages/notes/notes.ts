@@ -14,6 +14,7 @@ export class NotesPage {
 
     courses: FirebaseListObservable<any[]>;
     displayName: string;
+    text: string;
     //Set defualt Segment to the main Note
     noteSegment: string = "publicNote";
 
@@ -22,5 +23,10 @@ export class NotesPage {
         //check that user exists
         if(this.authService.getFireAuth().currentUser)
             this.displayName = this.authService.getFireAuth().currentUser.displayName;
+    }
+
+    saveNote(){
+        if(this.text != null)
+            this.firebaseService.saveNotes({user: this.displayName, text: this.text});
     }
 }

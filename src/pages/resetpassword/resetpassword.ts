@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { NavController, AlertController, LoadingController } from 'ionic-angular';
 import { AuthService } from '../../providers/auth-service';
 
+import { HomePage } from '../home/home';
+
 
 @Component({
   selector: 'page-resetpassword',
@@ -20,7 +22,7 @@ export class ResetPasswordPage {
         if(this.email != ''){
             this.authService.resetPassword(this.email).then(
                 authService => {
-                    //this.navCtrl.setRoot(HomePage);
+                    this.navCtrl.setRoot(HomePage);
                 }, error => {
                     // Handle errors
                     this.loading.dismiss().then(

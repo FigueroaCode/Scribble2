@@ -34,6 +34,22 @@ $list-md-background-color: map-get($colors, secondary);
 $toolbar-ios-title-text-color: map-get($colors, light);
 $toolbar-md-title-text-color: map-get($colors, light);
 
+//Custom Grid
+$grid-breakpoints: (
+  xs: 50px,
+  sm: 576px,
+  md: 768px,
+  lg: 992px,
+  xl: 1200px
+);
+
+$grid-max-widths: (
+  xs: 300px,
+  sm: 420px,
+  md: 720px,
+  lg: 960px
+);
+
 // App iOS Variables
 // --------------------------------------------------
 // iOS only Sass variables can go here
