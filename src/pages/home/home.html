@@ -1,11 +1,11 @@
 <ion-content class="background" padding wrap>
   <ion-grid>
     <ion-row row-12>
-      <ion-col align="right" style="border: solid 1px black" col-xs-1 col-sm-1 col-md-1 col-lg-1>
+      <ion-col align="right" col-xs-1 col-sm-1 col-md-1 col-lg-1>
         <ion-icon (click)="previousSlide()" class="arrow-icons" name="ios-arrow-back"></ion-icon>
       </ion-col>
 
-      <ion-col style="border: solid 1px black" col-xs-10 col-sm-10 col-md-10 col-lg-10>
+      <ion-col col-xs-10 col-sm-10 col-md-10 col-lg-10>
         <ion-slides class="slides" pager="false" loop="true">
           <ion-slide>
             <h1 class="title">{{appName}}</h1>
@@ -29,7 +29,7 @@
         </ion-slides>
       </ion-col>
 
-      <ion-col align="left" style="border: solid 1px black" col-xs-1 col-sm-1 col-md-1 col-lg-1>
+      <ion-col align="left" col-xs-1 col-sm-1 col-md-1 col-lg-1>
         <ion-icon (click)="nextSlide()" class="arrow-icons" name="ios-arrow-forward"></ion-icon>
       </ion-col>
 
