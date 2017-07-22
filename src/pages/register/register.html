@@ -8,42 +8,44 @@
 </ion-header>
 
 <ion-content padding class="background">
-    <ion-row>
-        <ion-col>
-            <div  align="center">
-                <ion-item class="fixedWidth" align="center">
-                    <ion-label floating>Username</ion-label>
-                    <ion-input type="text" #username (change)="usernameChanged(username)"></ion-input>
-                </ion-item>
-            </div>
-        </ion-col>
-    </ion-row>
-    <ion-row>
-        <ion-col>
-            <div  align="center">
-                <ion-item class="fixedWidth" align="center">
-                    <ion-label floating>Email</ion-label>
-                    <ion-input type="text" #email (change)="emailChanged(email)"></ion-input>
-                </ion-item>
-            </div>
-        </ion-col>
-    </ion-row>
-    <ion-row>
-        <ion-col>
-            <div align="center">
-                <ion-item class="fixedWidth" align="center">
-                    <ion-label floating>Password</ion-label>
-                    <ion-input type="password" #password (change)="passwordChanged(password)"></ion-input>
-                </ion-item>
-            </div>
-        </ion-col>
-    </ion-row>
-    <ion-row>
-        <ion-col>
-            <div align="center">
-                <button ion-button color="danger" (click)="registerUser()"> Register </button>
-            </div>
-        </ion-col>
-    </ion-row>
+  <div style="margin-top: 28vh" align="center">
+      <ion-row>
+          <ion-col>
+              <div  align="center">
+                  <ion-item class="fixedWidth" align="center">
+                      <ion-label floating>Username</ion-label>
+                      <ion-input type="text" #username (change)="usernameChanged(username)"></ion-input>
+                  </ion-item>
+              </div>
+          </ion-col>
+      </ion-row>
+      <ion-row>
+          <ion-col>
+              <div  align="center">
+                  <ion-item class="fixedWidth" align="center">
+                      <ion-label floating>Email</ion-label>
+                      <ion-input type="text" #email (change)="emailChanged(email)"></ion-input>
+                  </ion-item>
+              </div>
+          </ion-col>
+      </ion-row>
+      <ion-row>
+          <ion-col>
+              <div align="center">
+                  <ion-item class="fixedWidth" align="center">
+                      <ion-label floating>Password</ion-label>
+                      <ion-input type="password" #password (change)="passwordChanged(password)"></ion-input>
+                  </ion-item>
+              </div>
+          </ion-col>
+      </ion-row>
+      <ion-row>
+          <ion-col>
+              <div align="center">
+                  <button ion-button color="danger" (click)="registerUser()"> Register </button>
+              </div>
+          </ion-col>
+      </ion-row>
+  </div>
 
 </ion-content>

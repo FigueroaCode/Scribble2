@@ -1,35 +1,35 @@
 <ion-content class="background" padding wrap>
   <ion-grid>
     <ion-row row-12>
-      <ion-col align="right" style="border: solid 1px black" col-xs-1 col-sm-1 col-md-1 col-lg-1>
+      <ion-col align="right" col-xs-1 col-sm-1 col-md-1 col-lg-1>
         <ion-icon (click)="previousSlide()" class="arrow-icons" name="ios-arrow-back"></ion-icon>
       </ion-col>
 
-      <ion-col style="border: solid 1px black" col-xs-10 col-sm-10 col-md-10 col-lg-10>
-        <ion-slides class="slides" pager="false" loop="true">
+      <ion-col col-xs-10 col-sm-10 col-md-10 col-lg-10>
+        <ion-slides class="slides" spaceBetween="80px" pager="false" loop="true">
           <ion-slide>
             <h1 class="title">{{appName}}</h1>
           </ion-slide>
 
           <ion-slide>
-            <h1 class="title" style="font-size: 8vw">What is {{appName}}?</h1>
+            <h1 class="title" style="font-size: 8vh">What is {{appName}}?</h1>
             <h3 class="bodyText">{{appName}} is a platform meant to encourage and facilitate group studying and note-taking</h3>
           </ion-slide>
 
           <ion-slide>
-            <h1 class="title" style="font-size: 8vw" >How does it work?</h1>
+            <h1 class="title" style="font-size: 8vh" >How does it work?</h1>
             <div class="bodyText">
               <p>
-                Scribble uses an algorithm to compare your notes to that of others, and then merges them into a single document.
-                It recognizes similarities between sentences found in both documents as well as unique sentences, then allows users
-                to decide which sentences to replace, update, or append.
+                {{appName}} uses an algorithm to compare your notes to that of others, and then merges them into a single document. It
+                recognizes similarities between sentences found in both documents as well as unique sentences, then allows users to
+                decide which sentences to replace, update, or append.
               </p>
             </div>
           </ion-slide>
         </ion-slides>
       </ion-col>
 
-      <ion-col align="left" style="border: solid 1px black" col-xs-1 col-sm-1 col-md-1 col-lg-1>
+      <ion-col align="left" col-xs-1 col-sm-1 col-md-1 col-lg-1>
         <ion-icon (click)="nextSlide()" class="arrow-icons" name="ios-arrow-forward"></ion-icon>
       </ion-col>
 
