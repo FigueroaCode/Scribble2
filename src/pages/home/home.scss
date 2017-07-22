@@ -6,19 +6,12 @@ page-home {
     word-wrap: normal;
     color: map-get($colors, primary);
     height: 85vh;
+    max-width: 80vw;
   }
 
   .arrow-icons {
     margin-top: 42vh;
     font-size: 10vw;
-  }
-
-  .box {
-    align-self: center;
-    align-content: center;
-    vertical-align: center;
-    word-wrap: normal;
-    margin: 15%;
   }
 
 }
