@@ -39,13 +39,13 @@ export class JoinCoursePage {
     filterItems(target: string, type: string) {
 
       // if the value is an empty string don't filter the items
-      if (target && target.trim() != '' && type == 'courseNameInput') {
+      if (target != null && target.trim() != '' && type == 'courseNameInput') {
           this.appliedFilters.title = target;
-      }else if (target && target.trim() != '' && type == 'courseID') {
+      }else if (target != null && target.trim() != '' && type == 'courseID') {
           this.appliedFilters.courseID = target;
-      }else if (target && target.trim() != '' && type == 'professor') {
+      }else if (target != null && target.trim() != '' && type == 'professor') {
           this.appliedFilters.professor = target;
-      } else if (target && target.trim() != '' && type == 'university') {
+      } else if (target != null && target.trim() != '' && type == 'university') {
           this.appliedFilters.university = target;
       }
 

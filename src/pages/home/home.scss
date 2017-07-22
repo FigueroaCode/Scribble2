@@ -1,19 +1,16 @@
 page-home {
 
-  .title {
-    font-family: "Blacksword";
-    font-size: 15vw;
+  .slides {
     align-self: center;
+    align-content: center;
     word-wrap: normal;
     color: map-get($colors, primary);
+    height: 85vh;
   }
 
-  .slide {
-    font-family: "Blacksword";
-    font-size: 5vw;
-    align-self: center;
-    word-wrap: normal;
-    color: map-get($colors, primary);
+  .arrow-icons {
+    margin-top: 42vh;
+    font-size: 10vw;
   }
 
   .box {
@@ -23,13 +20,5 @@ page-home {
     word-wrap: normal;
     margin: 15%;
   }
-
-  .pane {
-    //Just add the background image to be used after '/images/'
-      background: url("../assets/images/") no-repeat center center fixed;
-      -webkit-background-size: cover;
-      -moz-background-size: cover;
-      background-size: cover;
-    }
 
 }
