@@ -26,7 +26,9 @@ export class NotesPage {
     }
 
     saveNote(){
-        if(this.text != null)
+        if(this.text != null){
             this.firebaseService.saveNotes({user: this.displayName, text: this.text});
+        }
+
     }
 }

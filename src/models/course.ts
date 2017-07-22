@@ -1,20 +1,40 @@
+import { Chapter } from './chapter';
 
 export class Course {
 
     owner: string;
     title: string;
+    key: string;
     description: string;
     professor: string;
     university: string;
     courseID: string;
+    chapters: Array<Chapter>;
 
-    constructor(owner: string, title: string, description: string, professor: string, university: string, courseID: string){
+
+    constructor(owner: string, title: string, key: string,description: string, professor: string,
+        university: string, courseID: string){
         this.owner = owner;
         this.title = title;
+        this.key = key;
         this.description = description;
         this.professor = professor;
         this.university = university;
         this.courseID = courseID;
+
+        this.chapters = new Array<Chapter>();
+    }
+
+    addChapter(newChapter: Chapter){
+        this.chapters.push(newChapter);
+    }
+
+    getChapter(name:string){
+        //TODO: Search for the correct chapter using a binary search and sort alphabetically
+    }
+
+    removeChapter(index){
+        delete this.chapters[index];
     }
 
     //Getters
@@ -23,6 +43,9 @@ export class Course {
     }
     getTitle(){
         return this.title;
+    }
+    getKey(){
+        return this.key;
     }
     getDescription(){
         return this.description;

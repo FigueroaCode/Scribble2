@@ -9,6 +9,8 @@ import { CreateCoursePage } from './create_course';
 import { HomePage } from '../home/home';
 import { JoinCoursePage } from '../joincourse/joincourse';
 import { NotesPage } from '../notes/notes';
+import { User } from '../../models/user';
+import { Course } from '../../models/course';
 
 @Component({
   selector: 'page-courses',
@@ -19,12 +21,16 @@ export class CoursesPage {
 
     courses: FirebaseListObservable<any[]>;
     displayName: string;
+    currentUser: User;
 
     constructor(public navCtrl: NavController, public firebaseService: FirebaseService,
-    public authService: AuthService, public alertCtrl: AlertController, public modalCtrl: ModalController) {
+        public authService: AuthService, public alertCtrl: AlertController,
+        public modalCtrl: ModalController) {
         //check that user exists
         if(this.authService.getFireAuth().currentUser)
             this.displayName = this.authService.getFireAuth().currentUser.displayName;
+        //Create a user object
+        this.currentUser = new User(this.displayName);
         //Initialize Courses
         this.initializeCourses();
     }
@@ -38,11 +44,18 @@ export class CoursesPage {
                 equalTo: this.displayName
             }
         });
+
+        console.log(this.courses);
     }
 
     createCourse(){
-        let info = {name: this.displayName};
-        let modal = this.modalCtrl.create(CreateCoursePage, info);
+        let modal = this.modalCtrl.create(CreateCoursePage);
+        //Get back the course created
+        modal.onDidDismiss(data => {
+            if(data != null){
+                this.currentUser.addCourse(data['course']);
+            }
+        });
         modal.present();
     }
 

@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { ViewController, NavParams } from 'ionic-angular';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { FirebaseService } from '../../providers/firebase-service';
+import { AuthService } from '../../providers/auth-service';
 
 import { Course } from '../../models/course';
 
@@ -15,7 +16,8 @@ export class CreateCoursePage{
     createCourse: any;
     displayName: string;
 
-    constructor(public navParams: NavParams,public viewCtrl: ViewController, public formBuilder: FormBuilder, public firebaseService: FirebaseService){
+    constructor(public navParams: NavParams,public viewCtrl: ViewController,
+        public formBuilder: FormBuilder, public firebaseService: FirebaseService, public authService: AuthService){
         this.createCourse = formBuilder.group({
             courseTitle: ['', Validators.required],
             description: ['', Validators.required],
@@ -24,18 +26,22 @@ export class CreateCoursePage{
             university: ['', Validators.required]
         });
 
-        this.displayName = navParams.get('name');
+        //check that user exists
+        if(this.authService.getFireAuth().currentUser)
+            this.displayName = this.authService.getFireAuth().currentUser.displayName;
     }
 
     createACourse(){
         //Make sure all the fields are not empty
-        if(this.displayName != '' && this.createCourse.value.courseTitle != null && this.createCourse.value.description != null && this.createCourse.value.courseID != null
+        if(this.displayName != null && this.createCourse.value.courseTitle != null && this.createCourse.value.description != null && this.createCourse.value.courseID != null
             && this.createCourse.value.professor != null && this.createCourse.value.university != null){
                 let newCourse = new Course(this.displayName, this.createCourse.value.courseTitle,
                     this.createCourse.value.description, this.createCourse.value.professor, this.createCourse.value.university,
                     this.createCourse.value.courseID);
             this.firebaseService.addCourse(newCourse);
-            this.viewCtrl.dismiss();
+            //send the new course back to the courses page
+            let courseData = {'course': newCourse};
+            this.viewCtrl.dismiss(courseData);
         }else{
             console.log("A Field is Empty");
         }

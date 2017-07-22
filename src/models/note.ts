@@ -5,12 +5,14 @@ export class Note {
     owner: string;
     text: string;
     dateCreated: string;
+    isPrivate: boolean;
 
-    constructor(key: string, owner: string, text: string, dateCreated: string){
+    constructor(key: string, owner: string, text: string, dateCreated: string, isPrivate: boolean){
         this.key = key;
         this.owner = owner;
         this.text = text;
         this.dateCreated = dateCreated;
+        this.isPrivate = isPrivate;
     }
     //TODO
     updateText(){
@@ -29,6 +31,9 @@ export class Note {
     }
     getDateCreated(){
         return this.dateCreated;
+    }
+    getIsPrivate(){
+        return this.isPrivate;
     }
 
     //Setters

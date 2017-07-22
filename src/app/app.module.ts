@@ -22,6 +22,7 @@ import { CenterPage } from '../pages/center/center';
 import { NotesPage } from '../pages/notes/notes';
 import { ResetPasswordPage } from '../pages/resetpassword/resetpassword';
 import { JoinCoursePage } from '../pages/joincourse/joincourse';
+import { User } from '../models/user';
 
 export const firebaseConfig = {
     apiKey: "AIzaSyAzEAPiDw8-K235uSq_wfrNPIAZyRivsAE",
