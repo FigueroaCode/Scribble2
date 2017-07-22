@@ -26,23 +26,21 @@
                             <ion-col id="cardTitle">
                                 {{ course.title }}
                             </ion-col>
-                            <ion-col id="courseID">
-                                Course ID: {{ course.courseID }}
-                            </ion-col>
                         </ion-row>
                         <!-- Content -->
                         <ion-row>
-                            <ion-col col-2>
-                                <p>Professor: {{ course.professor }}</p>
-                                <p>University: {{ course.university }}</p>
+                            <ion-col col-lg-9>
+                                <b>Description:</b> {{ course.description }}
                             </ion-col>
-                            <ion-col col-4 align="right">
-                                Description: {{ course.content }}
+                            <ion-col col-lg-3 align="left">
+                                <p><b>Course ID:</b> {{ course.courseID }}</p>
+                                <p><b>Professor:</b> {{ course.professor }}</p>
+                                <p><b>University:</b> {{ course.university }}</p>
                             </ion-col>
                         </ion-row>
                         <!-- Footer -->
                         <ion-row>
-                            <ion-col align="right">
+                            <ion-col align="center">
                                 <button ion-button (click)="notes()"> Edit Notes </button>
                                 <button ion-button color="danger" (click)="deleteCourse(course.$key)">Delete Course</button>
                             </ion-col>
