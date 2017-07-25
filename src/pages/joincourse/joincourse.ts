@@ -11,23 +11,14 @@ import { AuthService } from '../../providers/auth-service';
 
 export class JoinCoursePage {
     courses: FirebaseListObservable<any[]>;
-    coursesToShow: FirebaseListObservable<any[]>;
-    appliedFilters: {
-      title: string,
-      courseID: string,
-      professor: string,
-      university: string
-    };
+    filterType: string;
+    filterText: string;
 
     constructor(public navCtrl: NavController, public firebaseService: FirebaseService,
         public authService: AuthService, public alertCtrl: AlertController) {
         this.initializeList();
-        this.appliedFilters = {
-          title: '',
-          courseID: '',
-          professor: '',
-          university: ''
-        };
+        this.filterType = "";
+        this.filterText = "";
     }
 
     initializeList(){
@@ -36,41 +27,26 @@ export class JoinCoursePage {
     }
 
     //Filter Items for course list.
-    filterItems(target: string, type: string) {
-
-      // if the value is an empty string don't filter the items
-      if (target != null && target.trim() != '' && type == 'courseNameInput') {
-          this.appliedFilters.title = target;
-      }else if (target != null && target.trim() != '' && type == 'courseID') {
-          this.appliedFilters.courseID = target;
-      }else if (target != null && target.trim() != '' && type == 'professor') {
-          this.appliedFilters.professor = target;
-      } else if (target != null && target.trim() != '' && type == 'university') {
-          this.appliedFilters.university = target;
-      }
-
-      this.applyFilters();
+    chooseFilter(target: string) {
+      this.filterType = target;
     }
 
-    applyFilters(){
-      let tempCourses = this.firebaseService.getDB().list('/courses');
-      tempCourses.forEach(list => {
-        for(let x = 0; x < list.length; x++){
-          if(
-            ( (list[x].title != this.appliedFilters.title) || (this.appliedFilters.title != '') ) &&
-            ( (list[x].courseID != this.appliedFilters.courseID) || (this.appliedFilters.courseID != '') ) &&
-            ( (list[x].professor != this.appliedFilters.professor) || (this.appliedFilters.professor != '') ) &&
-            ( (list[x].university != this.appliedFilters.university) || (this.appliedFilters.university != '') )
-          ){
-            //This is in case I ever need to find courses that do not match the filter.
-          }else{
-            //This is where you handle courses that do match the filter.
-            console.log(list[x])
-            this.coursesToShow.push(list[x]);
-          }
+    applyFilters(target: string){
+      this.filterText = target;
+      //A filter type must be selected in order to filter the course list.
+      if(this.filterType != ''){
+        //Apply the filter to the DB
+        if (this.filterText && this.filterText.trim() != '') {
+            this.courses = this.firebaseService.getDB().list('/courses', {
+                query:
+                {
+                    orderByChild: this.filterType,
+                    equalTo: this.filterText
+
+                }
+            });
         }
-      });
-      this.courses = this.coursesToShow;
+      }
     }
 
 }
