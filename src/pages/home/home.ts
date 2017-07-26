@@ -1,5 +1,5 @@
-import { Component, NgZone } from '@angular/core';
-import { NavController, AlertController, LoadingController } from 'ionic-angular';
+import { Component, NgZone, ViewChild } from '@angular/core';
+import { NavController, AlertController, LoadingController, Slides } from 'ionic-angular';
 import { AuthService } from '../../providers/auth-service';
 import { global } from '../../app/global';
 import firebase from 'firebase';
@@ -15,9 +15,12 @@ import { RegisterPage } from '../register/register';
 export class HomePage {
     zone: NgZone;
     loading: any;
+    @ViewChild(Slides) slides: Slides;
+    appName: string;
 
   constructor(public navCtrl: NavController, public alertCtrl: AlertController, public loadingCtrl: LoadingController) {
         this.zone = new NgZone({});
+        this.appName = "Scribble";
 
         //Send User to Course Page if hes already signed in
         firebase.auth().onAuthStateChanged((user) => {
@@ -37,6 +40,14 @@ export class HomePage {
 
   register(){
     this.navCtrl.push(RegisterPage);
+  }
+
+  nextSlide(){
+    this.slides.slideNext(500,false);
+  }
+
+  previousSlide(){
+    this.slides.slidePrev(500,false);
   }
 
 }

@@ -1,8 +1,5 @@
 // http://ionicframework.com/docs/v2/theming/
 
-.background{
-    background-color: map-get($colors, secondary);
-}
 // App Global Sass
 // --------------------------------------------------
 // Put style rules here that you want to apply globally. These
@@ -16,6 +13,31 @@
 // To declare rules for a specific mode, create a child rule
 // for the .md, .ios, or .wp mode classes. The mode class is
 // automatically applied to the <body> element in the app.
+
+
+.background{
+    background-color: map-get($colors, secondary);
+    // background: url("../assets/images/wildtextures-leather-Campo-ivory.jpg") no-repeat center center fixed;
+    // -webkit-background-size: cover;
+    // -moz-background-size: cover;
+    // background-size: cover;
+}
+
+.title {
+  font-family: "Blacksword";
+  font-size: 15vw;
+  align-self: center;
+  word-wrap: normal;
+  color: map-get($colors, primary);
+}
+
+.bodyText {
+  font-family: sans-serif;
+  font-size: 3vh;
+  align-self: center;
+  word-wrap: normal;
+  color: black;
+}
 
 @font-face {
   font-family: "Blacksword";

@@ -1,14 +1,12 @@
 <ion-header>
   <ion-navbar color="primary">
-    <button ion-button menuToggle>
-      <ion-icon name="menu"></ion-icon>
-    </button>
     <h2 id="title">Sign In</h2>
   </ion-navbar>
 </ion-header>
 
-<ion-content padding class="background">
-    <ion-row>
+<ion-content class="background">
+  <div style="margin-top: 30vh" align="center">
+      <ion-row>
         <ion-col>
             <div  align="center">
                 <ion-item class="fixedWidth" align="center">
@@ -17,8 +15,8 @@
                 </ion-item>
             </div>
         </ion-col>
-    </ion-row>
-    <ion-row>
+      </ion-row>
+      <ion-row>
         <ion-col>
             <div align="center">
                 <ion-item class="fixedWidth" align="center">
@@ -27,20 +25,20 @@
                 </ion-item>
             </div>
         </ion-col>
-    </ion-row>
-    <ion-row>
+      </ion-row>
+      <ion-row>
         <ion-col>
             <div align="center">
                 <button ion-button color="danger" (click)="signInUser()"> Sign In </button>
             </div>
         </ion-col>
-    </ion-row>
-    <ion-row>
+      </ion-row>
+      <ion-row>
         <ion-col>
             <div align="center">
                 <p id="reset" (click)="resetPassword()"> Click here to Reset Password </p>
             </div>
         </ion-col>
-    </ion-row>
-
+      </ion-row>
+  </div>
 </ion-content>

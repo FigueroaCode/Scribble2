@@ -9,68 +9,69 @@
 
 <ion-content>
     <ion-grid>
-        <ion-row>
-            <ion-col col-10>
-                <!-- Course list -->
-                <h1>Course List</h1>
-                <ion-scroll style="width:100%;height:65vh" scrollY="true">
-                <ion-list scroll="true">
-                  <ion-card *ngFor="let course of courses | async">
-                    <ion-card-header>{{ course.title }}</ion-card-header>
-                    <ion-card-content>
-                      <ion-row *ngIf="course.courseID.trim() != ''">
-                        Course ID: {{ course.courseID }}
-                      </ion-row>
-                      <ion-row *ngIf="course.courseID.trim() == ''">
-                        Course ID: N/A
-                      </ion-row>
+      <ion-row>
+        <h1>Search Criteria</h1>
+      </ion-row>
+      <ion-row>
+        <!-- Drop down menu for type of search -->
+        <div class="dropdown">
+          <button ion-button icon-right class="dropdown-button">
+            Choose Search Filter
+            <ion-icon name="ios-arrow-down"></ion-icon>
+          </button>
+          <div class="dropdown-content">
+            <button ion-button (click)="chooseFilter('title')">Course Name</button>
+            <button ion-button (click)="chooseFilter('courseID')">Course ID</button>
+            <button ion-button (click)="chooseFilter('professor')">Professor</button>
+            <button ion-button (click)="chooseFilter('university')">University</button>
+          </div>
+        </div>
+        <!-- Search Bar -->
+        <ion-item>
+          <ion-input placeholder="Searching courses by: {{filterType}}" [(ngModel)]="searchbarInput" (change)="applyFilters(searchbarInput)" type="text"></ion-input>
+        </ion-item>
+      </ion-row>
 
-                      <ion-row *ngIf="course.professor.trim() != ''">
-                        Professor: {{ course.professor }}
-                      </ion-row>
-                      <ion-row *ngIf="course.professor.trim() == ''">
-                        Professor: N/A
-                      </ion-row>
+      <!-- Course list -->
+      <ion-row>
+        <h1>Course List</h1>
+        <ion-scroll style="width:100%;height:65vh" scrollY="true">
+          <ion-list scroll="true">
+            <ion-card *ngFor="let course of courses | async">
+              <ion-card-header>{{ course.title }}</ion-card-header>
+              <ion-card-content>
+                <ion-row *ngIf="course.courseID != null && course.courseID.trim() != ''">
+                  Course ID: {{ course.courseID }}
+                </ion-row>
+                <ion-row *ngIf="course.courseID != null && course.courseID.trim() == ''">
+                  Course ID: N/A
+                </ion-row>
 
-                      <ion-row *ngIf="course.university.trim() != ''">
-                        University: {{ course.university }}
-                      </ion-row>
-                      <ion-row *ngIf="course.university.trim() == ''">
-                        University: N/A
-                      </ion-row>
+                <ion-row *ngIf="course.professor != null && course.professor.trim() != ''">
+                  Professor: {{ course.professor }}
+                </ion-row>
+                <ion-row *ngIf="course.professor != null && course.professor.trim() == ''">
+                  Professor: N/A
+                </ion-row>
 
-                      <ion-row *ngIf="course.content.trim() != ''">
-                        Description: {{ course.content }}
-                      </ion-row>
-                      <ion-row *ngIf="course.content.trim() == ''">
-                        Description: N/A
-                      </ion-row>
-                    </ion-card-content>
-                  </ion-card>
-                </ion-list>
-                </ion-scroll>
-            </ion-col>
-            <ion-col col-2>
-                <!-- Filter -->
-                <h1>Search Criteria</h1>
-                <ion-list>
-                  <ion-item>
-                    <ion-input placeholder="Course Name" [(ngModel)]="courseNameInput" (change)="filterItems(courseNameInput, 'courseNameInput')" type="text"></ion-input>
-                  </ion-item>
+                <ion-row *ngIf="course.university != null && course.university.trim() != ''">
+                  University: {{ course.university }}
+                </ion-row>
+                <ion-row *ngIf="course.university != null && course.university.trim() == ''">
+                  University: N/A
+                </ion-row>
 
-                  <ion-item>
-                    <ion-input placeholder="Course ID, ex: MAC2312" [(ngModel)]="courseID" (change)="filterItems(courseID, 'courseID')" type="text"></ion-input>
-                  </ion-item>
+                <ion-row *ngIf="course.content != null && course.content.trim() != ''">
+                  Description: {{ course.content }}
+                </ion-row>
+                <ion-row *ngIf="course.content != null && course.content.trim() == ''">
+                  Description: N/A
+                </ion-row>
+              </ion-card-content>
+            </ion-card>
+          </ion-list>
+        </ion-scroll>
+      </ion-row>
 
-                  <ion-item>
-                    <ion-input placeholder="Professor" [(ngModel)]="professor" (change)="filterItems(professor, 'professor')" type="text"></ion-input>
-                  </ion-item>
-
-                  <ion-item>
-                    <ion-input placeholder="University" [(ngModel)]="university" (change)="filterItems(university, 'university')" type="text"></ion-input>
-                  </ion-item>
-                </ion-list>
-            </ion-col>
-        </ion-row>
     </ion-grid>
 </ion-content>
