@@ -1,14 +1,12 @@
 
 export class Note {
 
-    key: string;
     owner: string;
     text: string;
     dateCreated: string;
     isPrivate: boolean;
 
-    constructor(key: string, owner: string, text: string, dateCreated: string, isPrivate: boolean){
-        this.key = key;
+    constructor(owner: string, text: string, dateCreated: string, isPrivate: boolean){
         this.owner = owner;
         this.text = text;
         this.dateCreated = dateCreated;
@@ -20,9 +18,6 @@ export class Note {
     }
 
     //Getters
-    getKey(){
-        return this.key;
-    }
     getOwner(){
         return this.owner;
     }
@@ -37,9 +32,6 @@ export class Note {
     }
 
     //Setters
-    setText(newText: string){
-        this.text = newText;
-    }
     setDateCreated(newDate: string){
         this.dateCreated = newDate;
     }

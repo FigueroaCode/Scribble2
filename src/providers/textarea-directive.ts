@@ -29,6 +29,6 @@ export class Autosize implements OnInit{
         //Dont let the user change the size of the textarea
         textarea.style.resize = 'none';
         //Give it a fixed size
-        textarea.style.height = '60vh';
+        textarea.style.height = '62vh';
     }
 }

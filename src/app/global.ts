@@ -1,3 +1,4 @@
 export var global = {
-    signingIn: false
+    signingIn: false,
+    chapterKey: ''
 }

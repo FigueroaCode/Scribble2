@@ -1,0 +1,25 @@
+<ion-toolbar color="primary">
+    <ion-title>Create New Chapter</ion-title>
+</ion-toolbar>
+<ion-content class="background" padding style="margin-top: 25px;">
+    <ion-grid>
+        <ion-row>
+            <ion-col>
+                <form [formGroup]="createChapter">
+                    <ion-item>
+                        <ion-label floating>Course Title</ion-label>
+                        <ion-input formControlName="chapterName" type="text"></ion-input>
+                    </ion-item>
+                </form>
+            </ion-col>
+        </ion-row>
+        <ion-row>
+            <ion-col>
+                <div class="buttons" align="center">
+                    <button ion-button (click)="cancel()">Cancel</button>
+                    <button ion-button (click)="createAChapter()">Create</button>
+                </div>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+</ion-content>

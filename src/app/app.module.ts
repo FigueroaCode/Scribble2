@@ -20,6 +20,7 @@ import { CoursesPage } from '../pages/courses/courses';
 import { CreateCoursePage } from '../pages/courses/create_course';
 import { CenterPage } from '../pages/center/center';
 import { NotesPage } from '../pages/notes/notes';
+import { CreateChapterPage } from '../pages/notes/create_chapter';
 import { ResetPasswordPage } from '../pages/resetpassword/resetpassword';
 import { JoinCoursePage } from '../pages/joincourse/joincourse';
 import { User } from '../models/user';
@@ -47,6 +48,7 @@ firebase.initializeApp(firebaseConfig);
     ResetPasswordPage,
     JoinCoursePage,
     NotesPage,
+    CreateChapterPage,
     Autosize
   ],
   imports: [
@@ -68,7 +70,8 @@ firebase.initializeApp(firebaseConfig);
     CenterPage,
     ResetPasswordPage,
     JoinCoursePage,
-    NotesPage
+    NotesPage,
+    CreateChapterPage
   ],
   providers: [
     StatusBar,

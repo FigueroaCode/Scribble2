@@ -1,8 +1,10 @@
 import { Component } from '@angular/core';
-import { NavController, AlertController } from 'ionic-angular';
+import { NavController, AlertController, NavParams, ModalController } from 'ionic-angular';
 import { FirebaseService } from '../../providers/firebase-service';
 import { FirebaseListObservable } from 'angularfire2/database';
 import { AuthService } from '../../providers/auth-service';
+
+import { CreateChapterPage } from './create_chapter';
 
 
 @Component({
@@ -12,23 +14,122 @@ import { AuthService } from '../../providers/auth-service';
 
 export class NotesPage {
 
-    courses: FirebaseListObservable<any[]>;
+    chapters: FirebaseListObservable<any[]>;
     displayName: string;
     text: string;
+    courseKey: string;
+    currentChapterKey: string;
+    inPublicNote: boolean;
     //Set defualt Segment to the main Note
     noteSegment: string = "publicNote";
+    getFirstChapterKey: Promise<any>;
+    getFirebase: Promise<any>;
 
     constructor(public navCtrl: NavController, public firebaseService: FirebaseService,
-    public authService: AuthService, public alertCtrl: AlertController) {
+    public authService: AuthService, public alertCtrl: AlertController, public modalCtrl: ModalController, public navParams: NavParams) {
+        //need to wrap this in a promise in order to use it in another promise
+        let getCourseKey = new Promise(function(resolve, reject){
+            let key = navParams.get('key');
+            resolve(key);
+        });
+        this.getFirebase = new Promise(function(resolve, reject){
+             resolve(firebaseService);
+        });
+        //Get the key of the course this belongs to
+        this.courseKey = navParams.get('key');
+        this.currentChapterKey = '';
+        this.inPublicNote = true;
         //check that user exists
         if(this.authService.getFireAuth().currentUser)
             this.displayName = this.authService.getFireAuth().currentUser.displayName;
+
+        this.initializeChapters();
+        //set the first chapter as the default
+        this.getFirstChapterKey =  new Promise(function(resolve, reject){
+            getCourseKey.then(function(courseKey){
+                firebaseService.getDB().database.ref('/courses/'+courseKey+'/chapters/').once('value').then(function(snapshot){
+                         snapshot.forEach(function(childsnapshot){
+                             resolve(childsnapshot.key);
+                            }
+                        );
+                    });
+            });
+        });
+        //TODO: Later check if the currentChapterKey is saved between notes
+        //Set the textbox to the text of the first chapter
+        let that = this;
+        this.getFirstChapterKey.then(function(chapterKey){
+            firebaseService.getNoteText(that.courseKey, chapterKey, that.inPublicNote)
+            .then(function(noteText){
+                that.setNoteText(noteText);
+            });
+        });
+    }
+
+    initializeChapters(){
+        this.chapters = this.firebaseService.getChapters(this.courseKey);
+    }
+
+    setNoteText(newText: string){
+        this.text = newText;
+    }
+
+    createChapter(){
+        if(this.courseKey != null){
+            let info = {'key': this.courseKey};
+            let modal = this.modalCtrl.create(CreateChapterPage, info);
+            //Get back the course created
+            modal.onDidDismiss(data => {
+                if(data != null){
+
+                }
+            });
+            modal.present();
+        }
+    }
+    updateNoteText(){
+        let that = this;
+        if((this.currentChapterKey == null || this.currentChapterKey == '') && this.courseKey != null && this.text != null){
+            //needs to be done in order for the promise to recognize which object 'this' is referring
+            this.getFirstChapterKey.then(function(firstKey){
+                //defualt chapter is the first one
+                that.firebaseService.getNoteText(that.courseKey,firstKey, that.inPublicNote)
+                .then(function(noteText){
+                    that.setNoteText(noteText);
+                });
+            });
+        }else if(this.courseKey != null && this.text != null && this.currentChapterKey != ''){
+            this.firebaseService.getNoteText(this.courseKey,this.currentChapterKey, this.inPublicNote)
+            .then(function(noteText){
+                that.setNoteText(noteText);
+            });
+        }
+    }
+    showNote(chapterKey){
+        this.currentChapterKey = chapterKey;
+        this.updateNoteText();
     }
 
     saveNote(){
-        if(this.text != null){
-            this.firebaseService.saveNotes({user: this.displayName, text: this.text});
+        if((this.currentChapterKey == null || this.currentChapterKey == '') && this.courseKey != null && (this.text != null || this.text != '')){
+            //needs to be done in order for the promise to recognize which object 'this' is referring to
+            let that = this;
+            this.getFirstChapterKey.then(function(firstKey){
+                //defualt chapter is the first one
+                that.firebaseService.saveNotes(that.courseKey,firstKey, that.text, that.inPublicNote);
+            });
+        }else if(this.courseKey != null && (this.text != null || this.text != '') && this.currentChapterKey != ''){
+            this.firebaseService.saveNotes(this.courseKey,this.currentChapterKey, this.text, this.inPublicNote);
         }
+    }
+    //Switching Between Notes
+    publicNoteClicked(){
+        this.inPublicNote = true;
+        this.updateNoteText();
+    }
 
+    privateNoteClicked(){
+        this.inPublicNote = false;
+        this.updateNoteText();
     }
 }

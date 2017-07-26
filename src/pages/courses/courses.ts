@@ -1,9 +1,8 @@
 import { Component } from '@angular/core';
-import { NavController, AlertController } from 'ionic-angular';
+import { NavController, AlertController, ModalController } from 'ionic-angular';
 import { FirebaseService } from '../../providers/firebase-service';
 import { FirebaseListObservable } from 'angularfire2/database';
 import { AuthService } from '../../providers/auth-service';
-import { ModalController } from 'ionic-angular';
 import { CreateCoursePage } from './create_course';
 
 import { HomePage } from '../home/home';
@@ -44,8 +43,6 @@ export class CoursesPage {
                 equalTo: this.displayName
             }
         });
-
-        console.log(this.courses);
     }
 
     createCourse(){
@@ -104,7 +101,8 @@ export class CoursesPage {
   }
 
   //go to note page
-  notes(){
-    this.navCtrl.push(NotesPage);
+  notes(courseKey){
+      let info = {'key': courseKey};
+      this.navCtrl.push(NotesPage, info);
   }
 }

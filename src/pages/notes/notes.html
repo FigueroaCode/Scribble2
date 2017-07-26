@@ -9,33 +9,44 @@
 <ion-content>
     <ion-grid padding>
       <ion-segment [(ngModel)]="noteSegment">
-        <ion-segment-button value="publicNote">
+        <ion-segment-button value="publicNote" (click)="publicNoteClicked()">
           Public Notes
         </ion-segment-button>
-        <ion-segment-button value="privateNote">
+        <ion-segment-button value="privateNote" (click)="privateNoteClicked()">
           Private Notes
         </ion-segment-button>
       </ion-segment>
         <ion-row [ngSwitch]="noteSegment">
                 <!-- Topics Columns -->
-                <ion-col col-xs-5 col-sm-3 col-md-2 col-lg-2>
-                    <button ion-button> Add a Chapter</button>
+                <ion-col col-xs-5 col-sm-3 col-md-2 col-lg-2 align="center" style="margin-top: 5px;">
+                    <button ion-button full (click)="createChapter()"> Create Chapter</button>
+                    <ion-card style="height: 62vh">
+                        <ion-scroll style="width:100%;height:100%;" scrollY="true">
+                        <ion-card-content scroll="true">
+                                <button (click)="showNote(chapter.$key)" color="danger" ion-button full *ngFor="let chapter of chapters | async">
+                                    {{ chapter.name }}
+                                </button>
+                        </ion-card-content>
+                        </ion-scroll>
+                    </ion-card>
                 </ion-col>
+                <!-- Note Area -->
                 <ion-col col-xs-7 col-sm-9 col-md-10 col-lg-10 *ngSwitchCase="'publicNote'">
-                    <!-- Instructions -->
-                    <p>Enter Your notes here, and make sure to press the save button to upload your changes.</p>
+                    <ion-row>
+                        <ion-col style="margin-bottom: -10px;">
+                            <button ion-button full (click)="saveNote()">Save</button>
+                        </ion-col>
+                    </ion-row>
                     <ion-textarea id="noteText" autosize [(ngModel)]="text" [value]="text"></ion-textarea>
                 </ion-col>
                 <ion-col col-xs-8 col-sm-9 col-md-10 col-lg-10 *ngSwitchCase="'privateNote'">
-                    <!-- Instructions -->
-                    <p>Enter Your notes here, and make sure to press the save button to upload your changes.</p>
-                    <ion-textarea id="noteText" autosize></ion-textarea>
+                    <ion-row>
+                        <ion-col>
+                            <button ion-button full (click)="saveNote()">Save</button>
+                        </ion-col>
+                    </ion-row>
+                    <ion-textarea id="noteText" autosize [(ngModel)]="text" [value]="text"></ion-textarea>
                 </ion-col>
-        </ion-row>
-        <ion-row>
-            <ion-col align="right">
-                <button ion-button (click)="saveNote()">Save</button>
-            </ion-col>
         </ion-row>
 </ion-grid>
 </ion-content>

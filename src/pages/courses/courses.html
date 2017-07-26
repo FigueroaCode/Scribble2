@@ -41,7 +41,7 @@
                         <!-- Footer -->
                         <ion-row>
                             <ion-col align="center">
-                                <button ion-button (click)="notes()"> Edit Notes </button>
+                                <button ion-button (click)="notes(course.$key)"> Edit Notes </button>
                                 <button ion-button color="danger" (click)="deleteCourse(course.$key)">Delete Course</button>
                             </ion-col>
                         </ion-row>

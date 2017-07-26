@@ -33,9 +33,9 @@ export class CreateCoursePage{
 
     createACourse(){
         //Make sure all the fields are not empty
-        if(this.displayName != null && this.createCourse.value.courseTitle != null && this.createCourse.value.description != null && this.createCourse.value.courseID != null
-            && this.createCourse.value.professor != null && this.createCourse.value.university != null){
-                let newCourse = new Course(this.displayName, this.createCourse.value.courseTitle,
+        if(this.displayName != null && this.createCourse.value.courseTitle != '' && this.createCourse.value.description != '' && this.createCourse.value.courseID != ''
+            && this.createCourse.value.professor != '' && this.createCourse.value.university != ''){
+                let newCourse = new Course(this.displayName, this.createCourse.value.courseTitle, '',
                     this.createCourse.value.description, this.createCourse.value.professor, this.createCourse.value.university,
                     this.createCourse.value.courseID);
             this.firebaseService.addCourse(newCourse);
