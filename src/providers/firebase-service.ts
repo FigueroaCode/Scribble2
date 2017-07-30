@@ -31,12 +31,66 @@ export class FirebaseService {
 
     let key = this.fireDB.list('/courses/').push(course).key;
     this.fireDB.list('/courses/').update(key, {'key': key});
+    //create chapter container
     this.fireDB.list('/courses/').update(key, {'chapters': ''});
+    //set the first member to be the owner
+    this.fireDB.database.ref('/courses/'+key).child('members').set({'owner': course.getOwner()});
   }
 
   addChapter(chapter: Chapter, courseKey: string){
-     let key = this.fireDB.list('courses/'+ courseKey+'/chapters/').push(chapter).key;
-     this.fireDB.list('courses/'+ courseKey+'/chapters/').update(key,{'key': key});
+     let key = this.fireDB.list('/courses/'+ courseKey+'/chapters/').push(chapter).key;
+     this.fireDB.list('/courses/'+ courseKey+'/chapters/').update(key,{'key': key});
+  }
+
+  sendJoinRequest(courseKey: string, username: string){
+      let that = this;
+      this.fireDB.database.ref('/courses/'+courseKey).once('value').then(function(snapshot){
+          let currentCount = snapshot.val().requestCounter;
+          let ownerName = snapshot.val().owner;
+          //check to see if person already exists and they arent the owner
+          if(ownerName != username){
+              that.fireDB.database.ref('/courses/'+courseKey+'/pendingRequest/').once('value').then(function(snapshot2){
+                  let exist = false;
+
+                  snapshot2.forEach(function(child){
+                      if(child.val().name == username){
+                          exist = true;
+                      }
+                  });
+
+                  if(!exist){
+                      //increase request count
+                      currentCount++;
+                      that.fireDB.database.ref('/courses/'+courseKey+'/requestCounter/').set(currentCount);
+
+                      that.fireDB.list('/courses/'+courseKey+'/pendingRequest/').push({'name': username});
+                  }
+              });
+          }
+
+      });
+  }
+
+  joinCourse(courseID: string, username: string){
+      let that = this;
+      //check that they arent already in the course, check that they arent the owner
+      this.fireDB.database.ref('/courses/'+courseID+'/members/').once('value').then(function(snapshot){
+          let exists = false;
+          //go through each member
+          snapshot.forEach(function(child){
+              let name = child.val().name;
+
+              if(name == username){
+                  //found the user
+                  exists = true;
+              }
+          });
+
+          if(!exists){
+              that.fireDB.list('/courses/'+courseID+'/members/').push({'name': username});
+          }
+
+      });
   }
 
   saveNotes(courseKey: string,chapterKey: string,text: string,isPublic: boolean){

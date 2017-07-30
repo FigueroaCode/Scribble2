@@ -37,32 +37,57 @@
             <ion-card *ngFor="let course of courses | async">
               <ion-card-header>{{ course.title }}</ion-card-header>
               <ion-card-content>
-                <ion-row *ngIf="course.courseID != null && course.courseID.trim() != ''">
-                  Course ID: {{ course.courseID }}
-                </ion-row>
-                <ion-row *ngIf="course.courseID != null && course.courseID.trim() == ''">
-                  Course ID: N/A
-                </ion-row>
+                  <ion-row>
+                      <ion-col>
+                          <!-- Course Information -->
+                        <ion-row *ngIf="course.courseID != null && course.courseID.trim() != ''">
+                          Course ID: {{ course.courseID }}
+                        </ion-row>
+                        <ion-row *ngIf="course.courseID != null && course.courseID.trim() == ''">
+                          Course ID: N/A
+                        </ion-row>
 
-                <ion-row *ngIf="course.professor != null && course.professor.trim() != ''">
-                  Professor: {{ course.professor }}
-                </ion-row>
-                <ion-row *ngIf="course.professor != null && course.professor.trim() == ''">
-                  Professor: N/A
-                </ion-row>
+                        <ion-row *ngIf="course.professor != null && course.professor.trim() != ''">
+                          Professor: {{ course.professor }}
+                        </ion-row>
+                        <ion-row *ngIf="course.professor != null && course.professor.trim() == ''">
+                          Professor: N/A
+                        </ion-row>
 
-                <ion-row *ngIf="course.university != null && course.university.trim() != ''">
-                  University: {{ course.university }}
-                </ion-row>
-                <ion-row *ngIf="course.university != null && course.university.trim() == ''">
-                  University: N/A
-                </ion-row>
+                        <ion-row *ngIf="course.university != null && course.university.trim() != ''">
+                          University: {{ course.university }}
+                        </ion-row>
+                        <ion-row *ngIf="course.university != null && course.university.trim() == ''">
+                          University: N/A
+                        </ion-row>
 
-                <ion-row *ngIf="course.content != null && course.content.trim() != ''">
-                  Description: {{ course.content }}
-                </ion-row>
-                <ion-row *ngIf="course.content != null && course.content.trim() == ''">
-                  Description: N/A
+                        <ion-row *ngIf="course.description != null && course.description.trim() != ''">
+                          Description: {{ course.description }}
+                        </ion-row>
+                        <ion-row *ngIf="course.description != null && course.description.trim() == ''">
+                          Description: N/A
+                        </ion-row>
+                        <!-- End of Course Information -->
+                    </ion-col>
+
+                    <!-- Buttons -->
+                    <ion-col>
+                        <ion-row>
+                            <ion-col align='right'>
+                                <button ion-button round color="light">Check Notes</button>
+                            </ion-col>
+                        </ion-row>
+                        <ion-row>
+                            <ion-col align='right'>
+                                <button ion-button round color="light">Save Course</button>
+                            </ion-col>
+                        </ion-row>
+                        <ion-row>
+                            <ion-col align='right'>
+                                <button ion-button round color="light" (click)="joinCourse(course.$key)">Join Course</button>
+                            </ion-col>
+                        </ion-row>
+                    </ion-col>
                 </ion-row>
               </ion-card-content>
             </ion-card>

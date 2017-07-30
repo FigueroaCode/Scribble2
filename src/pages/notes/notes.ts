@@ -55,7 +55,6 @@ export class NotesPage {
                     });
             });
         });
-        //TODO: Later check if the currentChapterKey is saved between notes
         //Set the textbox to the text of the first chapter
         let that = this;
         this.getFirstChapterKey.then(function(chapterKey){

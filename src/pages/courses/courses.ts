@@ -10,6 +10,7 @@ import { JoinCoursePage } from '../joincourse/joincourse';
 import { NotesPage } from '../notes/notes';
 import { User } from '../../models/user';
 import { Course } from '../../models/course';
+import { PendingRequestPage } from '../pendingrequest/pendingrequest';
 
 @Component({
   selector: 'page-courses',
@@ -30,6 +31,7 @@ export class CoursesPage {
             this.displayName = this.authService.getFireAuth().currentUser.displayName;
         //Create a user object
         this.currentUser = new User(this.displayName);
+
         //Initialize Courses
         this.initializeCourses();
     }
@@ -104,5 +106,9 @@ export class CoursesPage {
   notes(courseKey){
       let info = {'key': courseKey};
       this.navCtrl.push(NotesPage, info);
+  }
+  //go to pending request page
+  pendingRequest(){
+      this.navCtrl.push(PendingRequestPage);
   }
 }

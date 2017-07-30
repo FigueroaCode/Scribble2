@@ -13,17 +13,22 @@ export class JoinCoursePage {
     courses: FirebaseListObservable<any[]>;
     filterType: string;
     filterText: string;
+    displayName: string;
 
     constructor(public navCtrl: NavController, public firebaseService: FirebaseService,
         public authService: AuthService, public alertCtrl: AlertController) {
         this.initializeList();
         this.filterType = "";
         this.filterText = "";
+
+        //check that user exists
+        if(this.authService.getFireAuth().currentUser)
+            this.displayName = this.authService.getFireAuth().currentUser.displayName;
     }
 
     initializeList(){
         this.courses = this.firebaseService.getCourses();
-        console.log(this.courses);
+        //console.log(this.courses);
     }
 
     //Filter Items for course list.
@@ -49,4 +54,9 @@ export class JoinCoursePage {
       }
     }
 
+    //Joining a course
+    joinCourse(courseKey){
+        //its going to send a request instead later
+        this.firebaseService.sendJoinRequest(courseKey, this.displayName);
+    }
 }

@@ -23,6 +23,7 @@ import { NotesPage } from '../pages/notes/notes';
 import { CreateChapterPage } from '../pages/notes/create_chapter';
 import { ResetPasswordPage } from '../pages/resetpassword/resetpassword';
 import { JoinCoursePage } from '../pages/joincourse/joincourse';
+import { PendingRequestPage } from '../pages/pendingrequest/pendingrequest';
 import { User } from '../models/user';
 
 export const firebaseConfig = {
@@ -49,6 +50,7 @@ firebase.initializeApp(firebaseConfig);
     JoinCoursePage,
     NotesPage,
     CreateChapterPage,
+    PendingRequestPage,
     Autosize
   ],
   imports: [
@@ -71,7 +73,8 @@ firebase.initializeApp(firebaseConfig);
     ResetPasswordPage,
     JoinCoursePage,
     NotesPage,
-    CreateChapterPage
+    CreateChapterPage,
+    PendingRequestPage
   ],
   providers: [
     StatusBar,
