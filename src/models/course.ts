@@ -11,7 +11,6 @@ export class Course {
     courseID: string;
     chapters: Array<Chapter>;
 
-
     constructor(owner: string, title: string, key: string,description: string, professor: string,
         university: string, courseID: string){
         this.owner = owner;

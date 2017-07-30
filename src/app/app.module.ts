@@ -11,6 +11,7 @@ import { HttpModule } from '@angular/http';
 import { IonicStorageModule } from '@ionic/storage';
 import firebase from 'firebase';
 import { Autosize } from '../providers/textarea-directive';
+import { File } from '@ionic-native/file';
 
 import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
@@ -78,7 +79,8 @@ firebase.initializeApp(firebaseConfig);
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     AuthService,
-    FirebaseService
+    FirebaseService,
+    File
   ]
 })
 export class AppModule {}

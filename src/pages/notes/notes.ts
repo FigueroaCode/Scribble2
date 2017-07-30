@@ -3,8 +3,13 @@ import { NavController, AlertController, NavParams, ModalController } from 'ioni
 import { FirebaseService } from '../../providers/firebase-service';
 import { FirebaseListObservable } from 'angularfire2/database';
 import { AuthService } from '../../providers/auth-service';
+import { File } from '@ionic-native/file';
+
 
 import { CreateChapterPage } from './create_chapter';
+import { PrivateNote } from '../../models/private_note';
+import { PublicNote } from '../../models/public_note';
+import { Chapter } from '../../models/chapter';
 
 
 @Component({
@@ -24,9 +29,11 @@ export class NotesPage {
     noteSegment: string = "publicNote";
     getFirstChapterKey: Promise<any>;
     getFirebase: Promise<any>;
+    // fileInput: string;
 
     constructor(public navCtrl: NavController, public firebaseService: FirebaseService,
-    public authService: AuthService, public alertCtrl: AlertController, public modalCtrl: ModalController, public navParams: NavParams) {
+    public authService: AuthService, public alertCtrl: AlertController,
+    public modalCtrl: ModalController, public navParams: NavParams, private file: File) {
         //need to wrap this in a promise in order to use it in another promise
         let getCourseKey = new Promise(function(resolve, reject){
             let key = navParams.get('key');
@@ -64,6 +71,7 @@ export class NotesPage {
                 that.setNoteText(noteText);
             });
         });
+
     }
 
     initializeChapters(){
@@ -86,6 +94,8 @@ export class NotesPage {
             });
             modal.present();
         }
+        // this.fileInput = document.getElementById("fileInput").dir;
+        // console.log(this.fileInput);
     }
     updateNoteText(){
         let that = this;
@@ -121,6 +131,10 @@ export class NotesPage {
         }else if(this.courseKey != null && (this.text != null || this.text != '') && this.currentChapterKey != ''){
             this.firebaseService.saveNotes(this.courseKey,this.currentChapterKey, this.text, this.inPublicNote);
         }
+
+        // let publicNoteText = this.firebaseService.getNoteText(this.courseKey, this.currentChapterKey, true, ).then();
+
+
     }
     //Switching Between Notes
     publicNoteClicked(){
@@ -132,4 +146,5 @@ export class NotesPage {
         this.inPublicNote = false;
         this.updateNoteText();
     }
+
 }

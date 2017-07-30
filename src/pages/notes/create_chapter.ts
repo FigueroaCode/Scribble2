@@ -6,7 +6,8 @@ import { AuthService } from '../../providers/auth-service';
 
 import { Course } from '../../models/course';
 import { Chapter } from '../../models/chapter';
-import { Note } from '../../models/note';
+import { PrivateNote } from '../../models/private_note';
+import { PublicNote } from '../../models/public_note';
 
 @Component({
   selector: 'page-create_chapter',
@@ -37,8 +38,8 @@ export class CreateChapterPage{
 
         if(this.displayName != null && this.createChapter.value.chapterName != null && this.createChapter.value.chapterName != '' ){
                 let newChapter= new Chapter(this.createChapter.value.chapterName, '',
-                     new Note(this.displayName, '',new Date().toString(),false),
-                     new Note(this.displayName, '',new Date().toString(),true));
+                     new PublicNote(' ',new Date().toString()),
+                     new PrivateNote(this.displayName, ' ',new Date().toString()));
             this.firebaseService.addChapter(newChapter, this.courseKey);
             //send the new course back to the courses page
             let chapterData = {'chapter': newChapter};

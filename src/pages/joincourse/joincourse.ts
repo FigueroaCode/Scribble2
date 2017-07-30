@@ -45,7 +45,11 @@ export class JoinCoursePage {
 
                 }
             });
+        }else{
+          this.courses = this.firebaseService.getDB().list('/courses');
         }
+      }else{
+        this.courses = this.firebaseService.getDB().list('/courses');
       }
     }
 
