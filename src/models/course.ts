@@ -11,9 +11,13 @@ export class Course {
     courseID: string;
     chapters: Array<Chapter>;
 
+    members: number;
+    memberCount: number;
+    requestCounter: number;
+
 
     constructor(owner: string, title: string, key: string,description: string, professor: string,
-        university: string, courseID: string){
+        university: string, courseID: string,members: number,memberCount: number, requestCounter: number){
         this.owner = owner;
         this.title = title;
         this.key = key;
@@ -21,6 +25,9 @@ export class Course {
         this.professor = professor;
         this.university = university;
         this.courseID = courseID;
+        this.members = members;
+        this.memberCount = memberCount;
+        this.requestCounter = requestCounter;
 
         this.chapters = new Array<Chapter>();
     }
@@ -59,6 +66,12 @@ export class Course {
     getCourseID(){
         return this.courseID;
     }
+    getMemberCount(){
+        return this.memberCount;
+    }
+    getRequestCounter(){
+        return this.requestCounter;
+    }
 
     //Setters
     setTitle(newTitle: string){
@@ -75,5 +88,17 @@ export class Course {
     }
     setCourseID(newID: string){
         this.courseID = newID;
+    }
+    incrementMemberCount(){
+        this.memberCount++;
+    }
+    decrementMemberCount(){
+        this.memberCount--;
+    }
+    incrementRequestCounter(){
+        this.requestCounter++;
+    }
+    decrementRequestCounter(){
+        this.requestCounter--;
     }
 }

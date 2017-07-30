@@ -31,6 +31,10 @@ export class CenterPage {
                 title: 'Courses',
                 component: CoursesPage
             },
+            // {
+            //     title: 'Pending Requests',
+            //     component: PendingPage
+            // },
             {
                 title: 'Sign Out',
                 component: HomePage
