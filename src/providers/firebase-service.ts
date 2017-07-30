@@ -5,7 +5,6 @@ import { AngularFireDatabase } from 'angularfire2/database';
 
 import { Course } from '../models/course';
 import { Chapter } from '../models/chapter';
-import { Note } from '../models/note';
 
 @Injectable()
 export class FirebaseService {
@@ -101,7 +100,7 @@ export class FirebaseService {
     }
   }
 
-  getNoteText(courseKey: string,chapterKey: string,isPublic: boolean): Promise<any>{
+  getNoteText(courseKey: string, chapterKey: string, isPublic: boolean): Promise<any>{
       let that = this;
       let textPromise = new Promise(function(resolve, reject){
           if(isPublic){

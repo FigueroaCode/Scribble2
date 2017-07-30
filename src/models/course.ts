@@ -15,7 +15,6 @@ export class Course {
     memberCount: number;
     requestCounter: number;
 
-
     constructor(owner: string, title: string, key: string,description: string, professor: string,
         university: string, courseID: string,members: number,memberCount: number, requestCounter: number){
         this.owner = owner;

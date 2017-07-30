@@ -20,15 +20,15 @@
                 <!-- Topics Columns -->
                 <ion-col col-xs-5 col-sm-3 col-md-2 col-lg-2 align="center" style="margin-top: 5px;">
                     <button ion-button full (click)="createChapter()"> Create Chapter</button>
-                    <ion-card style="height: 62vh">
-                        <ion-scroll style="width:100%;height:100%;" scrollY="true">
-                        <ion-card-content scroll="true">
-                                <button (click)="showNote(chapter.$key)" color="danger" ion-button full *ngFor="let chapter of chapters | async">
-                                    {{ chapter.name }}
-                                </button>
-                        </ion-card-content>
-                        </ion-scroll>
-                    </ion-card>
+                      <ion-card style="height: 62vh">
+                          <ion-scroll style="width:100%;height:100%;" scrollY="true">
+                          <ion-card-content scroll="true">
+                                  <button (click)="showNote(chapter.$key)" color="danger" ion-button full *ngFor="let chapter of chapters | async">
+                                      {{ chapter.name }}
+                                  </button>
+                          </ion-card-content>
+                          </ion-scroll>
+                      </ion-card>
                 </ion-col>
                 <!-- Note Area -->
                 <ion-col col-xs-7 col-sm-9 col-md-10 col-lg-10 *ngSwitchCase="'publicNote'">
@@ -37,12 +37,22 @@
                             <button ion-button full (click)="saveNote()">Save</button>
                         </ion-col>
                     </ion-row>
-                    <ion-textarea id="noteText" autosize [(ngModel)]="text" [value]="text"></ion-textarea>
+                    <ion-row>
+                      <ion-col col-xs-8 col-sm-8 col-md-8 col-lg-8>
+                        <ion-textarea id="noteText" readonly="true" autosize [(ngModel)]="text" [value]="text"></ion-textarea>
+                      </ion-col>
+                      <ion-col col-xs-4 col-sm-4 col-md-4 col-lg-4>
+                        <ion-card style="height: 62vh" id="noteText">Test</ion-card>
+                      </ion-col>
+                    </ion-row>
                 </ion-col>
                 <ion-col col-xs-8 col-sm-9 col-md-10 col-lg-10 *ngSwitchCase="'privateNote'">
                     <ion-row>
                         <ion-col>
                             <button ion-button full (click)="saveNote()">Save</button>
+                        </ion-col>
+                        <ion-col>
+                          <input type="file" id="fileInput">
                         </ion-col>
                     </ion-row>
                     <ion-textarea id="noteText" autosize [(ngModel)]="text" [value]="text"></ion-textarea>
