@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
-import 'rxjs/add/operator/map';
+import {Observable} from 'rxjs/Observable';
+import 'rxjs/add/operator/map'
 import { AngularFireDatabase } from 'angularfire2/database';
 
 import { Course } from '../models/course';
@@ -15,30 +16,82 @@ export class FirebaseService {
 
   getDB(){
     return this.fireDB;
-    }
+  }
+
+  getCurrentUserID(displayName: string){
+      let that = this;
+      let userIDPromise = new Promise(function(resolve, reject){
+        that.fireDB.database.ref('/Users/').once('child_added').then(function(snapshot){
+          if(displayName == snapshot.val().name){
+            resolve(snapshot.key);
+          }
+        });
+      });
+
+      return userIDPromise;
+  }
 
   getCourses(){
     return this.fireDB.list('/courses/');
   }
 
-  getChapters(courseKey: string){
-      return this.fireDB.list('/courses/'+courseKey+'/chapters/');
+  getMembersCourses(username: string){
+    let that = this;
+    //grab the users key in order to access their courses
+    let coursesPromise = new Promise(function(resolve, reject){
+      that.getCurrentUserID(username).then(function(userID){
+         resolve(that.fireDB.list('/Users/'+userID+'/courses/'));
+      });
+    });
+
+    return coursesPromise;
   }
 
-  addCourse(course: Course){
+  getChapters(courseKey: string){
+      return this.fireDB.list('/courseChapters/'+courseKey);
+  }
+
+  getPendingRequest(courseKey: string){
+      return this.fireDB.list('/courseJoinRequest/'+courseKey);
+  }
+
+  getNoteText(courseKey: string, chapterKey: string, isPublic: boolean): Promise<any>{
+      let that = this;
+      let textPromise = new Promise(function(resolve, reject){
+          if(isPublic){
+              that.fireDB.database.ref('/courseChapters/'+courseKey+'/'+chapterKey+'/publicNote/').once('value')
+              .then(function(snapshot){
+                  resolve(snapshot.val().text);
+              });
+          }else{
+              that.fireDB.database.ref('/courseChapters/'+courseKey+'/'+chapterKey+'/privateNote/').once('value')
+              .then(function(snapshot){
+                  resolve(snapshot.val().text);
+              });
+          }
+      });
+      return textPromise;
+  }
+
+  addCourse(course: Course, currentUserID){
       //add a course object to the database
 
     let key = this.fireDB.list('/courses/').push(course).key;
-    this.fireDB.list('/courses/').update(key, {'key': key});
-    //create chapter container
-    this.fireDB.list('/courses/').update(key, {'chapters': ''});
-    //set the first member to be the owner
-    this.fireDB.database.ref('/courses/'+key).child('members').set({'owner': course.getOwner()});
+    this.fireDB.database.ref('/courses/'+key).update({'key': key});
+
+    //Make Dir for holding course chapter
+    this.fireDB.database.ref('/courseChapters/'+key).set('');
+
+    //Add the course to the list of courses the user is in
+    this.fireDB.database.ref('/Users/'+currentUserID+'/courses/'+key).set(course);
+    //this.fireDB.database.ref('/courseMembers/'+key).push({'name': course.getOwner()});
+
+    //Make Dir for holding course requests
+    this.fireDB.database.ref('/courseJoinRequest/'+key).set('');
   }
 
   addChapter(chapter: Chapter, courseKey: string){
-     let key = this.fireDB.list('/courses/'+ courseKey+'/chapters/').push(chapter).key;
-     this.fireDB.list('/courses/'+ courseKey+'/chapters/').update(key,{'key': key});
+     this.fireDB.list('/courseChapters/'+ courseKey).push(chapter);
   }
 
   sendJoinRequest(courseKey: string, username: string){
@@ -48,7 +101,7 @@ export class FirebaseService {
           let ownerName = snapshot.val().owner;
           //check to see if person already exists and they arent the owner
           if(ownerName != username){
-              that.fireDB.database.ref('/courses/'+courseKey+'/pendingRequest/').once('value').then(function(snapshot2){
+              that.fireDB.database.ref('/courseJoinRequest/'+courseKey).once('value').then(function(snapshot2){
                   let exist = false;
 
                   snapshot2.forEach(function(child){
@@ -62,7 +115,7 @@ export class FirebaseService {
                       currentCount++;
                       that.fireDB.database.ref('/courses/'+courseKey+'/requestCounter/').set(currentCount);
 
-                      that.fireDB.list('/courses/'+courseKey+'/pendingRequest/').push({'name': username});
+                      that.fireDB.list('/courseJoinRequest/'+courseKey).push({'name': username});
                   }
               });
           }
@@ -73,56 +126,64 @@ export class FirebaseService {
   joinCourse(courseID: string, username: string){
       let that = this;
       //check that they arent already in the course, check that they arent the owner
-      this.fireDB.database.ref('/courses/'+courseID+'/members/').once('value').then(function(snapshot){
+      this.getCurrentUserID(username).then(function(userID){
+        that.fireDB.database.ref('/Users/'+userID+'/courses/').once('child_added').then(function(snapshot){
           let exists = false;
-          //go through each member
-          snapshot.forEach(function(child){
-              let name = child.val().name;
-
-              if(name == username){
-                  //found the user
-                  exists = true;
-              }
-          });
+          //check all the course keys
+          let key = snapshot.val().key
+          console.log(key);
 
           if(!exists){
-              that.fireDB.list('/courses/'+courseID+'/members/').push({'name': username});
+              that.fireDB.list('/courseMembers/'+courseID).push({'name': username});
           }
 
+        });
+
       });
+
   }
+
 
   saveNotes(courseKey: string,chapterKey: string,text: string,isPublic: boolean){
     if(isPublic){
-        this.fireDB.database.ref().child('/courses/'+courseKey+'/chapters/'+chapterKey+'/publicNote/').child('text').set(text);
+        this.fireDB.database.ref().child('/courseChapters/'+courseKey+'/'+chapterKey+'/publicNote/').child('text').set(text);
     }else{
-        this.fireDB.database.ref().child('/courses/'+courseKey+'/chapters/'+chapterKey+'/privateNote/').child('text').set(text);
+        this.fireDB.database.ref().child('/courseChapters/'+courseKey+'/'+chapterKey+'/privateNote/').child('text').set(text);
     }
   }
 
-  getNoteText(courseKey: string, chapterKey: string, isPublic: boolean): Promise<any>{
-      let that = this;
-      let textPromise = new Promise(function(resolve, reject){
-          if(isPublic){
-              that.fireDB.database.ref('/courses/'+courseKey+'/chapters/'+chapterKey+'/publicNote/').once('value')
-              .then(function(snapshot){
-                  resolve(snapshot.val().text);
-              });
-          }else{
-              that.fireDB.database.ref('/courses/'+courseKey+'/chapters/'+chapterKey+'/privateNote/').once('value')
-              .then(function(snapshot){
-                  resolve(snapshot.val().text);
-              });
-          }
-      });
-      return textPromise;
-  }
 
-  removeCourse(id){
-    this.fireDB.list('/courses/').remove(id);
+  removeCourse(id, username: string){
+    let that = this;
+    //check if they are the owner to permanently delete it
+    this.fireDB.database.ref('/courses/'+id).once('value').then(function(snapshot){
+      let owner = snapshot.val().owner;
+      if(username == owner){
+        //delete the course completely
+        that.fireDB.list('/courses/').remove(id);
+        //delete its chapters and requests
+        that.fireDB.list('/courseChapters/').remove(id);
+        that.fireDB.list('/courseJoinRequest/').remove(id);
+        that.getCurrentUserID(username).then(function(userID){
+        that.fireDB.list('/Users/'+userID+'/courses/').remove(id);
+        });
+      }else{
+        let that = this;
+        //only delete it from the courses they are a part of
+        that.getCurrentUserID(username).then(function(userID){
+          that.fireDB.list('/Users/'+userID+'/courses/').remove(id);
+        });
+      }
+
+    });
+
   }
 
   removeChapter(id, courseKey: string){
-    this.fireDB.list('/courses/'+courseKey+'/chapters/').remove(id);
+    this.fireDB.list('/courseChapters/'+courseKey).remove(id);
+  }
+
+  removePendingRequest(id, courseKey: string){
+    this.fireDB.list('/courseJoinRequest/'+courseKey).remove(id);
   }
 }

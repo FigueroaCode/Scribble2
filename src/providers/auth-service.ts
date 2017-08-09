@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
 import 'rxjs/add/operator/map';
 import firebase from 'firebase';
+import { AngularFireDatabase } from 'angularfire2/database';
 
 @Injectable()
 export class AuthService {
     public fireAuth: any;
 
-    constructor() {
+    constructor(public fireDB: AngularFireDatabase) {
         this.fireAuth = firebase.auth();
     }
 
@@ -49,6 +50,10 @@ export class AuthService {
                 newUser.updateProfile({
                     displayName: username
                 });
+
+                //create a user profile in the database
+                let user = {'name': username, 'courses': ''};
+                this.fireDB.list('/Users/').push(user);
             });
     }
     resetPassword(email: string): any {

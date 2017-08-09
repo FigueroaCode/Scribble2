@@ -35,10 +35,14 @@ export class CreateCoursePage{
         //Make sure all the fields are not empty
         if(this.displayName != null && this.createCourse.value.courseTitle != '' && this.createCourse.value.description != '' && this.createCourse.value.courseID != ''
             && this.createCourse.value.professor != '' && this.createCourse.value.university != ''){
-                let newCourse = new Course(this.displayName, this.createCourse.value.courseTitle, '',
+                let newCourse = new Course(this.displayName, this.createCourse.value.courseTitle, ' ',
                     this.createCourse.value.description, this.createCourse.value.professor, this.createCourse.value.university,
                     this.createCourse.value.courseID,1,1 ,0);
-            this.firebaseService.addCourse(newCourse);
+            //get the users id
+            let that = this;
+            this.firebaseService.getCurrentUserID(this.displayName).then(function(key){
+                that.firebaseService.addCourse(newCourse, key);
+            });
             //send the new course back to the courses page
             let courseData = {'course': newCourse};
             this.viewCtrl.dismiss(courseData);

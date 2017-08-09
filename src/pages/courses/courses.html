@@ -6,7 +6,7 @@
     <h2 id="title"> Courses </h2>
   </ion-navbar>
 </ion-header>
-<ion-content >
+<ion-content class="background">
     <ion-grid>
         <ion-row>
             <!-- SEARCH BOX -->
@@ -42,7 +42,7 @@
                         <ion-row>
                             <ion-col align="center">
                                 <button  ion-button (click)="notes(course.$key)"> Edit Notes </button>
-                                <button ion-button (click)="pendingRequest()">Pending Requests ({{ course.requestCounter }})</button>
+                                <button ion-button (click)="pendingRequest(course.$key)">Pending Requests ({{ course.requestCounter }})</button>
                                 <button ion-button color="danger" (click)="deleteCourse(course.$key)">Delete Course</button>
                             </ion-col>
                         </ion-row>

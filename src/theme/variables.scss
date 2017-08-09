@@ -29,7 +29,7 @@ $colors: (
   dark:       #cccccc //Grey
 );
 
-$list-md-background-color: map-get($colors, secondary);
+$list-md-background-color: map-get($colors, light);
 
 $toolbar-ios-title-text-color: map-get($colors, light);
 $toolbar-md-title-text-color: map-get($colors, light);

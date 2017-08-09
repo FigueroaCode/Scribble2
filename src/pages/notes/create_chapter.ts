@@ -37,7 +37,7 @@ export class CreateChapterPage{
         //Make sure all the fields are not empty
 
         if(this.displayName != null && this.createChapter.value.chapterName != null && this.createChapter.value.chapterName != '' ){
-                let newChapter= new Chapter(this.createChapter.value.chapterName, '',
+                let newChapter= new Chapter(this.createChapter.value.chapterName,
                      new PublicNote(' ',new Date().toString()),
                      new PrivateNote(this.displayName, ' ',new Date().toString()));
             this.firebaseService.addChapter(newChapter, this.courseKey);

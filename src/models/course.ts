@@ -1,4 +1,5 @@
 import { Chapter } from './chapter';
+import {Observable} from 'rxjs/Observable';
 
 export class Course {
 
@@ -15,7 +16,7 @@ export class Course {
     memberCount: number;
     requestCounter: number;
 
-    constructor(owner: string, title: string, key: string,description: string, professor: string,
+    constructor(owner: string, title: string,key: string,description: string, professor: string,
         university: string, courseID: string,members: number,memberCount: number, requestCounter: number){
         this.owner = owner;
         this.title = title;
@@ -30,6 +31,18 @@ export class Course {
 
         this.chapters = new Array<Chapter>();
     }
+
+    static fromJsonList(array): Course[] {
+      return array.map(Course.fromJson);
+    }
+
+    //add more parameters depending on your database entries and Hero constructor
+    static fromJson({owner, title,description, professor,university,courseID,members,memberCount, requestCounter}): Course {
+
+      return new Course(owner, title,description, professor, '',
+          university, courseID,members,memberCount, requestCounter);
+    }
+
 
     addChapter(newChapter: Chapter){
         this.chapters.push(newChapter);
@@ -51,7 +64,7 @@ export class Course {
         return this.title;
     }
     getKey(){
-        return this.key;
+      return this.key;
     }
     getDescription(){
         return this.description;
@@ -73,20 +86,29 @@ export class Course {
     }
 
     //Setters
-    setTitle(newTitle: string){
+    set Owner(newOwner: string){
+      this.owner = newOwner;
+    }
+    set Title(newTitle: string){
         this.title = newTitle;
     }
-    setDescription(newDescription: string){
+    set Description(newDescription: string){
         this.description = newDescription;
     }
-    setProfessor(newProfessor: string){
+    set Professor(newProfessor: string){
         this.professor = newProfessor;
     }
-    setUniversity(newUniversity: string){
+    set University(newUniversity: string){
         this.university = newUniversity;
     }
-    setCourseID(newID: string){
+    set CourseID(newID: string){
         this.courseID = newID;
+    }
+    set MemberCount(newCount: number){
+      this.memberCount = newCount;
+    }
+    set RequestCounter(newCount: number){
+      this.requestCounter = newCount;
     }
     incrementMemberCount(){
         this.memberCount++;

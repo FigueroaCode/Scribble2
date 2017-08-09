@@ -54,7 +54,7 @@ export class NotesPage {
         //set the first chapter as the default
         this.getFirstChapterKey =  new Promise(function(resolve, reject){
             getCourseKey.then(function(courseKey){
-                firebaseService.getDB().database.ref('/courses/'+courseKey+'/chapters/').once('value').then(function(snapshot){
+                firebaseService.getDB().database.ref('/courseChapters/'+courseKey).once('value').then(function(snapshot){
                          snapshot.forEach(function(childsnapshot){
                              resolve(childsnapshot.key);
                             }
@@ -88,7 +88,21 @@ export class NotesPage {
             //Get back the course created
             modal.onDidDismiss(data => {
                 if(data != null){
+                }
+                if(this.currentChapterKey == null || this.currentChapterKey == ''){
+                  this.initializeChapters();
+                  let that = this;
+                  let setCurrentChapterKey = new Promise(function(resolve, reject){
+                    that.firebaseService.getDB().database.ref('/courseChapters/'+that.courseKey).once('value').then(function(snapshot){
+                      snapshot.forEach(function(chapter){
+                        resolve(chapter.key);
+                      });
+                    });
+                  });
 
+                  setCurrentChapterKey.then(function(chapterKey: string){
+                    that.currentChapterKey = chapterKey;
+                  });
                 }
             });
             modal.present();

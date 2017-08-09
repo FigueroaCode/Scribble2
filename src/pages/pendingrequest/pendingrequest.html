@@ -8,6 +8,17 @@
 </ion-header>
 
 <ion-content padding class="background">
-    <ion-list></ion-list>
-
+  <div align="center">
+    <ion-card *ngFor="let request of requests | async" style="width: 50vw">
+        <ion-row align="center">
+          <ion-col align="left" col-xs-12 col-lg-6>
+            <h1 style="margin-top: 8px; margin-left: 8px">{{ request.name }}</h1>
+          </ion-col>
+          <ion-col align="right" col-xs-12 col-lg-6>
+            <button ion-button (click)="acceptRequest(request.name, request.$key)">Accept</button>
+            <button ion-button color="danger" (click)="denyRequest(request.$key)">Deny</button>
+          </ion-col>
+        </ion-row>
+    </ion-card>
+  </div>
 </ion-content>

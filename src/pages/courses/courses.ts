@@ -4,6 +4,8 @@ import { FirebaseService } from '../../providers/firebase-service';
 import { FirebaseListObservable } from 'angularfire2/database';
 import { AuthService } from '../../providers/auth-service';
 import { CreateCoursePage } from './create_course';
+import {Observable} from 'rxjs/Observable';
+import 'rxjs/add/operator/map';
 
 import { HomePage } from '../home/home';
 import { JoinCoursePage } from '../joincourse/joincourse';
@@ -22,6 +24,8 @@ export class CoursesPage {
     courses: FirebaseListObservable<any[]>;
     displayName: string;
     currentUser: User;
+    memberCourses: Array<any>;
+
 
     constructor(public navCtrl: NavController, public firebaseService: FirebaseService,
         public authService: AuthService, public alertCtrl: AlertController,
@@ -37,14 +41,10 @@ export class CoursesPage {
     }
 
     initializeCourses(){
-
-        this.courses = this.firebaseService.getDB().list('/courses', {
-            query:
-            {
-                orderByChild: 'owner',
-                equalTo: this.displayName
-            }
-        });
+      let that = this;
+      this.firebaseService.getMembersCourses(this.displayName).then(function(memberCourses){
+        that.courses = memberCourses as FirebaseListObservable<any[]>;
+      });
     }
 
     createCourse(){
@@ -74,7 +74,7 @@ export class CoursesPage {
                 {
                     text: 'Delete',
                     handler: data => {
-                        this.firebaseService.removeCourse(id);
+                        this.firebaseService.removeCourse(id,this.displayName);
                     }
                 }
             ]
@@ -108,7 +108,8 @@ export class CoursesPage {
       this.navCtrl.push(NotesPage, info);
   }
   //go to pending request page
-  pendingRequest(){
-      this.navCtrl.push(PendingRequestPage);
+  pendingRequest(courseKey){
+      let info = {'key': courseKey};
+      this.navCtrl.push(PendingRequestPage, info);
   }
 }

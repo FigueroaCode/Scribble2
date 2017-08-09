@@ -4,23 +4,18 @@ import { PublicNote } from './public_note';
 export class Chapter {
 
     name: string;
-    key: string;
     privateNote: PrivateNote;
     publicNote: PublicNote;
 
 
-    constructor(name: string, key: string, publicNote: PublicNote, privateNote: PrivateNote){
+    constructor(name: string, publicNote: PublicNote, privateNote: PrivateNote){
         this.name = name;
-        this.key = key;
         this.publicNote = publicNote;
         this.privateNote = privateNote;
     }
 
     getPrivateNote(){
         return this.privateNote;
-    }
-    getKey(){
-        return this.key;
     }
     getPublicNote(){
         return this.publicNote;
