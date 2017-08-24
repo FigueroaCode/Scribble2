@@ -10,5 +10,8 @@
     "!www/lib/**/*",
     "!www/**/*.map"
   ],
-  "type": "ionic-angular"
+  "type": "ionic-angular",
+  "integrations": {
+    "cordova": {}
+  }
 }

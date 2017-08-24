@@ -37,7 +37,7 @@ export class CreateCoursePage{
             && this.createCourse.value.professor != '' && this.createCourse.value.university != ''){
                 let newCourse = new Course(this.displayName, this.createCourse.value.courseTitle, ' ',
                     this.createCourse.value.description, this.createCourse.value.professor, this.createCourse.value.university,
-                    this.createCourse.value.courseID,1,1 ,0);
+                    this.createCourse.value.courseID,1,0);
             //get the users id
             let that = this;
             this.firebaseService.getCurrentUserID(this.displayName).then(function(key){

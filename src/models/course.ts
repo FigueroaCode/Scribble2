@@ -11,13 +11,11 @@ export class Course {
     university: string;
     courseID: string;
     chapters: Array<Chapter>;
-
-    members: number;
     memberCount: number;
     requestCounter: number;
 
     constructor(owner: string, title: string,key: string,description: string, professor: string,
-        university: string, courseID: string,members: number,memberCount: number, requestCounter: number){
+        university: string, courseID: string,memberCount: number, requestCounter: number){
         this.owner = owner;
         this.title = title;
         this.key = key;
@@ -25,7 +23,6 @@ export class Course {
         this.professor = professor;
         this.university = university;
         this.courseID = courseID;
-        this.members = members;
         this.memberCount = memberCount;
         this.requestCounter = requestCounter;
 
@@ -40,7 +37,7 @@ export class Course {
     static fromJson({owner, title,description, professor,university,courseID,members,memberCount, requestCounter}): Course {
 
       return new Course(owner, title,description, professor, '',
-          university, courseID,members,memberCount, requestCounter);
+          university, courseID,memberCount, requestCounter);
     }
 
 
