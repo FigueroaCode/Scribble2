@@ -59,8 +59,8 @@ export class JoinCoursePage {
     }
 
     //Joining a course
-    joinCourse(courseKey){
+    joinCourse(courseKey, courseOwner){
         //its going to send a request instead later
-        this.firebaseService.sendJoinRequest(courseKey, this.displayName);
+        this.firebaseService.sendJoinRequest(courseKey, this.displayName, courseOwner);
     }
 }

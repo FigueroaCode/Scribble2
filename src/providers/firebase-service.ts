@@ -94,7 +94,7 @@ export class FirebaseService {
      this.fireDB.list('/courseChapters/'+ courseKey).push(chapter);
   }
 
-  sendJoinRequest(courseKey: string, username: string){
+  sendJoinRequest(courseKey: string, username: string, owner: string){
       let that = this;
       this.fireDB.database.ref('/courses/'+courseKey).once('value').then(function(snapshot){
           let currentCount = snapshot.val().requestCounter;
@@ -111,9 +111,15 @@ export class FirebaseService {
                   });
 
                   if(!exist){
+                    //console.log('running');
                       //increase request count
                       currentCount++;
+                      //update the course
                       that.fireDB.database.ref('/courses/'+courseKey+'/requestCounter/').set(currentCount);
+                      that.getCurrentUserID(owner).then(function(userID){
+                        console.log(userID);
+                        that.fireDB.database.ref('/Users/'+userID+'/courses/'+courseKey+'/requestCounter/').set(currentCount);
+                      });
 
                       that.fireDB.list('/courseJoinRequest/'+courseKey).push({'name': username});
                   }
@@ -134,7 +140,18 @@ export class FirebaseService {
           console.log(key);
 
           if(!exists){
-              that.fireDB.list('/courseMembers/'+courseID).push({'name': username});
+            //get the course and make another one in this user
+            that.fireDB.database.ref('/Courses/').once('value').then(function(snapshot){
+              snapshot.forEach(function(child){
+                console.log('child key: ', child.key);
+                if(child.key == courseID){
+                  console.log('course', child);
+                  //that.fireDB.list('/Users/'+userID+'/courses/').push();
+                }
+              });
+
+            });
+
           }
 
         });
