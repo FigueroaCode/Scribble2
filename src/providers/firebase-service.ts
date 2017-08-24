@@ -133,20 +133,23 @@ export class FirebaseService {
       let that = this;
       //check that they arent already in the course, check that they arent the owner
       this.getCurrentUserID(username).then(function(userID){
-        that.fireDB.database.ref('/Users/'+userID+'/courses/').once('child_added').then(function(snapshot){
+        that.fireDB.database.ref('/Users/'+userID+'/courses/').once('value').then(function(snapshot){
           let exists = false;
           //check all the course keys
-          let key = snapshot.val().key
-          console.log(key);
+          snapshot.forEach(function(course){
+            if(course.key == courseID){
+              exists = true;
+            }
+          });
 
           if(!exists){
             //get the course and make another one in this user
-            that.fireDB.database.ref('/Courses/').once('value').then(function(snapshot){
+            that.fireDB.database.ref('/courses/').once('value').then(function(snapshot){
               snapshot.forEach(function(child){
-                console.log('child key: ', child.key);
-                if(child.key == courseID){
-                  console.log('course', child);
-                  //that.fireDB.list('/Users/'+userID+'/courses/').push();
+                //find the current course that is to be added to the pending user
+                if(child.val().key == courseID){
+                  //add that course to his/her courses
+                  that.fireDB.list('/Users/'+userID+'/courses/').push(child.val());
                 }
               });
 

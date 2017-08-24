@@ -43,7 +43,8 @@
                             <ion-col align="center">
                                 <button  ion-button (click)="notes(course.$key)"> Edit Notes </button>
                                 <button *ngIf="displayName == course.owner" ion-button (click)="pendingRequest(course.$key)">Pending Requests ({{ course.requestCounter }})</button>
-                                <button ion-button color="danger" (click)="deleteCourse(course.$key)">Delete Course</button>
+                                <button *ngIf="displayName == course.owner" ion-button color="danger" (click)="deleteCourse(course.$key)">Delete Course</button>
+                                <button *ngIf="displayName != course.owner" ion-button color="danger" (click)="deleteCourse(course.$key)">Leave Course</button>
                             </ion-col>
                         </ion-row>
                     </ion-grid>
