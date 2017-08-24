@@ -21,10 +21,12 @@ export class FirebaseService {
   getCurrentUserID(displayName: string){
       let that = this;
       let userIDPromise = new Promise(function(resolve, reject){
-        that.fireDB.database.ref('/Users/').once('child_added').then(function(snapshot){
-          if(displayName == snapshot.val().name){
-            resolve(snapshot.key);
-          }
+        that.fireDB.database.ref('/Users/').once('value').then(function(snapshot){
+          snapshot.forEach(function(child){
+            if(displayName == child.val().name){
+              resolve(child.key);
+            }
+          });
         });
       });
 
@@ -111,13 +113,11 @@ export class FirebaseService {
                   });
 
                   if(!exist){
-                    //console.log('running');
                       //increase request count
                       currentCount++;
                       //update the course
                       that.fireDB.database.ref('/courses/'+courseKey+'/requestCounter/').set(currentCount);
                       that.getCurrentUserID(owner).then(function(userID){
-                        console.log(userID);
                         that.fireDB.database.ref('/Users/'+userID+'/courses/'+courseKey+'/requestCounter/').set(currentCount);
                       });
 
