@@ -204,6 +204,20 @@ export class FirebaseService {
   }
 
   removePendingRequest(id, courseKey: string){
-    this.fireDB.list('/courseJoinRequest/'+courseKey).remove(id);
+    //decrement request counter
+    let that = this;
+    this.fireDB.database.ref('/courses/'+courseKey).once('value').then(function(snapshot){
+        let counter = snapshot.val().requestCounter;
+        let owner = snapshot.val().owner;
+        if(counter > 0){
+          counter--;
+          //update it on the database
+          that.fireDB.database.ref('/courses/'+courseKey+'/requestCounter/').set(counter);
+          that.getCurrentUserID(owner).then(function(userID){
+            that.fireDB.database.ref('/Users/'+userID+'/courses/'+courseKey+'/requestCounter/').set(counter);
+          });
+          that.fireDB.list('/courseJoinRequest/'+courseKey).remove(id);
+        }
+    });
   }
 }
