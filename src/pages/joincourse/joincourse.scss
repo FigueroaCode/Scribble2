@@ -2,7 +2,16 @@
   background-color: map-get($colors, danger);
 }
 
-#filterInput{
+#courseTitle{
+  background-color: map-get($colors, light);
+}
+#courseID{
+  background-color: map-get($colors, light);
+}
+#professor{
+  background-color: map-get($colors, light);
+}
+#university{
   background-color: map-get($colors, light);
 }
 
