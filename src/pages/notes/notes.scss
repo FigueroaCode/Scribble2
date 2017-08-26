@@ -1,3 +1,7 @@
+#border {
+  border: solid 1px black;
+}
+
 #noteText{
   background-color: map-get($colors,secondary);
   //border: solid 1px black;

@@ -18,81 +18,79 @@
       </ion-segment>
 
       <ion-row [ngSwitch]="noteSegment">
-              <!-- PUBLIC NOTE -->
-              <ion-col col-xs-12 col-sm-12 col-md-12 col-lg-12 *ngSwitchCase="'publicNote'">
-                <!-- Choose a chapter area -->
-                <ion-row>
-                  <div class="chapter-dropdown">
-                    <ion-row>
-                      <ion-col>
-                        <h1 style="margin-top: 6px">Chapter: </h1>
-                      </ion-col>
-                      <ion-col>
-                        <button ion-button (click)="toggleDropDown()" class="dropbutton">{{dropDownTitle}}</button>
-                        <div id="chapterDropdown" class="chapter-dropdown-content">
-                          <button (click)="showNote(chapter.$key)" color="danger" ion-button full *ngFor="let chapter of chapters | async">
-                              {{ chapter.name }}
-                          </button>
-                        </div>
-                      </ion-col>
-                      <ion-col>
-                        <button ion-button full (click)="createChapter()"> Create Chapter</button>
-                      </ion-col>
-                    </ion-row>
+        <!-- PUBLIC NOTE -->
+        <ion-col col-xs-12 col-sm-12 col-md-12 col-lg-12 *ngSwitchCase="'publicNote'">
+          <!-- Choose a chapter area -->
+          <ion-row>
+            <div class="chapter-dropdown">
+              <ion-row>
+                <ion-col>
+                  <h1 style="margin-top: 6px">Chapter: </h1>
+                </ion-col>
+                <ion-col>
+                  <button ion-button (click)="toggleDropDown()" class="dropbutton">{{dropDownTitle}}</button>
+                  <div id="chapterDropdown" class="chapter-dropdown-content">
+                    <button (click)="showNote(chapter.$key)" color="danger" ion-button full *ngFor="let chapter of chapters | async">
+                        {{ chapter.name }}
+                    </button>
                   </div>
-                </ion-row>
-                <ion-row col-xs-12 col-sm-12 col-md-12 col-lg-12>
-                  <ion-col col-xs-12 col-sm-12 col-md-12 col-lg-9>
-                    <ion-card style="height: 62vh">
-                      <ion-card-content>
-                        <ion-textarea readonly autosize [(ngModel)]="text" [value]="text"></ion-textarea>
-                      </ion-card-content>
-                    </ion-card>
-                  </ion-col>
-                  <ion-col col-xs-12 col-sm-12 col-md-12 col-lg-3>
-                    <ion-card style="height: 62vh">Test</ion-card>
-                  </ion-col>
-                </ion-row>
-              </ion-col>
-
-              <!-- PRIVATE NOTE -->
-              <ion-row col-xs-12 col-sm-12 col-md-12 col-lg-12 *ngSwitchCase="'privateNote'">
-                <!-- Header + Chapter Buttons -->
-                <ion-row col-xs-12 col-sm-12 col-md-12 col-lg-12>
-                  <div class="chapter-dropdown">
-                    <ion-row>
-                      <ion-col col-3>
-                        <h1 style="margin-top: 6px">Chapter: </h1>
-                      </ion-col>
-                      <ion-col col-3>
-                        <button ion-button (click)="toggleDropDown()" class="dropbutton">{{dropDownTitle}}</button>
-                        <div id="chapterDropdown" class="chapter-dropdown-content">
-                          <button (click)="showNote(chapter.$key)" color="danger" ion-button full *ngFor="let chapter of chapters | async">
-                              {{ chapter.name }}
-                          </button>
-                        </div>
-                      </ion-col>
-                      <ion-col col-3>
-                        <button ion-button full (click)="createChapter()"> Create Chapter</button>
-                      </ion-col>
-                      <ion-col col-3>
-                          <button ion-button full (click)="saveNote()">Save</button>
-                      </ion-col>
-                      <ion-col>
-                        <input ion-button type="file" name="file" class="inputfile" color="primary">
-                      </ion-col>
-                    </ion-row>
-                  </div>
-                </ion-row>
-                <!-- Note Text Area -->
-                <ion-row col-xs-12 col-sm-12 col-md-12 col-lg-12>
-                  <ion-card style="height: 62vh">
-                    <ion-card-content>
-                      <ion-textarea autosize [(ngModel)]="text" [value]="text"></ion-textarea>
-                    </ion-card-content>
-                  </ion-card>
-                </ion-row>
+                </ion-col>
+                <ion-col>
+                  <button ion-button full (click)="createChapter()">Create Chapter</button>
+                </ion-col>
               </ion-row>
+            </div>
+          </ion-row>
+          <ion-row row-xs-12 row-sm-12 row-md-12 row-lg-12>
+            <ion-col col-xs-12 col-sm-12 col-md-12 col-lg-9>
+              <ion-card style="height: 62vh">
+                <ion-card-content>
+                  <ion-textarea readonly autosize [(ngModel)]="text" [value]="text"></ion-textarea>
+                </ion-card-content>
+              </ion-card>
+            </ion-col>
+            <ion-col col-xs-12 col-sm-12 col-md-12 col-lg-3>
+              <ion-card style="height: 62vh">Test</ion-card>
+            </ion-col>
+          </ion-row>
+        </ion-col>
+
+        <!-- PRIVATE NOTE -->
+        <ion-col col-xs-12 col-sm-12 col-md-12 col-lg-12 *ngSwitchCase="'privateNote'">
+          <!-- Choose a chapter area -->
+          <ion-row>
+            <div class="chapter-dropdown">
+              <ion-row>
+                <ion-col>
+                  <h1 style="margin-top: 6px">Chapter: </h1>
+                </ion-col>
+                <ion-col>
+                  <button ion-button (click)="toggleDropDown()" class="dropbutton">{{dropDownTitle}}</button>
+                  <div id="chapterDropdown" class="chapter-dropdown-content">
+                    <button (click)="showNote(chapter.$key)" color="danger" ion-button full *ngFor="let chapter of chapters | async">
+                        {{ chapter.name }}
+                    </button>
+                  </div>
+                </ion-col>
+                <ion-col>
+                  <button ion-button full (click)="createChapter()">Create Chapter</button>
+                </ion-col>
+                <ion-col>
+                  <button ion-button full (click)="saveNote()">Save Changes</button>
+                </ion-col>
+              </ion-row>
+            </div>
+          </ion-row>
+          <ion-row row-xs-12 row-sm-12 row-md-12 row-lg-12>
+            <ion-col col-xs-12 col-sm-12 col-md-12 col-lg-12>
+              <ion-card style="height: 62vh">
+                <ion-card-content>
+                  <ion-textarea autosize [(ngModel)]="text" [value]="text"></ion-textarea>
+                </ion-card-content>
+              </ion-card>
+            </ion-col>
+          </ion-row>
+        </ion-col>
       </ion-row>
     </ion-grid>
 </ion-content>
