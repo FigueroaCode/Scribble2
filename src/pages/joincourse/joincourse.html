@@ -34,7 +34,7 @@
         <h1>Course List</h1>
         <ion-scroll style="width:100%;height:65vh" scrollY="true">
           <ion-list scroll="true">
-            <ion-card *ngFor="let course of courses | async">
+            <ion-card *ngFor="let course of courses">
               <ion-card-header>{{ course.title }}</ion-card-header>
               <ion-card-content>
                   <ion-row>
