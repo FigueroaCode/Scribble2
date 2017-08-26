@@ -10,25 +10,30 @@ import { AuthService } from '../../providers/auth-service';
 })
 
 export class JoinCoursePage {
-    courses: FirebaseListObservable<any[]>;
+    courses: Array<any>;
     filterType: string;
     filterText: string;
     displayName: string;
 
     constructor(public navCtrl: NavController, public firebaseService: FirebaseService,
         public authService: AuthService, public alertCtrl: AlertController) {
-        this.initializeList();
         this.filterType = "";
         this.filterText = "";
 
         //check that user exists
         if(this.authService.getFireAuth().currentUser)
             this.displayName = this.authService.getFireAuth().currentUser.displayName;
+
+        this.initializeList();
     }
 
     initializeList(){
-        this.courses = this.firebaseService.getCourses();
-        //console.log(this.courses);
+      if(this.displayName !=  undefined){
+        let that = this;
+        this.firebaseService.getFirebaseAsArray(this.displayName).then(function(excludedCourses){
+          that.courses = excludedCourses as any[];
+        });
+      }
     }
 
     //Filter Items for course list.
@@ -39,23 +44,23 @@ export class JoinCoursePage {
     applyFilters(target: string){
       this.filterText = target;
       //A filter type must be selected in order to filter the course list.
-      if(this.filterType != ''){
-        //Apply the filter to the DB
-        if (this.filterText && this.filterText.trim() != '') {
-            this.courses = this.firebaseService.getDB().list('/courses', {
-                query:
-                {
-                    orderByChild: this.filterType,
-                    equalTo: this.filterText
-
-                }
-            });
-        }else{
-          this.courses = this.firebaseService.getDB().list('/courses');
-        }
-      }else{
-        this.courses = this.firebaseService.getDB().list('/courses');
-      }
+      // if(this.filterType != ''){
+      //   //Apply the filter to the DB
+      //   if (this.filterText && this.filterText.trim() != '') {
+      //       this.courses = this.firebaseService.getDB().list('/courses', {
+      //           query:
+      //           {
+      //               orderByChild: this.filterType,
+      //               equalTo: this.filterText
+      //
+      //           }
+      //       });
+      //   }else{
+      //     this.courses = this.firebaseService.getDB().list('/courses');
+      //   }
+      // }else{
+      //   this.courses = this.firebaseService.getDB().list('/courses');
+      // }
     }
 
     //Joining a course

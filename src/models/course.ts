@@ -1,5 +1,6 @@
 import { Chapter } from './chapter';
 import {Observable} from 'rxjs/Observable';
+import 'rxjs/add/operator/map';
 
 export class Course {
 
@@ -34,7 +35,7 @@ export class Course {
     }
 
     //add more parameters depending on your database entries and Hero constructor
-    static fromJson({owner, title,description, professor,university,courseID,members,memberCount, requestCounter}): Course {
+    static fromJson({owner, title,description, professor,university,courseID,memberCount, requestCounter}): Course {
 
       return new Course(owner, title,description, professor, '',
           university, courseID,memberCount, requestCounter);

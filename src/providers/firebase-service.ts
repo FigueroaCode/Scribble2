@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
 import {Observable} from 'rxjs/Observable';
-import 'rxjs/add/operator/map'
+import 'rxjs/add/operator/map';
 import { AngularFireDatabase } from 'angularfire2/database';
+import { FirebaseListObservable } from 'angularfire2/database';
 
 import { Course } from '../models/course';
 import { Chapter } from '../models/chapter';
@@ -75,6 +76,55 @@ export class FirebaseService {
       return textPromise;
   }
 
+  getFirebaseAsArray(username: string){
+    let that = this;
+    //get the users current courses
+    let userCourses = new Promise(function(resolve, reject){
+      that.getMembersCourses(username).then(function(memberCourses){
+          let courses = memberCourses as FirebaseListObservable<any[]>;
+          courses.forEach(function(course){
+            resolve(course);
+          });
+        }
+      );
+    });
+    //get all the courses
+    let courses = that.getCourses();
+    let allCourses = new Promise(function(resolve,reject){
+      courses.forEach(function(course){
+          resolve(course);
+      });
+    });
+
+    let excludedCourses = new Promise(function(resolve,reject){
+      userCourses.then(function(memberCoursesObj){
+
+        allCourses.then(function(coursesObj){
+          //Filter out the courses which are the same
+          let coursesArray = coursesObj as Array<any>;
+          let memberCourses = memberCoursesObj as Array<any>;
+          let filteredCourses = coursesArray.filter(function(course){
+              for(let i = 0; i < memberCourses.length; i++){
+                if(memberCourses[i].key == course.key){
+                  return false;
+                }
+              }
+
+              return true;
+          });
+
+          resolve(filteredCourses);
+        });
+
+      });
+      //end of usercourses
+    });
+    //end of Promise
+
+    return excludedCourses;
+
+  }
+
   addCourse(course: Course, currentUserID){
       //add a course object to the database
 
@@ -86,6 +136,7 @@ export class FirebaseService {
 
     //Add the course to the list of courses the user is in
     this.fireDB.database.ref('/Users/'+currentUserID+'/courses/'+key).set(course);
+    this.fireDB.database.ref('/Users/'+currentUserID+'/courses/'+key).update({'key': key});
     //this.fireDB.database.ref('/courseMembers/'+key).push({'name': course.getOwner()});
 
     //Make Dir for holding course requests
