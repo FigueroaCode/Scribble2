@@ -18,7 +18,6 @@ import { Chapter } from '../../models/chapter';
 })
 
 export class NotesPage {
-
     chapters: FirebaseListObservable<any[]>;
     displayName: string;
     text: string;
@@ -30,7 +29,7 @@ export class NotesPage {
     getFirstChapterKey: Promise<any>;
     getFirebase: Promise<any>;
     dropDownTitle: string;
-    // fileInput: string;
+
 
     constructor(public navCtrl: NavController, public firebaseService: FirebaseService,
     public authService: AuthService, public alertCtrl: AlertController,

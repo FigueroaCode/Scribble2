@@ -2,6 +2,22 @@
   border: solid 1px black;
 }
 
+#inputOuterField {
+  position: relative;
+}
+
+#fakeInput {
+  position: absolute;
+  top: 10px;
+  z-index: -1;
+}
+
+#fileInput {
+   z-index: 2;
+   margin-top: 10px;
+   opacity: 0;
+}
+
 #noteText{
   background-color: map-get($colors,secondary);
   //border: solid 1px black;
