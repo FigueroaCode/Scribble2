@@ -29,6 +29,7 @@ export class NotesPage {
     noteSegment: string = "publicNote";
     getFirstChapterKey: Promise<any>;
     getFirebase: Promise<any>;
+    dropDownTitle: string;
     // fileInput: string;
 
     constructor(public navCtrl: NavController, public firebaseService: FirebaseService,
@@ -65,6 +66,9 @@ export class NotesPage {
         //Set the textbox to the text of the first chapter
         let that = this;
         this.getFirstChapterKey.then(function(chapterKey){
+            firebaseService.getDB().database.ref('/courseChapters/' + that.courseKey + '/' + chapterKey).once('value').then(function(getChapterName){
+              that.dropDownTitle = getChapterName.val().name;
+            });
             firebaseService.getNoteText(that.courseKey, chapterKey, that.inPublicNote)
             .then(function(noteText){
                 that.setNoteText(noteText);
@@ -115,7 +119,7 @@ export class NotesPage {
         if((this.currentChapterKey == null || this.currentChapterKey == '') && this.courseKey != null && this.text != null){
             //needs to be done in order for the promise to recognize which object 'this' is referring
             this.getFirstChapterKey.then(function(firstKey){
-                //defualt chapter is the first one
+                //default chapter is the first one
                 that.firebaseService.getNoteText(that.courseKey,firstKey, that.inPublicNote)
                 .then(function(noteText){
                     that.setNoteText(noteText);
@@ -128,6 +132,7 @@ export class NotesPage {
             });
         }
     }
+
     showNote(chapterKey){
         this.currentChapterKey = chapterKey;
         this.updateNoteText();
@@ -146,9 +151,8 @@ export class NotesPage {
         }
 
         // let publicNoteText = this.firebaseService.getNoteText(this.courseKey, this.currentChapterKey, true, ).then();
-
-
     }
+
     //Switching Between Notes
     publicNoteClicked(){
         this.inPublicNote = true;
@@ -158,6 +162,10 @@ export class NotesPage {
     privateNoteClicked(){
         this.inPublicNote = false;
         this.updateNoteText();
+    }
+
+    toggleDropDown() {
+      document.getElementById("chapterDropdown").classList.toggle("show");
     }
 
 }

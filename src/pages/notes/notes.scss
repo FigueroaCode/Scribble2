@@ -4,6 +4,47 @@
   font-size: 20px;
 }
 
-#fileInput{
-  //: map-get($colors, primary);
+/* Show the dropdown menu on hover */
+.chapter-dropdown:hover .chapter-dropdown-content {
+    display: block;
 }
+
+/* Dropdown Button */
+.dropbutton {
+    min-width: 160px;
+    background-color: map-get($colors,primary);
+    color: white;
+    padding: 16px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+}
+
+/* Dropdown Content (Hidden by Default) */
+.chapter-dropdown-content {
+    display: none;
+    position: absolute;
+    min-width: 160px;
+    z-index: 1;
+}
+
+/* The container <div> - needed to position the dropdown content */
+.chapter-dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.chapter-dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+/* Change color of dropdown links on hover */
+.chapter-dropdown-content a:hover {
+  background-color: map-get($colors,primary);
+}
+
+/* Show the dropdown menu */
+.show {display:block;}
