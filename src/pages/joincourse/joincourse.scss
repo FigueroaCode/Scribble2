@@ -2,6 +2,10 @@
   background-color: map-get($colors, danger);
 }
 
+#filterInput{
+  background-color: map-get($colors, light);
+}
+
 /* Dropdown Button */
 .dropdown-button {
   padding: 16px;

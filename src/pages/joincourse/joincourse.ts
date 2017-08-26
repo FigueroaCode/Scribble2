@@ -44,23 +44,11 @@ export class JoinCoursePage {
     applyFilters(target: string){
       this.filterText = target;
       //A filter type must be selected in order to filter the course list.
-      // if(this.filterType != ''){
-      //   //Apply the filter to the DB
-      //   if (this.filterText && this.filterText.trim() != '') {
-      //       this.courses = this.firebaseService.getDB().list('/courses', {
-      //           query:
-      //           {
-      //               orderByChild: this.filterType,
-      //               equalTo: this.filterText
-      //
-      //           }
-      //       });
-      //   }else{
-      //     this.courses = this.firebaseService.getDB().list('/courses');
-      //   }
-      // }else{
-      //   this.courses = this.firebaseService.getDB().list('/courses');
-      // }
+      if(this.filterType != ''){
+
+      }else{
+
+      }
     }
 
     //Joining a course

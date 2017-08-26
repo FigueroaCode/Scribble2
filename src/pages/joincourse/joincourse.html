@@ -9,8 +9,7 @@
       <ion-row>
         <h1>Search Criteria</h1>
       </ion-row>
-      <ion-row>
-        <!-- Drop down menu for type of search -->
+      <!-- <ion-row>
         <div class="dropdown">
           <button ion-button icon-right class="dropdown-button">
             Choose Search Filter
@@ -23,12 +22,24 @@
             <button ion-button (click)="chooseFilter('university')">University</button>
           </div>
         </div>
-        <!-- Search Bar -->
         <ion-item>
           <ion-input placeholder="Searching courses by: {{filterType}}" [(ngModel)]="searchbarInput" (change)="applyFilters(searchbarInput)" type="text"></ion-input>
         </ion-item>
+      </ion-row> -->
+      <ion-row>
+        <ion-col>
+            <ion-input id="filterInput" placeholder="Course Title" type="text"></ion-input>
+        </ion-col>
+        <ion-col>
+            <ion-input id="filterInput" placeholder="Course ID" type="text"></ion-input>
+        </ion-col>
+        <ion-col>
+            <ion-input id="filterInput" placeholder="Professor" type="text"></ion-input>
+        </ion-col>
+        <ion-col>
+            <ion-input id="filterInput" placeholder="University" type="text"></ion-input>
+        </ion-col>
       </ion-row>
-
       <!-- Course list -->
       <ion-row>
         <h1>Course List</h1>

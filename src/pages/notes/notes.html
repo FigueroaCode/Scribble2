@@ -86,7 +86,7 @@
                   <input readonly>
                   <ion-icon name="ios-folder-outline"></ion-icon>
                 </div>
-                <input id="fileInput" type="file">
+                <input id="fileInput" #fileInput (change)="getFileInput()" type="file">
               </div>
             </ion-col>
           </ion-row>
