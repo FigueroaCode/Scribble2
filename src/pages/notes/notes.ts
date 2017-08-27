@@ -1,12 +1,10 @@
 import { Component, ViewChild } from '@angular/core';
-import { NavController, AlertController, NavParams, ModalController } from 'ionic-angular';
+import { NavController, AlertController, NavParams, ModalController, ToastController } from 'ionic-angular';
 import { FirebaseService } from '../../providers/firebase-service';
 import { FirebaseListObservable } from 'angularfire2/database';
 import { AuthService } from '../../providers/auth-service';
 import { File } from '@ionic-native/file';
 
-
-import { CreateChapterPage } from './create_chapter';
 import { PrivateNote } from '../../models/private_note';
 import { PublicNote } from '../../models/public_note';
 import { Chapter } from '../../models/chapter';
@@ -33,7 +31,7 @@ export class NotesPage {
 
 
     constructor(public navCtrl: NavController, public firebaseService: FirebaseService,
-    public authService: AuthService, public alertCtrl: AlertController,
+    public authService: AuthService, public alertCtrl: AlertController, public toastCtrl: ToastController,
     public modalCtrl: ModalController, public navParams: NavParams, private file: File) {
         //need to wrap this in a promise in order to use it in another promise
         let getCourseKey = new Promise(function(resolve, reject){
@@ -86,34 +84,45 @@ export class NotesPage {
     }
 
     createChapter(){
-        if(this.courseKey != null){
-            let info = {'key': this.courseKey};
-            let modal = this.modalCtrl.create(CreateChapterPage, info);
-            //Get back the course created
-            console.log(modal);
-            modal.onDidDismiss(data => {
-                if(data != null){
-                }
-                if(this.currentChapterKey == null || this.currentChapterKey == ''){
-                  this.initializeChapters();
-                  let that = this;
-                  let setCurrentChapterKey = new Promise(function(resolve, reject){
-                    that.firebaseService.getDB().database.ref('/courseChapters/'+that.courseKey).once('value').then(function(snapshot){
-                      snapshot.forEach(function(chapter){
-                        resolve(chapter.key);
-                      });
-                    });
-                  });
+      let alert = this.alertCtrl.create({
+        title: 'Name your Chapter',
+        inputs: [
+          {
+            name: 'chapterNameInput',
+            placeholder: 'New Chapter Name'
+          }
+        ],
+        buttons: [
+          {
+            text: 'Cancel',
+            role: 'cancel',
+            handler: data => {
+              //Cancel
+            }
+          },
+          {
+            text: 'Create',
+            handler: data => {
+              if(this.displayName !=null && data.chapterNameInput != ''){
+                let newChapter= new Chapter(data.chapterNameInput,
+                     new PublicNote(' ',new Date().toString()),
+                     new PrivateNote(this.displayName, ' ',new Date().toString()));
+                this.firebaseService.addChapter(newChapter, this.courseKey);
+              }else{
+                //let the user know later that it wasnt created because they didnt put a field
+                let toast = this.toastCtrl.create({
+                  message: 'You failed to create a chapter.',
+                  duration: 5000
+                });
 
-                  setCurrentChapterKey.then(function(chapterKey: string){
-                    that.currentChapterKey = chapterKey;
-                  });
-                }
-            });
-            modal.present();
-        }
-        // this.fileInput = document.getElementById("fileInput").dir;
-        // console.log(this.fileInput);
+                toast.present();
+              }
+            }
+          }
+        ]
+      });
+
+      alert.present();
     }
     updateNoteText(){
         let that = this;
