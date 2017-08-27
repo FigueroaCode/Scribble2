@@ -30,7 +30,7 @@ export class NotesPage {
     getFirstChapterKey: Promise<any>;
     getFirebase: Promise<any>;
     dropDownTitle: string;
-
+    chosenFileName: string;
 
     constructor(public navCtrl: NavController, public firebaseService: FirebaseService,
     public authService: AuthService, public alertCtrl: AlertController,
@@ -74,6 +74,8 @@ export class NotesPage {
                 that.setNoteText(noteText);
             });
         });
+
+        this.chosenFileName = "IMPORT TEXT FILE";
 
     }
 
@@ -169,9 +171,22 @@ export class NotesPage {
       document.getElementById("chapterDropdown").classList.toggle("show");
     }
 
+    filterFileName(fileURL: string){
+      let fileName = "";
+      let initialPoint = 0;
+      for( let i = 0; i < fileURL.length; i++){
+        if(fileURL[i] == '/' || fileURL[i] == '\\'){
+          initialPoint = i+1;
+        }
+      }
+      fileName = fileURL.substring(initialPoint);
+      return fileName;
+    }
+
     readSingleFile() {
       let that = this;
       var file = this.fileInput.nativeElement.files[0];
+      this.chosenFileName = this.filterFileName(this.fileInput.nativeElement.value);
       if (!file) {
         return;
       }

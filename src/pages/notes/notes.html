@@ -82,10 +82,12 @@
             </ion-col>
             <ion-col>
               <div id="inputOuterField">
-                <div id="fakeInput">
-                  <input readonly>
-                  <ion-icon name="ios-folder-outline"></ion-icon>
-                </div>
+                <button id="fakeInput" ion-button>
+                  <ion-row row-xs-12 row-sm-12 row-md-3 row-lg-3>
+                    <ion-input max="25" id="ionTextInput" readonly type="text" value="{{this.chosenFileName}}"></ion-input>
+                    <ion-icon id="fileIcon" name="ios-folder-outline"></ion-icon>
+                  </ion-row>
+                </button>
                 <input id="fileInput" type="file" #fileInput (change)="readSingleFile()">
               </div>
             </ion-col>

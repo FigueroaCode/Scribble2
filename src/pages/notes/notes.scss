@@ -2,14 +2,29 @@
   border: solid 1px black;
 }
 
+#fileIcon {
+  position: absolute;
+  left: 90%;
+  top: 10px;
+}
+
+#ionTextInput {
+  position: absolute;
+  left: 25%;
+  top: -3px;
+}
+
 #inputOuterField {
   position: relative;
 }
 
 #fakeInput {
   position: absolute;
-  top: 10px;
+  top: 0px;
   z-index: -1;
+  width: 100%;
+  background-color: map-get($colors,primary);
+  color: map-get($colors,light);
 }
 
 #fileInput {
