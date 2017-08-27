@@ -90,6 +90,7 @@ export class NotesPage {
             let info = {'key': this.courseKey};
             let modal = this.modalCtrl.create(CreateChapterPage, info);
             //Get back the course created
+            console.log(modal);
             modal.onDidDismiss(data => {
                 if(data != null){
                 }

@@ -25,7 +25,6 @@ export class CreateChapterPage{
         this.createChapter = formBuilder.group({
             chapterName: ['', Validators.required],
         });
-
         //check that user exists
         if(this.authService.getFireAuth().currentUser)
             this.displayName = this.authService.getFireAuth().currentUser.displayName;
@@ -35,7 +34,6 @@ export class CreateChapterPage{
 
     createAChapter(){
         //Make sure all the fields are not empty
-
         if(this.displayName != null && this.createChapter.value.chapterName != null && this.createChapter.value.chapterName != '' ){
                 let newChapter= new Chapter(this.createChapter.value.chapterName,
                      new PublicNote(' ',new Date().toString()),
