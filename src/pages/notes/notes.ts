@@ -75,6 +75,7 @@ export class NotesPage {
             });
         });
 
+        this.dropDownTitle = "No Chapters Exist";
         this.chosenFileName = "IMPORT TEXT FILE";
 
     }
@@ -136,9 +137,10 @@ export class NotesPage {
         }
     }
 
-    showNote(chapterKey){
+    showNote(chapterKey, chapterName){
         this.currentChapterKey = chapterKey;
         this.updateNoteText();
+        this.dropDownTitle = chapterName;
     }
 
     saveNote(){
@@ -196,6 +198,21 @@ export class NotesPage {
         that.text = contents.result;
       };
       reader.readAsText(file);
+    }
+
+    prepareMerge(){
+      if((this.currentChapterKey == null || this.currentChapterKey == '') && this.courseKey != null && (this.text != null || this.text != '')){
+          //needs to be done in order for the promise to recognize which object 'this' is referring to
+          let that = this;
+          this.getFirstChapterKey.then(function(firstKey){
+              //default chapter is the first one
+              that.firebaseService.saveNotes(that.courseKey,firstKey, that.text, true);
+              that.firebaseService.saveNotes(that.courseKey,firstKey, that.text, false);
+          });
+      }else if(this.courseKey != null && (this.text != null || this.text != '') && this.currentChapterKey != ''){
+          this.firebaseService.saveNotes(this.courseKey,this.currentChapterKey, this.text, true);
+          this.firebaseService.saveNotes(this.courseKey,this.currentChapterKey, this.text, false);
+      }
     }
 
 }

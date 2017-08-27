@@ -24,7 +24,7 @@ export class Chapter {
     getName(){
         return this.name;
     }
-
+    
     setName(newName: string){
         this.name = newName;
     }

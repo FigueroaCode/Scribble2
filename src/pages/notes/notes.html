@@ -28,17 +28,17 @@
                   <h1 style="margin-top: 6px">Chapter: </h1>
                 </ion-col>
                 <ion-col>
-                  <button ion-button (click)="toggleDropDown()" class="dropbutton">{{dropDownTitle}}</button>
+                  <button ion-button (click)="toggleDropDown()" class="dropbutton">{{this.dropDownTitle}}</button>
                   <div id="chapterDropdown" class="chapter-dropdown-content">
-                    <button (click)="showNote(chapter.$key)" color="danger" ion-button full *ngFor="let chapter of chapters | async">
+                    <button (click)="showNote(chapter.$key, chapter.name)" color="danger" ion-button full *ngFor="let chapter of chapters | async">
                         {{ chapter.name }}
                     </button>
                   </div>
                 </ion-col>
               </ion-row>
             </div>
-            <ion-col>
-              <button ion-button full (click)="createChapter()">Create Chapter</button>
+            <ion-col col-xs-12 col-sm-12 col-md-3 col-lg-3>
+              <button ion-button full (click)="createChapter()">CREATE CHAPTER</button>
             </ion-col>
           </ion-row>
           <ion-row row-xs-12 row-sm-12 row-md-12 row-lg-12>
@@ -65,9 +65,9 @@
                   <h1 style="margin-top: 6px">Chapter: </h1>
                 </ion-col>
                 <ion-col>
-                  <button ion-button (click)="toggleDropDown()" class="dropbutton">{{dropDownTitle}}</button>
+                  <button ion-button (click)="toggleDropDown()" class="dropbutton">{{this.dropDownTitle}}</button>
                   <div id="chapterDropdown" class="chapter-dropdown-content">
-                    <button (click)="showNote(chapter.$key)" color="danger" ion-button full *ngFor="let chapter of chapters | async">
+                    <button (click)="showNote(chapter.$key, chapter.name)" color="danger" ion-button full *ngFor="let chapter of chapters | async">
                         {{ chapter.name }}
                     </button>
                   </div>
@@ -75,10 +75,13 @@
               </ion-row>
             </div>
             <ion-col>
-              <button ion-button full (click)="createChapter()">Create Chapter</button>
+              <button ion-button full (click)="createChapter()">CREATE CHAPTER</button>
             </ion-col>
             <ion-col>
-              <button ion-button full (click)="saveNote()">Save Changes</button>
+              <button ion-button full (click)="saveNote()">SAVE CHANGES</button>
+            </ion-col>
+            <ion-col>
+              <button ion-button full (click)="prepareMerge()">SUBMIT CHANGES TO PUBLIC NOTE</button>
             </ion-col>
             <ion-col>
               <div id="inputOuterField">
