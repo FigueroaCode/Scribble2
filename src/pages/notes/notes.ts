@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { NavController, AlertController, NavParams, ModalController } from 'ionic-angular';
 import { FirebaseService } from '../../providers/firebase-service';
 import { FirebaseListObservable } from 'angularfire2/database';
@@ -18,6 +18,7 @@ import { Chapter } from '../../models/chapter';
 })
 
 export class NotesPage {
+    @ViewChild("fileInput") fileInput;
     chapters: FirebaseListObservable<any[]>;
     displayName: string;
     text: string;
@@ -165,6 +166,20 @@ export class NotesPage {
 
     toggleDropDown() {
       document.getElementById("chapterDropdown").classList.toggle("show");
+    }
+
+    readSingleFile() {
+      let that = this;
+      var file = this.fileInput.nativeElement.files[0];
+      if (!file) {
+        return;
+      }
+      var reader = new FileReader();
+      reader.onload = function(e) {
+        let contents = e.target as FileReader;
+        that.text = contents.result;
+      };
+      reader.readAsText(file);
     }
 
 }
