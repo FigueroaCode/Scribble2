@@ -7,28 +7,27 @@
 <ion-content class="background">
     <ion-grid>
       <ion-row>
-        <h1>Search Criteria</h1>
+        <ion-col col-2>
+          <h1>Search Criteria</h1>
+        </ion-col>
+        <ion-col col-10 align="right">
+          <button ion-button (click)="clearFilters()">Clear Filters</button>
+        </ion-col>
       </ion-row>
       <ion-row>
-        <!-- Drop down menu for type of search -->
-        <div class="dropdown">
-          <button ion-button icon-right class="dropdown-button">
-            Choose Search Filter
-            <ion-icon name="ios-arrow-down"></ion-icon>
-          </button>
-          <div class="dropdown-content">
-            <button ion-button (click)="chooseFilter('title')">Course Name</button>
-            <button ion-button (click)="chooseFilter('courseID')">Course ID</button>
-            <button ion-button (click)="chooseFilter('professor')">Professor</button>
-            <button ion-button (click)="chooseFilter('university')">University</button>
-          </div>
-        </div>
-        <!-- Search Bar -->
-        <ion-item>
-          <ion-input placeholder="Searching courses by: {{filterType}}" [(ngModel)]="searchbarInput" (change)="applyFilters(searchbarInput)" type="text"></ion-input>
-        </ion-item>
+        <ion-col>
+            <ion-input id="courseTitle" [(ngModel)]="courseTitle" placeholder="Course Title" (change)="updateFilter()" type="text"></ion-input>
+        </ion-col>
+        <ion-col>
+            <ion-input id="courseID" [(ngModel)]="courseID" placeholder="Course ID" (change)="updateFilter()" type="text"></ion-input>
+        </ion-col>
+        <ion-col>
+            <ion-input id="professor" [(ngModel)]="professor" placeholder="Professor" (change)="updateFilter()" type="text"></ion-input>
+        </ion-col>
+        <ion-col>
+            <ion-input id="university" [(ngModel)]="university" placeholder="University" (change)="updateFilter()" type="text"></ion-input>
+        </ion-col>
       </ion-row>
-
       <!-- Course list -->
       <ion-row>
         <h1>Course List</h1>

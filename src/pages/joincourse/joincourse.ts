@@ -11,15 +11,17 @@ import { AuthService } from '../../providers/auth-service';
 
 export class JoinCoursePage {
     courses: Array<any>;
-    filterType: string;
-    filterText: string;
+    unfilteredCourses: Array<any>;
     displayName: string;
+
+    courseTitle: string = "";
+    courseID: string = "";
+    professor: string = "";
+    university: string = "";
+
 
     constructor(public navCtrl: NavController, public firebaseService: FirebaseService,
         public authService: AuthService, public alertCtrl: AlertController) {
-        this.filterType = "";
-        this.filterText = "";
-
         //check that user exists
         if(this.authService.getFireAuth().currentUser)
             this.displayName = this.authService.getFireAuth().currentUser.displayName;
@@ -31,37 +33,52 @@ export class JoinCoursePage {
       if(this.displayName !=  undefined){
         let that = this;
         this.firebaseService.getFirebaseAsArray(this.displayName).then(function(excludedCourses){
-          that.courses = excludedCourses as any[];
+          that.unfilteredCourses = excludedCourses as any[];
+          that.courses = that.unfilteredCourses;
         });
       }
     }
 
-    //Filter Items for course list.
-    chooseFilter(target: string) {
-      this.filterType = target;
+    // ---- Filter Handling ---- //
+    updateFilter(){
+      let that = this;
+      //if all the filters are empty show all the courses
+      if(this.courseTitle.trim() == "" && this.courseID.trim() == ""
+        && this.professor.trim() == "" && this.university.trim() == ""){
+          this.initializeList();
+      }else{
+        //filter courses according to criteria
+        this.courses = this.unfilteredCourses.filter(function(course){
+          //add up all the filters into one string
+          let compositeFilter = that.courseTitle.trim() + that.courseID.trim() + that.professor.trim() + that.university.trim();
+          let courseComposite = "";
+          //Add up the courses properties in the same order, ignoring that filters that were empty
+          if(that.courseTitle.trim() != "")
+            courseComposite += course.title;
+          if(that.courseID.trim() != "")
+            courseComposite += course.courseID;
+          if(that.professor.trim() != "")
+            courseComposite += course.professor;
+          if(that.university.trim() != "")
+            courseComposite += course.university;
+          //check if the strings match
+          if(courseComposite == compositeFilter)
+            return true;
+          else
+            return false;
+        });
+      }
     }
 
-    applyFilters(target: string){
-      this.filterText = target;
-      //A filter type must be selected in order to filter the course list.
-      // if(this.filterType != ''){
-      //   //Apply the filter to the DB
-      //   if (this.filterText && this.filterText.trim() != '') {
-      //       this.courses = this.firebaseService.getDB().list('/courses', {
-      //           query:
-      //           {
-      //               orderByChild: this.filterType,
-      //               equalTo: this.filterText
-      //
-      //           }
-      //       });
-      //   }else{
-      //     this.courses = this.firebaseService.getDB().list('/courses');
-      //   }
-      // }else{
-      //   this.courses = this.firebaseService.getDB().list('/courses');
-      // }
+    clearFilters(){
+      this.courseTitle = "";
+      this.courseID = "";
+      this.professor = "";
+      this.university = "";
+
+      this.initializeList();
     }
+    // ---- End of Filter Handling ---- //
 
     //Joining a course
     joinCourse(courseKey, courseOwner){

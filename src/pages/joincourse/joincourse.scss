@@ -2,6 +2,19 @@
   background-color: map-get($colors, danger);
 }
 
+#courseTitle{
+  background-color: map-get($colors, light);
+}
+#courseID{
+  background-color: map-get($colors, light);
+}
+#professor{
+  background-color: map-get($colors, light);
+}
+#university{
+  background-color: map-get($colors, light);
+}
+
 /* Dropdown Button */
 .dropdown-button {
   padding: 16px;
