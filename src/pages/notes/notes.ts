@@ -28,7 +28,7 @@ export class NotesPage {
     getFirstChapterKey: Promise<any>;
     getFirebase: Promise<any>;
     dropDownTitle: string;
-
+    chosenFileName: string;
 
     constructor(public navCtrl: NavController, public firebaseService: FirebaseService,
     public authService: AuthService, public alertCtrl: AlertController, public toastCtrl: ToastController,
@@ -72,6 +72,9 @@ export class NotesPage {
                 that.setNoteText(noteText);
             });
         });
+
+        this.dropDownTitle = "No Chapters Exist";
+        this.chosenFileName = "IMPORT TEXT FILE";
 
     }
 
@@ -143,9 +146,10 @@ export class NotesPage {
         }
     }
 
-    showNote(chapterKey){
+    showNote(chapterKey, chapterName){
         this.currentChapterKey = chapterKey;
         this.updateNoteText();
+        this.dropDownTitle = chapterName;
     }
 
     saveNote(){
@@ -178,9 +182,22 @@ export class NotesPage {
       document.getElementById("chapterDropdown").classList.toggle("show");
     }
 
+    filterFileName(fileURL: string){
+      let fileName = "";
+      let initialPoint = 0;
+      for( let i = 0; i < fileURL.length; i++){
+        if(fileURL[i] == '/' || fileURL[i] == '\\'){
+          initialPoint = i+1;
+        }
+      }
+      fileName = fileURL.substring(initialPoint);
+      return fileName;
+    }
+
     readSingleFile() {
       let that = this;
       var file = this.fileInput.nativeElement.files[0];
+      this.chosenFileName = this.filterFileName(this.fileInput.nativeElement.value);
       if (!file) {
         return;
       }
@@ -190,6 +207,21 @@ export class NotesPage {
         that.text = contents.result;
       };
       reader.readAsText(file);
+    }
+
+    prepareMerge(){
+      if((this.currentChapterKey == null || this.currentChapterKey == '') && this.courseKey != null && (this.text != null || this.text != '')){
+          //needs to be done in order for the promise to recognize which object 'this' is referring to
+          let that = this;
+          this.getFirstChapterKey.then(function(firstKey){
+              //default chapter is the first one
+              that.firebaseService.saveNotes(that.courseKey,firstKey, that.text, true);
+              that.firebaseService.saveNotes(that.courseKey,firstKey, that.text, false);
+          });
+      }else if(this.courseKey != null && (this.text != null || this.text != '') && this.currentChapterKey != ''){
+          this.firebaseService.saveNotes(this.courseKey,this.currentChapterKey, this.text, true);
+          this.firebaseService.saveNotes(this.courseKey,this.currentChapterKey, this.text, false);
+      }
     }
 
 }
