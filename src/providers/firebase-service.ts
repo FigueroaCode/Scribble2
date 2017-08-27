@@ -200,7 +200,7 @@ export class FirebaseService {
                 //find the current course that is to be added to the pending user
                 if(child.val().key == courseID){
                   //add that course to his/her courses
-                  that.fireDB.list('/Users/'+userID+'/courses/').push(child.val());
+                  that.fireDB.database.ref('/Users/'+userID+'/courses/'+child.val().key).set(child.val());
                 }
               });
 
