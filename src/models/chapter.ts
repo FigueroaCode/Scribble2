@@ -1,63 +1,39 @@
-import { PrivateNote } from './private_note';
-import { PublicNote } from './public_note';
-
 export class Chapter {
 
-    name: string;
-    privateNote: PrivateNote;
-    publicNote: PublicNote;
+    chapterName: string;
+    publicNoteText: string;
+    dateUpdated: string;
 
-
-    constructor(name: string, publicNote: PublicNote, privateNote: PrivateNote){
-        this.name = name;
-        this.publicNote = publicNote;
-        this.privateNote = privateNote;
+    constructor(name: string, publicNoteText: string, dateUpdated: string){
+        this.chapterName = name;
+        this.publicNoteText = publicNoteText;
+        this.dateUpdated = dateUpdated;
     }
 
-    getPrivateNote(){
-        return this.privateNote;
-    }
-    getPublicNote(){
-        return this.publicNote;
-    }
-
+    //Getters
     getName(){
-        return this.name;
+        return this.chapterName;
     }
-    
+
+    getPublicNoteText(){
+      return this.publicNoteText;
+    }
+
+    getDate(){
+      return this.dateUpdated;
+    }
+
+    //Setters
     setName(newName: string){
-        this.name = newName;
+        this.chapterName = newName;
     }
 
-    setPrivateNote(tempNote: PrivateNote){
-      this.privateNote = tempNote;
+    setPublicNoteText(text: string){
+      this.publicNoteText = text;
     }
 
-    setPublicNote(tempNote: PublicNote){
-      this.publicNote = tempNote;
-    }
-
-    //Find the differences between two Note object's texts.
-    //Create Change objects for each difference.
-    findDifferences(tempNote: PrivateNote)
-    {
-
-    }
-
-    //Compares the words of one sentence to those of another, taking synonyms into
-    //consideration.
-    compareSentences(sentence1: Array<string>, sentence2: Array<string>){
-
-    }
-
-    //Compare two words, return true if they are synonymous.
-    isSynonym(word1: string, word2: string){
-
-    }
-
-    //Automates the intermerging of sentences between two Note objects.
-    mergeNotes(){
-
+    setDateUpdated(date: string){
+      this.dateUpdated = date;
     }
 
 }

@@ -1,6 +1,4 @@
 import { Chapter } from './chapter';
-import { PrivateNote } from './private_note';
-import { PublicNote } from './public_note';
 
 export class Change {
 
