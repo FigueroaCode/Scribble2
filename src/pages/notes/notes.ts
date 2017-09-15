@@ -17,6 +17,7 @@ import { MergeHandler } from '../../models/mergeHandler';
 export class NotesPage {
     @ViewChild("fileInput") fileInput;
     chapters: FirebaseListObservable<any[]>;
+    changeLog: FirebaseListObservable<any[]>;
     displayName: string;
     publicText: string;
     privateText: string;
@@ -80,6 +81,21 @@ export class NotesPage {
         this.dropDownTitle = "No Chapters Exist";
         this.chosenFileName = "IMPORT TEXT FILE";
 
+        this.initializeChangeLog();
+
+    }
+
+    initializeChangeLog(){
+      let that = this;
+      if((this.currentChapterKey == null || this.currentChapterKey == '') && this.courseKey != null && this.privateText != null){
+          //needs to be done in order for the promise to recognize which object 'this' is referring
+          this.getFirstChapterKey.then(function(firstKey){
+              //default chapter is the first one
+              that.changeLog = that.firebaseService.getChangeLog(firstKey);
+          });
+      }else if(this.courseKey != null && this.privateText != null && this.currentChapterKey != ''){
+        this.changeLog = this.firebaseService.getChangeLog(this.currentChapterKey);
+      }
     }
 
     initializeChapters(){

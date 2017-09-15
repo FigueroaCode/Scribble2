@@ -7,6 +7,7 @@ import { FirebaseListObservable } from 'angularfire2/database';
 
 import { Course } from '../models/course';
 import { Chapter } from '../models/chapter';
+import { Change } from '../models/change';
 
 @Injectable()
 export class FirebaseService {
@@ -83,6 +84,10 @@ export class FirebaseService {
       return textPromise;
   }
 
+  getChangeLog(chapterKey: string){
+    return this.fireDB.list('/ChangeLog/'+chapterKey);
+  }
+
   getFirebaseAsArray(username: string){
     let that = this;
     //get the users current courses
@@ -156,6 +161,13 @@ export class FirebaseService {
      //create private note for the user for that chapter
      //private note has an owner, text, and dateUpdated property
      this.fireDB.list('/PrivateNotes/'+chapterKey).push(privateNote);
+  }
+
+  addChange(chapterKey: string, change: Change){
+    //add a change to the changelog for this chapters log
+    let key = this.fireDB.list('/ChangeLog/'+chapterKey).push(change).key;
+    //save the generated key
+    this.fireDB.database.ref('ChangeLog/'+chapterKey+'/'+key).update({'key': key});
   }
 
   sendJoinRequest(courseKey: string, username: string, owner: string){
