@@ -52,8 +52,27 @@
             <ion-col col-xs-12 col-sm-12 col-md-12 col-lg-3>
               <!-- Change Log -->
               <ion-card style="height: 62vh">
+                <ion-card-header class="bodyText" align="center" id="changeLog-Title">CHANGE LOG</ion-card-header>
                 <ion-list>
-                  <ion-item *ngFor="let change of changeLog | async">{{ change.originalSentence }}</ion-item>
+                  <ion-item text-wrap *ngFor="let change of changeLog | async">
+                    <ion-row>
+                      <ion-col col-xs-2 col-sm-1 col-md-1 col-lg-2 col-xl-2>
+                        <ion-row>
+                          <button id="disapproveBtn"ion-button icon-only><ion-icon name="md-close"></ion-icon></button>
+                        </ion-row>
+                        <ion-row>
+                          <button id="approveBtn" ion-button icon-only><ion-icon name="md-checkmark"></ion-icon></button>
+                        </ion-row>
+                      </ion-col>
+                      <ion-col col-xs-10 col-sm-11 col-md-11 col-lg-10 col-xl-10>
+                        <div *ngIf="change.originalSentence != 'N/A'">
+                          <p id="changeLog"><b>Would you like to replace: </b> {{ change.originalSentence }}</p>
+                          <p id="changeLog"><b>With the following sentence: </b> {{ change.proposedSentence }}</p>
+                        </div>
+                        <p id="changeLog" *ngIf="change.originalSentence == 'N/A'"><b>Would you like to insert the following sentence: </b> {{ change.proposedSentence }}</p>
+                      </ion-col>
+                    </ion-row>
+                  </ion-item>
                 </ion-list>
               </ion-card>
             </ion-col>

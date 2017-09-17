@@ -1,5 +1,25 @@
-#border {
-  border: solid 1px black;
+#changeLog {
+  font-size: 14px;
+  color: black;
+}
+
+#approveBtn {
+  height : 25px;
+  width : 25px;
+  background-color: #007c14;
+}
+
+#disapproveBtn {
+  height : 25px;
+  width : 25px;
+  background-color: #bc0505;
+}
+
+#changeLog-Title {
+  padding-top: 10px;
+  height: 40px;
+  color: map-get($colors, light);
+  background-color: map-get($colors, primary);
 }
 
 #fileIcon {
@@ -41,8 +61,12 @@
 }
 
 /* Show the dropdown menu on hover */
-.chapter-dropdown:hover .chapter-dropdown-content {
+.chapter-dropdown:enabled .chapter-dropdown-content {
     display: block;
+}
+
+.chapter-dropdown:disabled .chapter-dropdown-content {
+    display: none;
 }
 
 /* Dropdown Button */
@@ -75,11 +99,6 @@
     padding: 12px 16px;
     text-decoration: none;
     display: block;
-}
-
-/* Change color of dropdown links on hover */
-.chapter-dropdown-content a:hover {
-  background-color: map-get($colors,primary);
 }
 
 /* Show the dropdown menu */

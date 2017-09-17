@@ -1,16 +1,24 @@
 import { Change } from './change';
+import { FirebaseService } from '../providers/firebase-service';
 
 export class MergeHandler{
 
-  oPrivateNS: Array<Array<string>>; //Original Private Note Sentences
-  oPublicNS: Array<Array<string>>; //Original Public Note Sentences
-  ePrivateNS: Array<Array<string>>; //edited Private Note Sentences
-  ePublicNS: Array<Array<string>>; //edited Public Note Sentences
+  oPrivateNS: Array<Array<string>>; //Original Private Note Sentence-Word Array
+  oPublicNS: Array<Array<string>>; //Original Public Note Sentence-Word Array
+  ePrivateNS: Array<Array<string>>; //edited Private Note Sentence-Word Array
+  ePublicNS: Array<Array<string>>; //edited Public Note Sentence-Word Array
+  publicSentences : Array<string>;
+  privateSentences : Array<string>;
   privateNoteText: string;
   publicNoteText: string;
   changeLog: Array<Change>;
+  similarityCeiling = 80; //Something above this % is too similar to another sentence.
+  similarityFloor = 40; //Something below this % is not similar enough to any sentences.
+  // fireDB : FirebaseService;
 
-  constructor(privateNoteText: string, publicNoteText: string){
+  constructor(privateNoteText: string, publicNoteText: string, chapterKey: string, fireDB: FirebaseService){
+    this.changeLog = Array<Change>();
+
     this.privateNoteText = privateNoteText;
     this.publicNoteText = publicNoteText;
 
@@ -18,6 +26,13 @@ export class MergeHandler{
     this.oPublicNS = this.separateSentences(this.publicNoteText);
     this.ePrivateNS = this.filterSentences(this.oPrivateNS);
     this.ePublicNS = this.filterSentences(this.oPublicNS);
+    this.publicSentences = this.breakIntoSentences(publicNoteText);
+    this.privateSentences = this.breakIntoSentences(privateNoteText);
+    this.findDifferences();
+
+    for(let i = 0; i < this.changeLog.length; i++){
+      fireDB.addChange(chapterKey, this.changeLog[i]);
+    }
   }
 
   getePrivateNS(){
@@ -26,6 +41,28 @@ export class MergeHandler{
 
   getePublicNS(){
     return this.ePublicNS;
+  }
+
+  breakIntoSentences(originalText: string){
+    let sentences = Array<string>();
+    let sentence = "";
+
+    let text = originalText;
+    let length = text.length;
+    if( text[length-1] != "." || text[length-1] != "?" || text[length-1] != "!"){
+      text += ".";
+    }
+
+    for(let index = 0; index < length; index++){
+      if(text[index] != '.' && text[index] != '?' && text[index] != "!"){
+        sentence += text[index];
+      }else{
+        sentences.push(sentence);
+        sentence = "";
+      }
+    }
+
+    return sentences;
   }
 
   //Separate the note's text into an array of string arrays.
@@ -114,7 +151,31 @@ export class MergeHandler{
   //Create Change objects for each difference.
   findDifferences()
   {
+    let highestSimilarity = 0;
+    let indexOfChange = 0;
+    let previousIndexOfChange = 0; //To be honest, the way the previousIndexOfChange is recorded may not be effective and needs testing.
 
+    for(let s1Index = 0; s1Index < this.ePrivateNS.length; s1Index++){
+      let sentence1 = this.ePrivateNS[s1Index];
+      for(let s2Index = 0; s2Index < this.ePublicNS.length; s2Index++){
+        let sentence2 = this.ePublicNS[s2Index];
+        let currentSimiliarity = this.compareSentences(sentence1, sentence2);
+        if( currentSimiliarity > highestSimilarity){
+          highestSimilarity = currentSimiliarity;
+          previousIndexOfChange = indexOfChange;
+          indexOfChange = s2Index;
+        }
+      }
+      if(highestSimilarity < this.similarityCeiling && highestSimilarity > this.similarityFloor){
+        let change = new Change(this.publicSentences[indexOfChange], this.privateSentences[s1Index], indexOfChange, "", 0, 0);
+        this.changeLog.push(change);
+      }else if(highestSimilarity <= this.similarityFloor){
+        //If something has a similarity of ___ % or less, find a proper index for it.
+        let change = new Change("N/A", this.privateSentences[s1Index], previousIndexOfChange, "", 0, 0);
+        this.changeLog.push(change);
+      }
+      highestSimilarity = 0;
+    }
   }//End of Method
 
   //Compares the words of one sentence to those of another, taking synonyms into
@@ -132,7 +193,8 @@ export class MergeHandler{
       let word1 = sentence1[w1Index];
       for(let w2Index = 0; w2Index < sentence2.length; w2Index++){
         let word2 = sentence2[w2Index];
-        if(word1 == word2 || this.isSynonym(word1, word2)){
+        //  || this.isSynonym(word1, word2)  <== This needs to be in the if statement below after the method is implemented correctly.
+        if(word1 == word2){
           similarWordCount++;
         }
       }

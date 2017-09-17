@@ -82,18 +82,17 @@ export class NotesPage {
         this.chosenFileName = "IMPORT TEXT FILE";
 
         this.initializeChangeLog();
-
     }
 
     initializeChangeLog(){
       let that = this;
-      if((this.currentChapterKey == null || this.currentChapterKey == '') && this.courseKey != null && this.privateText != null){
+      if((this.currentChapterKey == null || this.currentChapterKey == '') && this.courseKey != null){
           //needs to be done in order for the promise to recognize which object 'this' is referring
           this.getFirstChapterKey.then(function(firstKey){
               //default chapter is the first one
               that.changeLog = that.firebaseService.getChangeLog(firstKey);
           });
-      }else if(this.courseKey != null && this.privateText != null && this.currentChapterKey != ''){
+      }else if(this.courseKey != null && this.currentChapterKey != ''){
         this.changeLog = this.firebaseService.getChangeLog(this.currentChapterKey);
       }
     }
@@ -186,7 +185,7 @@ export class NotesPage {
             //needs to be done in order for the promise to recognize which object 'this' is referring to
             let that = this;
             this.getFirstChapterKey.then(function(firstKey){
-                //defualt chapter is the first one
+                //default chapter is the first one
                 that.firebaseService.saveNotes(that.displayName,that.courseKey,firstKey, that.privateText, that.inPublicNote);
             });
         }else if(this.courseKey != null && (this.privateText != null || this.privateText != '') && this.currentChapterKey != ''){
@@ -237,20 +236,19 @@ export class NotesPage {
     }
 
     prepareMerge(){
-
-      let mergeHandler = new MergeHandler(this.privateText, this.publicText);
-
-      if((this.currentChapterKey == null || this.currentChapterKey == '') && this.courseKey != null && (this.privateText != null || this.privateText != '')){
+      let that = this;
+      if((this.currentChapterKey == null || this.currentChapterKey == '') && this.courseKey != null && (this.privateText != null && this.privateText != '')){
           //needs to be done in order for the promise to recognize which object 'this' is referring to
-          let that = this;
           this.getFirstChapterKey.then(function(firstKey){
               //default chapter is the first one
-              that.firebaseService.saveNotes(that.displayName, that.courseKey,firstKey, that.privateText, true);
               that.firebaseService.saveNotes(that.displayName, that.courseKey,firstKey, that.privateText, false);
+              let mergeHandler = new MergeHandler(that.privateText, that.publicText,firstKey, that.firebaseService);
+              that.initializeChangeLog();
           });
-      }else if(this.courseKey != null && (this.privateText != null || this.privateText != '') && this.currentChapterKey != ''){
-          this.firebaseService.saveNotes(this.displayName,this.courseKey,this.currentChapterKey, this.privateText, true);
+      }else if(this.courseKey != null && (this.privateText != null && this.privateText != '') && this.currentChapterKey != ''){
           this.firebaseService.saveNotes(this.displayName,this.courseKey,this.currentChapterKey, this.privateText, false);
+          let mergeHandler = new MergeHandler(that.privateText, that.publicText,that.currentChapterKey, this.firebaseService);
+          this.initializeChangeLog();
       }
     }
 
