@@ -19,7 +19,16 @@ export class MergeHandler{
   constructor(privateNoteText: string, publicNoteText: string, chapterKey: string, fireDB: FirebaseService){
     this.changeLog = Array<Change>();
 
+    let text = privateNoteText;
+    if( text[length-1] != "." || text[length-1] != "?" || text[length-1] != "!"){
+      text += ".";
+    }
     this.privateNoteText = privateNoteText;
+
+    text = publicNoteText;
+    if( text[length-1] != "." || text[length-1] != "?" || text[length-1] != "!"){
+      text += ".";
+    }
     this.publicNoteText = publicNoteText;
 
     this.oPrivateNS = this.separateSentences(this.privateNoteText);
@@ -49,9 +58,6 @@ export class MergeHandler{
 
     let text = originalText;
     let length = text.length;
-    if( text[length-1] != "." || text[length-1] != "?" || text[length-1] != "!"){
-      text += ".";
-    }
 
     for(let index = 0; index < length; index++){
       if(text[index] != '.' && text[index] != '?' && text[index] != "!"){

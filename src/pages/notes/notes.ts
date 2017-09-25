@@ -242,13 +242,22 @@ export class NotesPage {
           this.getFirstChapterKey.then(function(firstKey){
               //default chapter is the first one
               that.firebaseService.saveNotes(that.displayName, that.courseKey,firstKey, that.privateText, false);
+              if(that.publicText == null || that.publicText == ''){
+                that.firebaseService.saveNotes(that.displayName,that.courseKey,firstKey, that.privateText, true);
+              }else{
               let mergeHandler = new MergeHandler(that.privateText, that.publicText,firstKey, that.firebaseService);
               that.initializeChangeLog();
+              }
           });
       }else if(this.courseKey != null && (this.privateText != null && this.privateText != '') && this.currentChapterKey != ''){
           this.firebaseService.saveNotes(this.displayName,this.courseKey,this.currentChapterKey, this.privateText, false);
-          let mergeHandler = new MergeHandler(that.privateText, that.publicText,that.currentChapterKey, this.firebaseService);
-          this.initializeChangeLog();
+          if(this.publicText == null || this.publicText == ''){
+            this.firebaseService.saveNotes(this.displayName,this.courseKey,this.currentChapterKey, this.privateText, false);
+          }else{
+            let mergeHandler = new MergeHandler(that.privateText, that.publicText,that.currentChapterKey, this.firebaseService);
+            this.initializeChangeLog();
+          }
+
       }
     }
 
