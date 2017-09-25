@@ -161,6 +161,7 @@ export class FirebaseService {
      //create private note for the user for that chapter
      //private note has an owner, text, and dateUpdated property
      this.fireDB.list('/PrivateNotes/'+chapterKey).push(privateNote);
+     return chapterKey;
   }
 
   addChange(chapterKey: string, change: Change){

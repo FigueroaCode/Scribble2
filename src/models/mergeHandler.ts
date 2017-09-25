@@ -31,6 +31,7 @@ export class MergeHandler{
     this.findDifferences();
 
     for(let i = 0; i < this.changeLog.length; i++){
+      console.log(this.changeLog[i]);
       fireDB.addChange(chapterKey, this.changeLog[i]);
     }
   }

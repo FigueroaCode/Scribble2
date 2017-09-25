@@ -53,7 +53,8 @@
               <!-- Change Log -->
               <ion-card style="height: 62vh">
                 <ion-card-header class="bodyText" align="center" id="changeLog-Title">CHANGE LOG</ion-card-header>
-                <ion-list>
+                <ion-scroll style="width:100%;height:100%" scrollY="true">
+                <ion-list scroll="true">
                   <ion-item text-wrap *ngFor="let change of changeLog | async">
                     <ion-row>
                       <ion-col col-xs-2 col-sm-1 col-md-1 col-lg-2 col-xl-2>
@@ -74,6 +75,7 @@
                     </ion-row>
                   </ion-item>
                 </ion-list>
+                </ion-scroll>
               </ion-card>
             </ion-col>
           </ion-row>

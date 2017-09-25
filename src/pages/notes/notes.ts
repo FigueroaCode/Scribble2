@@ -132,7 +132,13 @@ export class NotesPage {
               if(this.displayName !=null && data.chapterNameInput != ''){
                 let dateCreated = new Date().toString();
                 let newChapter= new Chapter(data.chapterNameInput,"",dateCreated);
-                this.firebaseService.addChapter(newChapter, this.courseKey, {owner: this.displayName, privateNoteText: "", dateUpdated: dateCreated});
+                let chapterKey = this.firebaseService.addChapter(newChapter, this.courseKey, {owner: this.displayName, privateNoteText: "", dateUpdated: dateCreated});
+                //if its the first chapter then set it as the selected one
+                if(this.dropDownTitle == "No Chapters Exist"){
+                  this.currentChapterKey = chapterKey;
+                  this.updateNoteText();
+                  this.dropDownTitle = newChapter.getName();
+                }
               }else{
                 //let the user know later that it wasnt created because they didnt put a field
                 let toast = this.toastCtrl.create({
