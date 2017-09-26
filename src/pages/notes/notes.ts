@@ -86,6 +86,7 @@ export class NotesPage {
 
     initializeChangeLog(){
       let that = this;
+      //TODO: this should be done on another thread later
       if((this.currentChapterKey == null || this.currentChapterKey == '') && this.courseKey != null){
           //needs to be done in order for the promise to recognize which object 'this' is referring
           this.getFirstChapterKey.then(function(firstKey){
@@ -252,7 +253,7 @@ export class NotesPage {
                 that.firebaseService.saveNotes(that.displayName,that.courseKey,firstKey, that.privateText, true);
               }else{
               let mergeHandler = new MergeHandler(that.privateText, that.publicText,firstKey, that.firebaseService);
-              that.initializeChangeLog();
+              //that.initializeChangeLog();
               }
           });
       }else if(this.courseKey != null && (this.privateText != null && this.privateText != '') && this.currentChapterKey != ''){
@@ -261,7 +262,7 @@ export class NotesPage {
             this.firebaseService.saveNotes(this.displayName,this.courseKey,this.currentChapterKey, this.privateText, false);
           }else{
             let mergeHandler = new MergeHandler(that.privateText, that.publicText,that.currentChapterKey, this.firebaseService);
-            this.initializeChangeLog();
+            //this.initializeChangeLog();
           }
 
       }
