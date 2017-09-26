@@ -69,16 +69,17 @@ export class FirebaseService {
               });
           }else{
             //is Private
-            let privateNote = that.fireDB.list('/PrivateNotes/'+chapterKey, {
-              query: {
-                orderByChild: 'owner',
-                equalTo: owner
-              }
-            });
-
-            privateNote.forEach(function(note){
-              resolve(note[0].privateNoteText);
-            });
+            //get just the notes for this owner
+              that.fireDB.database.ref('/PrivateNotes/'+chapterKey).orderByChild('owner').equalTo(owner).once('value').then(function(snapshot){
+                if(snapshot != undefined){
+                  snapshot.forEach(function(child){
+                      resolve(child.val().privateNoteText);
+                  });
+                }else{
+                  //create a private note for this user if it doesnt exist
+                  that.fireDB.list('/PrivateNotes/'+chapterKey).push({'owner': owner, 'privateNoteText': '', 'dateUpdated': new Date().toString()});
+                }
+              });
           }
       });
       return textPromise;
@@ -243,18 +244,17 @@ export class FirebaseService {
     if(isPublic){
         this.fireDB.database.ref().child('/courseChapters/'+courseKey+'/'+chapterKey).child('publicNoteText').set(text);
     }else{
-        let privateNote = this.fireDB.list('/PrivateNotes/'+chapterKey, {
-          query: {
-            orderByChild: 'owner',
-            equalTo: owner
-          }
-        });
-        let that = this;
-        //set the text
-        privateNote.forEach(function(note){
-          let noteKey = note[0].$key;
-          if(text != undefined && text != null && text != ""){
-            that.fireDB.database.ref('/PrivateNotes/'+chapterKey+'/'+noteKey+'/privateNoteText').set(text);
+      let that = this;
+      //get just the notes for this owner
+        this.fireDB.database.ref('/PrivateNotes/'+chapterKey).orderByChild('owner').limitToLast(1).once('value').then(function(snapshot){
+          if(snapshot != undefined){
+            let noteKey = Object.keys(snapshot.val())[0];
+            if(text != undefined && text != null && text != "" && noteKey != null && noteKey != undefined){
+              that.fireDB.database.ref('/PrivateNotes/'+chapterKey+'/'+noteKey+'/privateNoteText').set(text);
+            }
+          }else{
+            //create a private note for this user if it doesnt exist
+            that.fireDB.list('/PrivateNotes/'+chapterKey).push({'owner': owner, 'privateNoteText': '', 'dateUpdated': new Date().toString()});
           }
         });
     }
