@@ -1,6 +1,6 @@
 {
   "name": "Scribble",
-  "app_id": "",
+  "app_id": "15556c7b",
   "gulpStartupTasks": [
     "sass",
     "watch"
