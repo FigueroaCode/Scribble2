@@ -80,6 +80,14 @@
     cursor: pointer;
 }
 
+.chapter-dropdown:hover .chapter-dropdown-content{
+  display: block;
+}
+
+.chapter-dropdown-content .ion-button:hover{
+  //$button-md-background-color-hover: map-get($colors, primary);
+}
+
 /* Dropdown Content (Hidden by Default) */
 .chapter-dropdown-content {
     display: none;
