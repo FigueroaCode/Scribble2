@@ -71,7 +71,7 @@ export class FirebaseService {
             //is Private
             //get just the notes for this owner
               that.fireDB.database.ref('/PrivateNotes/'+chapterKey).orderByChild('owner').equalTo(owner).once('value').then(function(snapshot){
-                if(snapshot != undefined){
+                if(snapshot.val() != undefined && snapshot.val() != null){
                   snapshot.forEach(function(child){
                       resolve(child.val().privateNoteText);
                   });
@@ -247,7 +247,7 @@ export class FirebaseService {
       let that = this;
       //get just the notes for this owner
         this.fireDB.database.ref('/PrivateNotes/'+chapterKey).orderByChild('owner').limitToLast(1).once('value').then(function(snapshot){
-          if(snapshot != undefined){
+          if(snapshot.val() != undefined && snapshot.val() != null){
             let noteKey = Object.keys(snapshot.val())[0];
             if(text != undefined && text != null && text != "" && noteKey != null && noteKey != undefined){
               that.fireDB.database.ref('/PrivateNotes/'+chapterKey+'/'+noteKey+'/privateNoteText').set(text);

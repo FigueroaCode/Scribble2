@@ -175,8 +175,10 @@ export class NotesPage {
             .then(function(noteText){
               if(that.inPublicNote)
                 that.setPublicNoteText(noteText);
-              else
+              else{
+                console.log('private', noteText);
                 that.setPrivateNoteText(noteText);
+              }
             });
         }
     }
