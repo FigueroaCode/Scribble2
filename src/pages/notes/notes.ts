@@ -175,8 +175,10 @@ export class NotesPage {
             .then(function(noteText){
               if(that.inPublicNote)
                 that.setPublicNoteText(noteText);
-              else
+              else{
+                console.log('private', noteText);
                 that.setPrivateNoteText(noteText);
+              }
             });
         }
     }
@@ -259,7 +261,7 @@ export class NotesPage {
       }else if(this.courseKey != null && (this.privateText != null && this.privateText != '') && this.currentChapterKey != ''){
           this.firebaseService.saveNotes(this.displayName,this.courseKey,this.currentChapterKey, this.privateText, false);
           if(this.publicText == null || this.publicText == ''){
-            this.firebaseService.saveNotes(this.displayName,this.courseKey,this.currentChapterKey, this.privateText, false);
+            this.firebaseService.saveNotes(this.displayName,this.courseKey,this.currentChapterKey, this.privateText, true);
           }else{
             let mergeHandler = new MergeHandler(that.privateText, that.publicText,that.currentChapterKey, this.firebaseService);
             //this.initializeChangeLog();
