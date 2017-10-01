@@ -250,19 +250,19 @@ export class NotesPage {
               //default chapter is the first one
               that.firebaseService.saveNotes(that.displayName, that.courseKey,firstKey, that.privateText, false);
               if(that.publicText == null || that.publicText == ''){
+                console.log('test',that.privateText);
                 that.firebaseService.saveNotes(that.displayName,that.courseKey,firstKey, that.privateText, true);
               }else{
-              let mergeHandler = new MergeHandler(that.privateText, that.publicText,firstKey, that.firebaseService);
-              //that.initializeChangeLog();
+                console.log('test2',that.privateText);
+                let mergeHandler = new MergeHandler(that.privateText, that.publicText,firstKey, that.firebaseService);
               }
           });
       }else if(this.courseKey != null && (this.privateText != null && this.privateText != '') && this.currentChapterKey != ''){
           this.firebaseService.saveNotes(this.displayName,this.courseKey,this.currentChapterKey, this.privateText, false);
           if(this.publicText == null || this.publicText == ''){
-            this.firebaseService.saveNotes(this.displayName,this.courseKey,this.currentChapterKey, this.privateText, false);
+            this.firebaseService.saveNotes(this.displayName,this.courseKey,this.currentChapterKey, this.privateText, true);
           }else{
             let mergeHandler = new MergeHandler(that.privateText, that.publicText,that.currentChapterKey, this.firebaseService);
-            //this.initializeChangeLog();
           }
 
       }

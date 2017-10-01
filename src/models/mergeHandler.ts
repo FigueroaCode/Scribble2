@@ -20,16 +20,16 @@ export class MergeHandler{
     this.changeLog = Array<Change>();
 
     let text = privateNoteText;
-    if( text[length-1] != "." || text[length-1] != "?" || text[length-1] != "!"){
+    if( text[length-1] != "." && text[length-1] != "?" && text[length-1] != "!"){
       text += ".";
     }
-    this.privateNoteText = privateNoteText;
+    this.privateNoteText = text;
 
     text = publicNoteText;
-    if( text[length-1] != "." || text[length-1] != "?" || text[length-1] != "!"){
+    if( text[length-1] != "." && text[length-1] != "?" && text[length-1] != "!"){
       text += ".";
     }
-    this.publicNoteText = publicNoteText;
+    this.publicNoteText = text;
 
     this.oPrivateNS = this.separateSentences(this.privateNoteText);
     this.oPublicNS = this.separateSentences(this.publicNoteText);
