@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
 import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
-import { AngularFireDatabase } from 'angularfire2/database';
-import { FirebaseListObservable } from 'angularfire2/database';
+import { AngularFireModule } from 'angularfire2';
+import { AngularFireDatabaseModule, AngularFireDatabase, FirebaseListObservable } from 'angularfire2/database';
 
 import { Course } from '../models/course';
 import { Chapter } from '../models/chapter';
@@ -23,7 +23,7 @@ export class FirebaseService {
   getCurrentUserID(displayName: string){
       let that = this;
       let userIDPromise = new Promise(function(resolve, reject){
-        that.fireDB.database.ref('/Users/').once('value').then(function(snapshot){
+        that.fireDB.object('/Users/').$ref.once('value').then(function(snapshot){
           snapshot.forEach(function(child){
             if(displayName == child.val().name){
               resolve(child.key);
@@ -63,14 +63,14 @@ export class FirebaseService {
       let that = this;
       let textPromise = new Promise(function(resolve, reject){
           if(isPublic){
-              that.fireDB.database.ref('/courseChapters/'+courseKey+'/'+chapterKey).once('value')
+              that.fireDB.object('/courseChapters/'+courseKey+'/'+chapterKey).$ref.once('value')
               .then(function(snapshot){
                   resolve(snapshot.val().publicNoteText);
               });
           }else{
             //is Private
             //get just the notes for this owner
-              that.fireDB.database.ref('/PrivateNotes/'+chapterKey).orderByChild('owner').equalTo(owner).once('value').then(function(snapshot){
+              that.fireDB.object('/PrivateNotes/'+chapterKey).$ref.orderByChild('owner').equalTo(owner).once('value').then(function(snapshot){
                 if(snapshot.val() != undefined && snapshot.val() != null){
                   snapshot.forEach(function(child){
                       resolve(child.val().privateNoteText);
@@ -142,18 +142,18 @@ export class FirebaseService {
       //add a course object to the database
 
     let key = this.fireDB.list('/courses/').push(course).key;
-    this.fireDB.database.ref('/courses/'+key).update({'key': key});
+    this.fireDB.object('/courses/'+key).$ref.update({'key': key});
 
     //Make Dir for holding course chapter
-    this.fireDB.database.ref('/courseChapters/'+key).set('');
+    this.fireDB.object('/courseChapters/'+key).$ref.set('');
 
     //Add the course to the list of courses the user is in
-    this.fireDB.database.ref('/Users/'+currentUserID+'/courses/'+key).set(course);
-    this.fireDB.database.ref('/Users/'+currentUserID+'/courses/'+key).update({'key': key});
+    this.fireDB.object('/Users/'+currentUserID+'/courses/'+key).$ref.set(course);
+    this.fireDB.object('/Users/'+currentUserID+'/courses/'+key).$ref.update({'key': key});
     //this.fireDB.database.ref('/courseMembers/'+key).push({'name': course.getOwner()});
 
     //Make Dir for holding course requests
-    this.fireDB.database.ref('/courseJoinRequest/'+key).set('');
+    this.fireDB.object('/courseJoinRequest/'+key).$ref.set('');
   }
 
   addChapter(chapter: Chapter, courseKey: string, privateNote){
@@ -169,17 +169,17 @@ export class FirebaseService {
     //add a change to the changelog for this chapters log
     let key = this.fireDB.list('/ChangeLog/'+chapterKey).push(change).key;
     //save the generated key
-    this.fireDB.database.ref('ChangeLog/'+chapterKey+'/'+key).update({'key': key});
+    this.fireDB.object('ChangeLog/'+chapterKey+'/'+key).$ref.update({'key': key});
   }
 
   sendJoinRequest(courseKey: string, username: string, owner: string){
       let that = this;
-      this.fireDB.database.ref('/courses/'+courseKey).once('value').then(function(snapshot){
+      this.fireDB.object('/courses/'+courseKey).$ref.once('value').then(function(snapshot){
           let currentCount = snapshot.val().requestCounter;
           let ownerName = snapshot.val().owner;
           //check to see if person already exists and they arent the owner
           if(ownerName != username){
-              that.fireDB.database.ref('/courseJoinRequest/'+courseKey).once('value').then(function(snapshot2){
+              that.fireDB.object('/courseJoinRequest/'+courseKey).$ref.once('value').then(function(snapshot2){
                   let exist = false;
 
                   snapshot2.forEach(function(child){
@@ -192,9 +192,9 @@ export class FirebaseService {
                       //increase request count
                       currentCount++;
                       //update the course
-                      that.fireDB.database.ref('/courses/'+courseKey+'/requestCounter/').set(currentCount);
+                      that.fireDB.object('/courses/'+courseKey+'/requestCounter/').$ref.set(currentCount);
                       that.getCurrentUserID(owner).then(function(userID){
-                        that.fireDB.database.ref('/Users/'+userID+'/courses/'+courseKey+'/requestCounter/').set(currentCount);
+                        that.fireDB.object('/Users/'+userID+'/courses/'+courseKey+'/requestCounter/').$ref.set(currentCount);
                       });
 
                       that.fireDB.list('/courseJoinRequest/'+courseKey).push({'name': username});
@@ -209,7 +209,7 @@ export class FirebaseService {
       let that = this;
       //check that they arent already in the course, check that they arent the owner
       this.getCurrentUserID(username).then(function(userID){
-        that.fireDB.database.ref('/Users/'+userID+'/courses/').once('value').then(function(snapshot){
+        that.fireDB.object('/Users/'+userID+'/courses/').$ref.once('value').then(function(snapshot){
           let exists = false;
           //check all the course keys
           snapshot.forEach(function(course){
@@ -220,12 +220,12 @@ export class FirebaseService {
 
           if(!exists){
             //get the course and make another one in this user
-            that.fireDB.database.ref('/courses/').once('value').then(function(snapshot){
+            that.fireDB.object('/courses/').$ref.once('value').then(function(snapshot){
               snapshot.forEach(function(child){
                 //find the current course that is to be added to the pending user
                 if(child.val().key == courseID){
                   //add that course to his/her courses
-                  that.fireDB.database.ref('/Users/'+userID+'/courses/'+child.val().key).set(child.val());
+                  that.fireDB.object('/Users/'+userID+'/courses/'+child.val().key).$ref.set(child.val());
                 }
               });
 
@@ -242,15 +242,15 @@ export class FirebaseService {
 
   saveNotes(owner: string,courseKey: string,chapterKey: string,text: string,isPublic: boolean){
     if(isPublic){
-        this.fireDB.database.ref().child('/courseChapters/'+courseKey+'/'+chapterKey).child('publicNoteText').set(text);
+        this.fireDB.object('').$ref.child('/courseChapters/'+courseKey+'/'+chapterKey).child('publicNoteText').set(text);
     }else{
       let that = this;
       //get just the notes for this owner
-        this.fireDB.database.ref('/PrivateNotes/'+chapterKey).orderByChild('owner').limitToLast(1).once('value').then(function(snapshot){
+        this.fireDB.object('/PrivateNotes/'+chapterKey).$ref.orderByChild('owner').limitToLast(1).once('value').then(function(snapshot){
           if(snapshot.val() != undefined && snapshot.val() != null){
             let noteKey = Object.keys(snapshot.val())[0];
             if(text != undefined && text != null && text != "" && noteKey != null && noteKey != undefined){
-              that.fireDB.database.ref('/PrivateNotes/'+chapterKey+'/'+noteKey+'/privateNoteText').set(text);
+              that.fireDB.object('/PrivateNotes/'+chapterKey+'/'+noteKey+'/privateNoteText').$ref.set(text);
             }
           }else{
             //create a private note for this user if it doesnt exist
@@ -264,7 +264,7 @@ export class FirebaseService {
   removeCourse(id, username: string){
     let that = this;
     //check if they are the owner to permanently delete it
-    this.fireDB.database.ref('/courses/'+id).once('value').then(function(snapshot){
+    this.fireDB.object('/courses/'+id).$ref.once('value').then(function(snapshot){
       let owner = snapshot.val().owner;
       if(username == owner){
         //delete the course completely
@@ -294,15 +294,15 @@ export class FirebaseService {
   removePendingRequest(id, courseKey: string){
     //decrement request counter
     let that = this;
-    this.fireDB.database.ref('/courses/'+courseKey).once('value').then(function(snapshot){
+    this.fireDB.object('/courses/'+courseKey).$ref.once('value').then(function(snapshot){
         let counter = snapshot.val().requestCounter;
         let owner = snapshot.val().owner;
         if(counter > 0){
           counter--;
           //update it on the database
-          that.fireDB.database.ref('/courses/'+courseKey+'/requestCounter/').set(counter);
+          that.fireDB.object('/courses/'+courseKey+'/requestCounter/').$ref.set(counter);
           that.getCurrentUserID(owner).then(function(userID){
-            that.fireDB.database.ref('/Users/'+userID+'/courses/'+courseKey+'/requestCounter/').set(counter);
+            that.fireDB.object('/Users/'+userID+'/courses/'+courseKey+'/requestCounter/').$ref.set(counter);
           });
           that.fireDB.list('/courseJoinRequest/'+courseKey).remove(id);
         }
