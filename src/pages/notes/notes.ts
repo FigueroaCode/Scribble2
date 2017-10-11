@@ -54,7 +54,7 @@ export class NotesPage {
         //set the first chapter as the default
         this.getFirstChapterKey =  new Promise(function(resolve, reject){
             getCourseKey.then(function(courseKey){
-                firebaseService.getDB().database.ref('/courseChapters/'+courseKey).once('value').then(function(snapshot){
+                firebaseService.getDB().object('/courseChapters/'+courseKey).$ref.once('value').then(function(snapshot){
                          snapshot.forEach(function(childsnapshot){
                              resolve(childsnapshot.key);
                             }
@@ -65,7 +65,7 @@ export class NotesPage {
         //Set the textbox to the text of the first chapter
         let that = this;
         this.getFirstChapterKey.then(function(chapterKey){
-            firebaseService.getDB().database.ref('/courseChapters/' + that.courseKey + '/' + chapterKey).once('value').then(function(getChapterName){
+            firebaseService.getDB().object('/courseChapters/' + that.courseKey + '/' + chapterKey).$ref.once('value').then(function(getChapterName){
               that.dropDownTitle = getChapterName.val().chapterName;
             });
             firebaseService.getNoteText(that.displayName,that.courseKey, chapterKey, true)
