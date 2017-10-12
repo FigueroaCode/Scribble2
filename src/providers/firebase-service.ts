@@ -169,7 +169,7 @@ export class FirebaseService {
     //add a change to the changelog for this chapters log
     let key = this.fireDB.list('/ChangeLog/'+chapterKey).push(change).key;
     //save the generated key
-    this.fireDB.object('ChangeLog/'+chapterKey+'/'+key).$ref.update({'key': key});
+    this.fireDB.object('/ChangeLog/'+chapterKey+'/'+key).$ref.update({'key': key});
   }
 
   sendJoinRequest(courseKey: string, username: string, owner: string){
@@ -242,7 +242,7 @@ export class FirebaseService {
 
   saveNotes(owner: string,courseKey: string,chapterKey: string,text: string,isPublic: boolean){
     if(isPublic){
-        this.fireDB.object('').$ref.child('/courseChapters/'+courseKey+'/'+chapterKey).child('publicNoteText').set(text);
+        this.fireDB.object('/courseChapters/'+courseKey+'/').$ref.child(chapterKey).child('publicNoteText').set(text);
     }else{
       let that = this;
       //get just the notes for this owner

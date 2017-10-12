@@ -19,15 +19,17 @@ export class MergeHandler{
   constructor(privateNoteText: string, publicNoteText: string, chapterKey: string, fireDB: FirebaseService){
     this.changeLog = Array<Change>();
 
-    let text = privateNoteText;
+    let text = privateNoteText.trim();
+    let length = text.length;
     if( text[length-1] != "." && text[length-1] != "?" && text[length-1] != "!"){
-      text += ".";
+      text += "\n";
     }
     this.privateNoteText = text;
 
-    text = publicNoteText;
+    text = publicNoteText.trim();
+    length = text.length;
     if( text[length-1] != "." && text[length-1] != "?" && text[length-1] != "!"){
-      text += ".";
+      text += "\n";
     }
     this.publicNoteText = text;
 
@@ -40,7 +42,6 @@ export class MergeHandler{
     this.findDifferences();
 
     for(let i = 0; i < this.changeLog.length; i++){
-      console.log(this.changeLog[i]);
       fireDB.addChange(chapterKey, this.changeLog[i]);
     }
   }
@@ -68,7 +69,6 @@ export class MergeHandler{
         sentence = "";
       }
     }
-
     return sentences;
   }
 
@@ -101,7 +101,7 @@ export class MergeHandler{
         chara = "";
       }
 
-      if(temp[i] == '.' || temp[i] == '!' || temp[i] == '?'){
+      if(temp[i] == '.' || temp[i] == '!' || temp[i] == '?' || temp[i] == '\n'){
         sentences.push(words);
         words = Array<string>();
       }

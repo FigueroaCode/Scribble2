@@ -176,7 +176,6 @@ export class NotesPage {
               if(that.inPublicNote)
                 that.setPublicNoteText(noteText);
               else{
-                console.log('private', noteText);
                 that.setPrivateNoteText(noteText);
               }
             });
@@ -252,10 +251,8 @@ export class NotesPage {
               //default chapter is the first one
               that.firebaseService.saveNotes(that.displayName, that.courseKey,firstKey, that.privateText, false);
               if(that.publicText == null || that.publicText == ''){
-                console.log('test',that.privateText);
                 that.firebaseService.saveNotes(that.displayName,that.courseKey,firstKey, that.privateText, true);
               }else{
-                console.log('test2',that.privateText);
                 let mergeHandler = new MergeHandler(that.privateText, that.publicText,firstKey, that.firebaseService);
               }
           });
