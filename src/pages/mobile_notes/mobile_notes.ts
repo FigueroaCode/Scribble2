@@ -7,15 +7,14 @@ import { File } from '@ionic-native/file';
 
 import { Chapter } from '../../models/chapter';
 import { MergeHandler } from '../../models/mergeHandler';
-import { MobileNotesPage } from '../mobile_notes/mobile_notes';
 
 
 @Component({
-  selector: 'page-notes',
-  templateUrl: 'notes.html'
+  selector: 'page-mobile_notes',
+  templateUrl: 'mobile_notes.html'
 })
 
-export class NotesPage {
+export class MobileNotesPage {
     @ViewChild("fileInput") fileInput;
     chapters: FirebaseListObservable<any[]>;
     changeLog: FirebaseListObservable<any[]>;
@@ -26,7 +25,7 @@ export class NotesPage {
     currentChapterKey: string;
     inPublicNote: boolean;
     //Set defualt Segment to the main Note
-    noteSegment: string = "publicNote";
+    noteSegment: string = "privateNote";
     getFirstChapterKey: Promise<any>;
     getFirebase: Promise<any>;
     dropDownTitle: string;
@@ -37,6 +36,7 @@ export class NotesPage {
     public authService: AuthService, public alertCtrl: AlertController, public toastCtrl: ToastController,
     public modalCtrl: ModalController, public navParams: NavParams, private file: File) {
         this.isApp = !document.URL.startsWith('http');
+        this.inPublicNote = false;
 
         //need to wrap this in a promise in order to use it in another promise
         let getCourseKey = new Promise(function(resolve, reject){
@@ -49,7 +49,6 @@ export class NotesPage {
         //Get the key of the course this belongs to
         this.courseKey = navParams.get('key');
         this.currentChapterKey = '';
-        this.inPublicNote = true;
         //check that user exists
         if(this.authService.getFireAuth().currentUser)
             this.displayName = this.authService.getFireAuth().currentUser.displayName;
@@ -269,11 +268,6 @@ export class NotesPage {
           }
 
       }
-    }
-
-    //-----------------------Mobile----------------//
-    sendToNotes(){
-      this.navCtrl.push(MobileNotesPage);
     }
 
 }

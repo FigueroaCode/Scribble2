@@ -21,6 +21,7 @@ import { CoursesPage } from '../pages/courses/courses';
 import { CreateCoursePage } from '../pages/courses/create_course';
 import { CenterPage } from '../pages/center/center';
 import { NotesPage } from '../pages/notes/notes';
+import { MobileNotesPage } from '../pages/mobile_notes/mobile_notes';
 import { ResetPasswordPage } from '../pages/resetpassword/resetpassword';
 import { JoinCoursePage } from '../pages/joincourse/joincourse';
 import { PendingRequestPage } from '../pages/pendingrequest/pendingrequest';
@@ -49,6 +50,7 @@ firebase.initializeApp(firebaseConfig);
     ResetPasswordPage,
     JoinCoursePage,
     NotesPage,
+    MobileNotesPage,
     PendingRequestPage,
     Autosize
   ],
@@ -72,6 +74,7 @@ firebase.initializeApp(firebaseConfig);
     ResetPasswordPage,
     JoinCoursePage,
     NotesPage,
+    MobileNotesPage,
     PendingRequestPage
   ],
   providers: [

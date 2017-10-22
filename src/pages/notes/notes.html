@@ -7,7 +7,13 @@
   </ion-navbar>
 </ion-header>
 <ion-content class="background">
-    <ion-grid padding>
+    <ion-grid *ngIf="!isApp">
+      <button ion-button>Create Chapter</button>
+      <ion-list>
+        <button (click)="sendToNotes()" ion-item *ngFor="let chapter of chapters | async">{{ chapter.chapterName }}</button>
+      </ion-list>
+    </ion-grid>
+    <ion-grid padding *ngIf="isApp">
       <ion-segment [(ngModel)]="noteSegment">
         <ion-segment-button value="publicNote" (click)="publicNoteClicked()">
           Public Notes

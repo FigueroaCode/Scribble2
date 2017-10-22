@@ -1,0 +1,91 @@
+<ion-header>
+  <ion-navbar color="primary">
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <h2 id="title"> Chapter Name Goes Here </h2>
+  </ion-navbar>
+</ion-header>
+<ion-content class="background">
+    <ion-grid padding>
+      <ion-segment [(ngModel)]="noteSegment">
+        <ion-segment-button value="privateNote" (click)="privateNoteClicked()">
+          Private Notes
+        </ion-segment-button>
+        <ion-segment-button value="publicNote" (click)="publicNoteClicked()">
+          Public Notes
+        </ion-segment-button>
+      </ion-segment>
+
+      <ion-row [ngSwitch]="noteSegment">
+        <!-- PUBLIC NOTE -->
+        <ion-col col-xs-12 col-sm-12 col-md-12 col-lg-12 *ngSwitchCase="'publicNote'">
+          <ion-row row-xs-12 row-sm-12 row-md-12 row-lg-12>
+            <ion-col col-xs-12 col-sm-12 col-md-12 col-lg-3>
+              <!-- Change Log TODO: change into a slider later-->
+              <ion-slides spaceBetween="80px" pager="false" loop="true">
+                <ion-slide *ngFor="let change of changeLog | async">
+                  <ion-row>
+                    <ion-col col-xs-2 col-sm-1 col-md-1 col-lg-2 col-xl-2>
+                      <ion-row>
+                        <button id="disapproveBtn"ion-button icon-only><ion-icon name="md-close"></ion-icon></button>
+                      </ion-row>
+                      <ion-row>
+                        <button id="approveBtn" ion-button icon-only><ion-icon name="md-checkmark"></ion-icon></button>
+                      </ion-row>
+                    </ion-col>
+                    <ion-col col-xs-10 col-sm-11 col-md-11 col-lg-10 col-xl-10>
+                      <div *ngIf="change.originalSentence != 'N/A'">
+                        <p id="changeLog"><b>Would you like to replace: </b> {{ change.originalSentence }}</p>
+                        <p id="changeLog"><b>With the following sentence: </b> {{ change.proposedSentence }}</p>
+                      </div>
+                      <p id="changeLog" *ngIf="change.originalSentence == 'N/A'"><b>Would you like to insert the following sentence: </b> {{ change.proposedSentence }}</p>
+                    </ion-col>
+                  </ion-row>
+                </ion-slide>
+              </ion-slides>
+            </ion-col>
+            <ion-col col-xs-12 col-sm-12 col-md-12 col-lg-9>
+              <ion-card style="height: 62vh">
+                <ion-card-content>
+                  <ion-textarea readonly [(ngModel)]="publicText" [value]="publicText"></ion-textarea>
+                </ion-card-content>
+              </ion-card>
+            </ion-col>
+          </ion-row>
+        </ion-col>
+
+        <!-- PRIVATE NOTE -->
+        <ion-col col-xs-12 col-sm-12 col-md-12 col-lg-12 *ngSwitchCase="'privateNote'">
+          <!-- Choose a chapter area -->
+          <ion-row>
+              <!-- Get file button -->
+            <ion-col>
+              <div id="inputOuterField">
+                <button id="fakeInput" ion-button>
+                  <ion-row row-xs-12 row-sm-12 row-md-3 row-lg-3>
+                    <ion-input max="25" id="ionTextInput" readonly type="text" value="{{this.chosenFileName}}"></ion-input>
+                    <ion-icon id="fileIcon" name="ios-folder-outline"></ion-icon>
+                  </ion-row>
+                </button>
+                <input id="fileInput" type="file" #fileInput (change)="readSingleFile()">
+              </div>
+            </ion-col>
+          </ion-row>
+          <!-- text area -->
+          <ion-row row-xs-12 row-sm-12 row-md-12 row-lg-12>
+            <ion-col col-xs-12 col-sm-12 col-md-12 col-lg-12>
+              <ion-card>
+                <ion-card-content>
+                  <ion-textarea autosize [(ngModel)]="privateText" [value]="privateText"></ion-textarea>
+                </ion-card-content>
+              </ion-card>
+            </ion-col>
+          </ion-row>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+    <ion-fab *ngIf="!inPublicNote" bottom right (click)="prepareMerge()">
+      <button ion-fab color="danger"><ion-icon name="share"></ion-icon></button>
+    </ion-fab>
+</ion-content>

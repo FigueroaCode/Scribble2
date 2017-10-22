@@ -23,12 +23,12 @@ export class Autosize implements OnInit{
     adjust():void {
         let textarea = this.element.nativeElement.getElementsByTagName('textarea')[0];
         //This is for a dynamicly changing size
-        //textarea.style.overflow = 'hidden';
-        //textarea.style.height = 'auto';
-        //textarea.style.height = textarea.scrollHeight + "px";
+        textarea.style.overflow = 'hidden';
+        textarea.style.height = 'auto';
+        textarea.style.height = textarea.scrollHeight + "px";
         //Dont let the user change the size of the textarea
-        textarea.style.resize = 'none';
+        //textarea.style.resize = 'none';
         //Give it a fixed size
-        textarea.style.height = '60vh';
+        //textarea.style.height = '60vh';
     }
 }
