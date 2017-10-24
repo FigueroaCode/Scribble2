@@ -8,9 +8,9 @@
 </ion-header>
 <ion-content class="background">
     <ion-grid *ngIf="!isApp">
-      <button ion-button>Create Chapter</button>
+      <button ion-button (click)="createChapter()">Create Chapter</button>
       <ion-list>
-        <button (click)="sendToNotes()" ion-item *ngFor="let chapter of chapters | async">{{ chapter.chapterName }}</button>
+        <button (click)="sendToNotes(chapter.chapterName, chapter.$key)" ion-item *ngFor="let chapter of chapters | async">{{ chapter.chapterName }}</button>
       </ion-list>
     </ion-grid>
     <ion-grid padding *ngIf="isApp">
@@ -51,7 +51,7 @@
             <ion-col col-xs-12 col-sm-12 col-md-12 col-lg-9>
               <ion-card style="height: 62vh">
                 <ion-card-content>
-                  <ion-textarea readonly autosize [(ngModel)]="publicText" [value]="publicText"></ion-textarea>
+                  <ion-textarea readonly websize [(ngModel)]="publicText" [value]="publicText"></ion-textarea>
                 </ion-card-content>
               </ion-card>
             </ion-col>
@@ -128,7 +128,7 @@
             <ion-col col-xs-12 col-sm-12 col-md-12 col-lg-12>
               <ion-card style="height: 62vh">
                 <ion-card-content>
-                  <ion-textarea autosize [(ngModel)]="privateText" [value]="privateText"></ion-textarea>
+                  <ion-textarea websize [(ngModel)]="privateText" [value]="privateText"></ion-textarea>
                 </ion-card-content>
               </ion-card>
             </ion-col>

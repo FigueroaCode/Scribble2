@@ -11,6 +11,7 @@ import { HttpModule } from '@angular/http';
 import { IonicStorageModule } from '@ionic/storage';
 import firebase from 'firebase';
 import { Autosize } from '../providers/textarea-directive';
+import { WebSize } from '../providers/textarea-directive-web';
 import { File } from '@ionic-native/file';
 
 import { MyApp } from './app.component';
@@ -52,7 +53,8 @@ firebase.initializeApp(firebaseConfig);
     NotesPage,
     MobileNotesPage,
     PendingRequestPage,
-    Autosize
+    Autosize,
+    WebSize
   ],
   imports: [
     BrowserModule,

@@ -272,8 +272,9 @@ export class NotesPage {
     }
 
     //-----------------------Mobile----------------//
-    sendToNotes(){
-      this.navCtrl.push(MobileNotesPage);
+    sendToNotes(chapterName, chapterKey){
+      let data = {'chapterName': chapterName, 'chapterKey': chapterKey, 'courseKey': this.courseKey};
+      this.navCtrl.push(MobileNotesPage, data);
     }
 
 }

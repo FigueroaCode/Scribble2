@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { NavController, AlertController, NavParams, ModalController, ToastController } from 'ionic-angular';
+import { NavController, AlertController, NavParams, ModalController, ToastController, Slides } from 'ionic-angular';
 import { FirebaseService } from '../../providers/firebase-service';
 import { FirebaseListObservable } from 'angularfire2/database';
 import { AuthService } from '../../providers/auth-service';
@@ -16,88 +16,53 @@ import { MergeHandler } from '../../models/mergeHandler';
 
 export class MobileNotesPage {
     @ViewChild("fileInput") fileInput;
+    @ViewChild(Slides) slides: Slides;
     chapters: FirebaseListObservable<any[]>;
     changeLog: FirebaseListObservable<any[]>;
     displayName: string;
     publicText: string;
     privateText: string;
     courseKey: string;
-    currentChapterKey: string;
     inPublicNote: boolean;
     //Set defualt Segment to the main Note
     noteSegment: string = "privateNote";
     getFirstChapterKey: Promise<any>;
     getFirebase: Promise<any>;
-    dropDownTitle: string;
     chosenFileName: string;
     isApp: boolean;
+    chapterName: string;
+    chapterKey: string;
 
     constructor(public navCtrl: NavController, public firebaseService: FirebaseService,
     public authService: AuthService, public alertCtrl: AlertController, public toastCtrl: ToastController,
     public modalCtrl: ModalController, public navParams: NavParams, private file: File) {
         this.isApp = !document.URL.startsWith('http');
         this.inPublicNote = false;
+        this.chapterName = navParams.get('chapterName');
+        this.chapterKey = navParams.get('chapterKey');
 
-        //need to wrap this in a promise in order to use it in another promise
-        let getCourseKey = new Promise(function(resolve, reject){
-            let key = navParams.get('key');
-            resolve(key);
-        });
         this.getFirebase = new Promise(function(resolve, reject){
              resolve(firebaseService);
         });
         //Get the key of the course this belongs to
-        this.courseKey = navParams.get('key');
-        this.currentChapterKey = '';
+        this.courseKey = navParams.get('courseKey');
         //check that user exists
         if(this.authService.getFireAuth().currentUser)
             this.displayName = this.authService.getFireAuth().currentUser.displayName;
-
-        this.initializeChapters();
-        //set the first chapter as the default
-        this.getFirstChapterKey =  new Promise(function(resolve, reject){
-            getCourseKey.then(function(courseKey){
-                firebaseService.getDB().object('/courseChapters/'+courseKey).$ref.once('value').then(function(snapshot){
-                         snapshot.forEach(function(childsnapshot){
-                             resolve(childsnapshot.key);
-                            }
-                        );
-                    });
-            });
-        });
         //Set the textbox to the text of the first chapter
         let that = this;
-        this.getFirstChapterKey.then(function(chapterKey){
-            firebaseService.getDB().object('/courseChapters/' + that.courseKey + '/' + chapterKey).$ref.once('value').then(function(getChapterName){
-              that.dropDownTitle = getChapterName.val().chapterName;
-            });
-            firebaseService.getNoteText(that.displayName,that.courseKey, chapterKey, true)
-            .then(function(noteText){
-                that.setPublicNoteText(noteText);
-            });
-            firebaseService.getNoteText(that.displayName,that.courseKey, chapterKey, false)
-            .then(function(noteText){
-                that.setPrivateNoteText(noteText);
-            });
+        firebaseService.getNoteText(that.displayName,this.courseKey, this.chapterKey, false)
+        .then(function(noteText){
+            that.setPrivateNoteText(noteText);
         });
-
-        this.dropDownTitle = "No Chapters Exist";
         this.chosenFileName = "IMPORT TEXT FILE";
 
         this.initializeChangeLog();
     }
 
     initializeChangeLog(){
-      let that = this;
-      //TODO: this should be done on another thread later
-      if((this.currentChapterKey == null || this.currentChapterKey == '') && this.courseKey != null){
-          //needs to be done in order for the promise to recognize which object 'this' is referring
-          this.getFirstChapterKey.then(function(firstKey){
-              //default chapter is the first one
-              that.changeLog = that.firebaseService.getChangeLog(firstKey);
-          });
-      }else if(this.courseKey != null && this.currentChapterKey != ''){
-        this.changeLog = this.firebaseService.getChangeLog(this.currentChapterKey);
+      if(this.courseKey != null && this.chapterKey != ''){
+        this.changeLog = this.firebaseService.getChangeLog(this.chapterKey);
       }
     }
 
@@ -113,94 +78,33 @@ export class MobileNotesPage {
         this.privateText = newText;
     }
 
-    createChapter(){
-      let alert = this.alertCtrl.create({
-        title: 'Name your Chapter',
-        inputs: [
-          {
-            name: 'chapterNameInput',
-            placeholder: 'New Chapter Name'
-          }
-        ],
-        buttons: [
-          {
-            text: 'Cancel',
-            role: 'cancel',
-            handler: data => {
-              //Cancel
-            }
-          },
-          {
-            text: 'Create',
-            handler: data => {
-              if(this.displayName !=null && data.chapterNameInput != ''){
-                let dateCreated = new Date().toString();
-                let newChapter= new Chapter(data.chapterNameInput,"",dateCreated);
-                let chapterKey = this.firebaseService.addChapter(newChapter, this.courseKey, {owner: this.displayName, privateNoteText: "", dateUpdated: dateCreated});
-                //if its the first chapter then set it as the selected one
-                if(this.dropDownTitle == "No Chapters Exist"){
-                  this.currentChapterKey = chapterKey;
-                  this.updateNoteText();
-                  this.dropDownTitle = newChapter.getName();
-                }
-              }else{
-                //let the user know later that it wasnt created because they didnt put a field
-                let toast = this.toastCtrl.create({
-                  message: 'You failed to create a chapter.',
-                  duration: 5000
-                });
-
-                toast.present();
-              }
-            }
-          }
-        ]
-      });
-
-      alert.present();
-    }
     updateNoteText(){
         let that = this;
-        if((this.currentChapterKey == null || this.currentChapterKey == '') && this.courseKey != null && this.privateText != null){
-            //needs to be done in order for the promise to recognize which object 'this' is referring
-            this.getFirstChapterKey.then(function(firstKey){
-                //default chapter is the first one
-                that.firebaseService.getNoteText(that.displayName,that.courseKey,firstKey, that.inPublicNote)
-                .then(function(noteText){
-                  if(that.inPublicNote)
-                    that.setPublicNoteText(noteText);
-                  else
-                    that.setPrivateNoteText(noteText);
-                });
-            });
-        }else if(this.courseKey != null && this.privateText != null && this.currentChapterKey != ''){
-            this.firebaseService.getNoteText(this.displayName,this.courseKey,this.currentChapterKey, this.inPublicNote)
+        console.log('stop');
+        if(this.courseKey != null && this.privateText != null && this.chapterKey != ''){
+            this.firebaseService.getNoteText(this.displayName,this.courseKey,this.chapterKey, this.inPublicNote)
             .then(function(noteText){
-              if(that.inPublicNote)
+              if(that.inPublicNote){
+                console.log(noteText);
                 that.setPublicNoteText(noteText);
-              else{
+              }else{
                 that.setPrivateNoteText(noteText);
               }
             });
         }
     }
 
-    showNote(chapterKey, chapterName){
-        this.currentChapterKey = chapterKey;
-        this.updateNoteText();
-        this.dropDownTitle = chapterName;
-    }
 
     saveNote(){
-        if((this.currentChapterKey == null || this.currentChapterKey == '') && this.courseKey != null && (this.privateText != null || this.privateText != '')){
+        if((this.chapterKey == null || this.chapterKey == '') && this.courseKey != null && (this.privateText != null || this.privateText != '')){
             //needs to be done in order for the promise to recognize which object 'this' is referring to
             let that = this;
             this.getFirstChapterKey.then(function(firstKey){
                 //default chapter is the first one
                 that.firebaseService.saveNotes(that.displayName,that.courseKey,firstKey, that.privateText, that.inPublicNote);
             });
-        }else if(this.courseKey != null && (this.privateText != null || this.privateText != '') && this.currentChapterKey != ''){
-            this.firebaseService.saveNotes(this.displayName,this.courseKey,this.currentChapterKey, this.privateText, this.inPublicNote);
+        }else if(this.courseKey != null && (this.privateText != null || this.privateText != '') && this.chapterKey != ''){
+            this.firebaseService.saveNotes(this.displayName,this.courseKey,this.chapterKey, this.privateText, this.inPublicNote);
         }
     }
 
@@ -213,10 +117,6 @@ export class MobileNotesPage {
     privateNoteClicked(){
         this.inPublicNote = false;
         this.updateNoteText();
-    }
-
-    toggleDropDown() {
-      document.getElementById("chapterDropdown").classList.toggle("show");
     }
 
     filterFileName(fileURL: string){
@@ -248,7 +148,7 @@ export class MobileNotesPage {
 
     prepareMerge(){
       let that = this;
-      if((this.currentChapterKey == null || this.currentChapterKey == '') && this.courseKey != null && (this.privateText != null && this.privateText != '')){
+      if((this.chapterKey == null || this.chapterKey == '') && this.courseKey != null && (this.privateText != null && this.privateText != '')){
           //needs to be done in order for the promise to recognize which object 'this' is referring to
           this.getFirstChapterKey.then(function(firstKey){
               //default chapter is the first one
@@ -259,15 +159,23 @@ export class MobileNotesPage {
                 let mergeHandler = new MergeHandler(that.privateText, that.publicText,firstKey, that.firebaseService);
               }
           });
-      }else if(this.courseKey != null && (this.privateText != null && this.privateText != '') && this.currentChapterKey != ''){
-          this.firebaseService.saveNotes(this.displayName,this.courseKey,this.currentChapterKey, this.privateText, false);
+      }else if(this.courseKey != null && (this.privateText != null && this.privateText != '') && this.chapterKey != ''){
+          this.firebaseService.saveNotes(this.displayName,this.courseKey,this.chapterKey, this.privateText, false);
           if(this.publicText == null || this.publicText == ''){
-            this.firebaseService.saveNotes(this.displayName,this.courseKey,this.currentChapterKey, this.privateText, true);
+            this.firebaseService.saveNotes(this.displayName,this.courseKey,this.chapterKey, this.privateText, true);
           }else{
-            let mergeHandler = new MergeHandler(that.privateText, that.publicText,that.currentChapterKey, this.firebaseService);
+            let mergeHandler = new MergeHandler(that.privateText, that.publicText,that.chapterKey, this.firebaseService);
           }
 
       }
+    }
+
+    nextSlide(){
+      this.slides.slideNext(500,false);
+    }
+
+    previousSlide(){
+      this.slides.slidePrev(500,false);
     }
 
 }
