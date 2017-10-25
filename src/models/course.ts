@@ -1,5 +1,4 @@
 import { Chapter } from './chapter';
-import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 
 export class Course {

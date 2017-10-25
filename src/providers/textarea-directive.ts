@@ -19,16 +19,20 @@ export class Autosize implements OnInit{
     ngOnInit(): void {
         setTimeout(() => this.adjust(),0);
     }
+
     //Style the textarea here
     adjust():void {
         let textarea = this.element.nativeElement.getElementsByTagName('textarea')[0];
         //This is for a dynamicly changing size
-        textarea.style.overflow = 'hidden';
-        textarea.style.height = 'auto';
-        textarea.style.height = textarea.scrollHeight + "px";
+        // textarea.style.overflow = 'hidden';
+        // textarea.style.height = 'auto';
+        //
+        // textarea.style.height = (textarea.scrollHeight + 5) + "px";
+
         //Dont let the user change the size of the textarea
-        //textarea.style.resize = 'none';
+        textarea.style.fontSize = '20px';
+        textarea.style.resize = 'none';
         //Give it a fixed size
-        //textarea.style.height = '60vh';
+        textarea.style.height = '65vh';
     }
 }

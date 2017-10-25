@@ -24,8 +24,7 @@ export class CoursesPage {
     courses: FirebaseListObservable<any[]>;
     displayName: string;
     currentUser: User;
-    memberCourses: Array<any>;
-
+    empty: boolean=true;
 
     constructor(public navCtrl: NavController, public firebaseService: FirebaseService,
         public authService: AuthService, public alertCtrl: AlertController,
@@ -44,6 +43,17 @@ export class CoursesPage {
       let that = this;
       this.firebaseService.getMembersCourses(this.displayName).then(function(memberCourses){
         that.courses = memberCourses as FirebaseListObservable<any[]>;
+        //keep track whether or nto there are any courses 
+        let size = that.courses.map(x => {
+          return x.length;
+        });
+          size.subscribe(function(val){
+          if(val <= 0){
+            that.empty = true;
+          }else{
+            that.empty = false;
+          }
+        });
       });
     }
 

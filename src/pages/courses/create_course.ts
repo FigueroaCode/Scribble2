@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { ViewController, NavParams } from 'ionic-angular';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, Validators } from '@angular/forms';
 import { FirebaseService } from '../../providers/firebase-service';
 import { AuthService } from '../../providers/auth-service';
 
