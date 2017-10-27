@@ -6,6 +6,7 @@ import { AuthService } from '../../providers/auth-service';
 import { File } from '@ionic-native/file';
 
 import { Chapter } from '../../models/chapter';
+import { Change } from '../../models/change';
 import { MergeHandler } from '../../models/mergeHandler';
 import { MobileNotesPage } from '../mobile_notes/mobile_notes';
 
@@ -83,6 +84,8 @@ export class NotesPage {
 
         this.dropDownTitle = "No Chapters Exist";
         this.chosenFileName = "IMPORT TEXT FILE";
+
+        this.initializeChangeLog();
     }
 
     initializeChangeLog(){
@@ -95,7 +98,7 @@ export class NotesPage {
               that.changeLog = that.firebaseService.getChangeLog(firstKey);
           });
       }else if(this.courseKey != null && this.currentChapterKey != ''){
-        that.changeLog = this.firebaseService.getChangeLog(this.currentChapterKey);
+        this.changeLog = this.firebaseService.getChangeLog(this.currentChapterKey);
       }
     }
 
