@@ -28,6 +28,8 @@ import { JoinCoursePage } from '../pages/joincourse/joincourse';
 import { PendingRequestPage } from '../pages/pendingrequest/pendingrequest';
 import { User } from '../models/user';
 
+import { WebWorkerService } from '../web-worker.service';
+
 export const firebaseConfig = {
     apiKey: "AIzaSyAzEAPiDw8-K235uSq_wfrNPIAZyRivsAE",
     authDomain: "scribble-c789c.firebaseapp.com",
@@ -85,7 +87,8 @@ firebase.initializeApp(firebaseConfig);
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     AuthService,
     FirebaseService,
-    File
+    File,
+    WebWorkerService
   ]
 })
 export class AppModule {}

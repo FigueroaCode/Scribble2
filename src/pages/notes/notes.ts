@@ -9,7 +9,6 @@ import { Chapter } from '../../models/chapter';
 import { MergeHandler } from '../../models/mergeHandler';
 import { MobileNotesPage } from '../mobile_notes/mobile_notes';
 
-
 @Component({
   selector: 'page-notes',
   templateUrl: 'notes.html'
@@ -84,13 +83,11 @@ export class NotesPage {
 
         this.dropDownTitle = "No Chapters Exist";
         this.chosenFileName = "IMPORT TEXT FILE";
-
-        this.initializeChangeLog();
     }
 
     initializeChangeLog(){
       let that = this;
-      //TODO: this should be done on another thread later
+
       if((this.currentChapterKey == null || this.currentChapterKey == '') && this.courseKey != null){
           //needs to be done in order for the promise to recognize which object 'this' is referring
           this.getFirstChapterKey.then(function(firstKey){
@@ -98,7 +95,7 @@ export class NotesPage {
               that.changeLog = that.firebaseService.getChangeLog(firstKey);
           });
       }else if(this.courseKey != null && this.currentChapterKey != ''){
-        this.changeLog = this.firebaseService.getChangeLog(this.currentChapterKey);
+        that.changeLog = this.firebaseService.getChangeLog(this.currentChapterKey);
       }
     }
 
@@ -208,12 +205,10 @@ export class NotesPage {
     //Switching Between Notes
     publicNoteClicked(){
         this.inPublicNote = true;
-        this.updateNoteText();
     }
 
     privateNoteClicked(){
         this.inPublicNote = false;
-        this.updateNoteText();
     }
 
     toggleDropDown() {
