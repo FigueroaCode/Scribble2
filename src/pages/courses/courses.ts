@@ -100,6 +100,7 @@ export class CoursesPage {
 
       // if the value is an empty string don't filter the items
       if (val && val.trim() != '') {
+        val = val.trim();
         let that = this;
           this.firebaseService.getCurrentUserID(this.displayName).then(function(userID){
             that.courses = that.firebaseService.getDB().list('/Users/'+userID+'/courses', {

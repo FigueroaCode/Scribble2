@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { NavController, AlertController, NavParams, ModalController, ToastController } from 'ionic-angular';
+import { Platform, NavController, AlertController, NavParams, ModalController, ToastController } from 'ionic-angular';
 import { FirebaseService } from '../../providers/firebase-service';
 import { FirebaseListObservable } from 'angularfire2/database';
 import { AuthService } from '../../providers/auth-service';
@@ -33,10 +33,15 @@ export class NotesPage {
     chosenFileName: string;
     isApp: boolean;
 
-    constructor(public navCtrl: NavController, public firebaseService: FirebaseService,
+    constructor(public navCtrl: NavController, public firebaseService: FirebaseService, public platform: Platform,
     public authService: AuthService, public alertCtrl: AlertController, public toastCtrl: ToastController,
     public modalCtrl: ModalController, public navParams: NavParams, private file: File) {
-        this.isApp = !document.URL.startsWith('http');
+        //check which platform i am on
+        if(this.platform.is('core') || this.platform.is('mobileweb')) {
+          this.isApp = false;
+        } else {
+          this.isApp = true;
+        }
 
         //need to wrap this in a promise in order to use it in another promise
         let getCourseKey = new Promise(function(resolve, reject){
