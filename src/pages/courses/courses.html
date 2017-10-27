@@ -15,14 +15,14 @@
         </ion-row>
         <ion-row>
             <!-- SEARCH BOX -->
-            <ion-col><!-- TODO: FIX search bar -->
+            <ion-col>
                 <ion-searchbar (ionInput)="getItems($event)" placeholder="Search for a Course"></ion-searchbar>
             </ion-col>
         </ion-row>
             <!-- Display courses -->
         <ion-row style="height: 70vh">
             <ion-col>
-                <ion-scroll style="width:100%;height:59vh" scrollY="true">
+                <ion-scroll style="width:100%;height:70vh" scrollY="true">
                 <ion-card scroll="true"  *ngFor="let course of courses | async">
                     <ion-grid>
                         <!-- Header -->

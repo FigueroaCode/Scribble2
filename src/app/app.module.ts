@@ -23,10 +23,13 @@ import { CreateCoursePage } from '../pages/courses/create_course';
 import { CenterPage } from '../pages/center/center';
 import { NotesPage } from '../pages/notes/notes';
 import { MobileNotesPage } from '../pages/mobile_notes/mobile_notes';
+import { ChangeLogPage } from '../pages/mobile_notes/changelogPage';
 import { ResetPasswordPage } from '../pages/resetpassword/resetpassword';
 import { JoinCoursePage } from '../pages/joincourse/joincourse';
 import { PendingRequestPage } from '../pages/pendingrequest/pendingrequest';
 import { User } from '../models/user';
+
+import { WebWorkerService } from '../web-worker.service';
 
 export const firebaseConfig = {
     apiKey: "AIzaSyAzEAPiDw8-K235uSq_wfrNPIAZyRivsAE",
@@ -52,6 +55,7 @@ firebase.initializeApp(firebaseConfig);
     JoinCoursePage,
     NotesPage,
     MobileNotesPage,
+    ChangeLogPage,
     PendingRequestPage,
     Autosize,
     WebSize
@@ -77,6 +81,7 @@ firebase.initializeApp(firebaseConfig);
     JoinCoursePage,
     NotesPage,
     MobileNotesPage,
+    ChangeLogPage,
     PendingRequestPage
   ],
   providers: [
@@ -85,7 +90,8 @@ firebase.initializeApp(firebaseConfig);
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     AuthService,
     FirebaseService,
-    File
+    File,
+    WebWorkerService
   ]
 })
 export class AppModule {}

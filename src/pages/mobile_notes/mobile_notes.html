@@ -21,40 +21,12 @@
         <!-- PUBLIC NOTE -->
         <ion-col col-xs-12 col-sm-12 col-md-12 col-lg-12 *ngSwitchCase="'publicNote'">
           <ion-row>
-              <ion-textarea style="height: 50vh" readonly autosize [(ngModel)]="publicText" [value]="publicText"></ion-textarea>
+              <ion-textarea style="height: 65vh" readonly autosize [(ngModel)]="publicText" [value]="publicText"></ion-textarea>
           </ion-row>
           <ion-row row-xs-12 row-sm-12 row-md-12 row-lg-12>
             <ion-col>
               <!-- Change Log -->
-              <ion-slides spaceBetween="80px" pager="false" loop="true">
-                <ion-slide *ngFor="let change of changeLog | async">
-                  <ion-row>
-                    <ion-col align="right" style="margin-top: 15px">
-                      <ion-icon (click)="previousSlide()" class="arrow-icons" name="ios-arrow-back"></ion-icon>
-                    </ion-col>
-                    <ion-col align="center">
-                      <div *ngIf="change.originalSentence != 'N/A'">
-                        <p id="changeLog"><b>Would you like to replace: </b> {{ change.originalSentence }}</p>
-                        <p id="changeLog"><b>With the following sentence: </b> {{ change.proposedSentence }}</p>
-                      </div>
-                      <p id="changeLog" *ngIf="change.originalSentence == 'N/A'"><b>Would you like to insert the following sentence: </b> {{ change.proposedSentence }}</p>
-                      <ion-row>
-                        <ion-col align="center">
-                          <ion-col>
-                            <button id="disapproveBtn"ion-button icon-only><ion-icon name="md-close"></ion-icon></button>
-                          </ion-col>
-                          <ion-col>
-                            <button id="approveBtn" ion-button icon-only><ion-icon name="md-checkmark"></ion-icon></button>
-                          </ion-col>
-                        </ion-col>
-                      </ion-row>
-                    </ion-col>
-                    <ion-col align="left" style="margin-top: 15px">
-                      <ion-icon (click)="nextSlide()" class="arrow-icons" name="ios-arrow-forward"></ion-icon>
-                    </ion-col>
-                  </ion-row>
-                </ion-slide>
-              </ion-slides>
+              <button ion-button full (click)="viewChanges()">View Changes</button>
             </ion-col>
           </ion-row>
         </ion-col>

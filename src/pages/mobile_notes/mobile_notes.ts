@@ -7,6 +7,7 @@ import { File } from '@ionic-native/file';
 
 import { Chapter } from '../../models/chapter';
 import { MergeHandler } from '../../models/mergeHandler';
+import { ChangeLogPage } from './changelogPage';
 
 
 @Component({
@@ -143,6 +144,13 @@ export class MobileNotesPage {
           }
 
       }
+    }
+
+    viewChanges(){
+      let data = {'chapterKey': this.chapterKey};
+      let popOver = this.modalCtrl.create(ChangeLogPage, data);
+
+      popOver.present();
     }
 
     nextSlide(){
