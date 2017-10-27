@@ -1,16 +1,6 @@
 page-home {
-
-  .slides {
-    align-self: center;
-    align-content: center;
-    word-wrap: normal;
-    color: map-get($colors, primary);
-    height: 85vh;
-  }
-
-  .arrow-icons {
-    margin-top: 42vh;
+  #title {
+    color: black;
     font-size: 10vw;
   }
-  
 }
