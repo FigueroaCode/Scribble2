@@ -21,7 +21,7 @@
         <!-- PUBLIC NOTE -->
         <ion-col col-xs-12 col-sm-12 col-md-12 col-lg-12 *ngSwitchCase="'publicNote'">
           <ion-row>
-              <ion-textarea style="height: 65vh" readonly autosize [(ngModel)]="publicText" [value]="publicText"></ion-textarea>
+              <ion-textarea style="height: 70vh" readonly autosize [(ngModel)]="publicText" [value]="publicText"></ion-textarea>
           </ion-row>
           <ion-row row-xs-12 row-sm-12 row-md-12 row-lg-12>
             <ion-col>
@@ -35,24 +35,35 @@
         <ion-col col-xs-12 col-sm-12 col-md-12 col-lg-12 *ngSwitchCase="'privateNote'">
           <!-- text area -->
           <ion-row style="height:70vh">
-              <ion-textarea autosize [(ngModel)]="privateText" [value]="privateText"></ion-textarea>
+              <ion-textarea autosize [(ngModel)]="privateText" [value]="privateText" placeholder="Enter your notes here or Import them from a file"></ion-textarea>
           </ion-row>
           <!-- Choose a chapter area -->
           <ion-row>
               <!-- Get file button -->
             <ion-col col-xs-6>
               <div id="inputOuterField">
-                <button id="fakeInput" ion-button>
-                  <ion-row row-xs-12 row-sm-12 row-md-3 row-lg-3>
-                    <ion-input max="25" id="ionTextInput" readonly type="text" value="{{this.chosenFileName}}"></ion-input>
-                    <ion-icon id="fileIcon" name="ios-folder-outline"></ion-icon>
-                  </ion-row>
+                <button id="fakeInput" ion-button full>
+                  <!-- <ion-row row-xs-12> -->
+                    <ion-col>
+                      <!-- <ion-input max="25" id="ionTextInput" readonly type="text" value="{{this.chosenFileName}}"></ion-input> -->
+                      <span id="ionTextInput">{{this.chosenFileName}}</span>
+                    </ion-col>
+                    <ion-col col-xs-11 style="margin-bottom: 25px">
+                      <!-- <ion-icon id="fileIcon" name="ios-folder-outline"></ion-icon> -->
+                    </ion-col>
+                  <!-- </ion-row> -->
                 </button>
                 <input id="fileInput" type="file" #fileInput (change)="readSingleFile()">
               </div>
             </ion-col>
-            <ion-col col-xs-6>
-              <button ion-button (click)="prepareMerge()">Save and Upload</button>
+            <ion-col col-xs-3>
+              <button ion-button (click)="saveNote()">Save</button>
+            </ion-col>
+            <ion-col col-xs-3>
+              <button ion-button (click)="prepareMerge()">
+                Merge
+                <!-- <ion-icon style="margin-left: 10px" name="md-git-pull-request"></ion-icon> -->
+              </button>
             </ion-col>
           </ion-row>
         </ion-col>

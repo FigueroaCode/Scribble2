@@ -26,7 +26,7 @@ export class NotesPage {
     currentChapterKey: string;
     inPublicNote: boolean;
     //Set defualt Segment to the main Note
-    noteSegment: string = "publicNote";
+    noteSegment: string = "privateNote";
     getFirstChapterKey: Promise<any>;
     getFirebase: Promise<any>;
     dropDownTitle: string;

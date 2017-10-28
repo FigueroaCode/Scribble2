@@ -10,16 +10,19 @@
     <ion-grid *ngIf="isApp">
       <button ion-button (click)="createChapter()">Create Chapter</button>
       <ion-list>
-        <button (click)="sendToNotes(chapter.chapterName, chapter.$key)" ion-item *ngFor="let chapter of chapters | async">{{ chapter.chapterName }}</button>
+        <ion-item *ngFor="let chapter of chapters | async" (click)="sendToNotes(chapter.chapterName, chapter.$key)" >
+          {{ chapter.chapterName }}
+          <ion-icon name="ios-exit-outline" item-end></ion-icon>
+        </ion-item>
       </ion-list>
     </ion-grid>
     <ion-grid padding *ngIf="!isApp">
       <ion-segment [(ngModel)]="noteSegment">
-        <ion-segment-button value="publicNote" (click)="publicNoteClicked()">
-          Public Notes
-        </ion-segment-button>
         <ion-segment-button value="privateNote" (click)="privateNoteClicked()">
           Private Notes
+        </ion-segment-button>
+        <ion-segment-button value="publicNote" (click)="publicNoteClicked()">
+          Public Notes
         </ion-segment-button>
       </ion-segment>
 
@@ -106,6 +109,9 @@
                 </ion-col>
               </ion-row>
             </div>
+            <ion-col>
+              <button ion-button full (click)="createChapter()">Create Chapter</button>
+            </ion-col>
             <ion-col>
               <button ion-button full (click)="saveNote()">SAVE CHANGES</button>
             </ion-col>

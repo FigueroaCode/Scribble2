@@ -34,8 +34,6 @@
 
 #ionTextInput {
   position: absolute;
-  left: 10%;
-  top: -3px;
   align-items: center;
 }
 
@@ -47,7 +45,7 @@
   position: absolute;
   top: 0px;
   z-index: -1;
-  width: 100%;
+  width: 150%;
   background-color: map-get($colors,primary);
   color: map-get($colors,light);
 }

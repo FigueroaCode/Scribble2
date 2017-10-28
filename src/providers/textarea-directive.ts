@@ -33,6 +33,6 @@ export class Autosize implements OnInit{
         textarea.style.fontSize = '20px';
         textarea.style.resize = 'none';
         //Give it a fixed size
-        textarea.style.height = '65vh';
+        textarea.style.height = '70vh';
     }
 }
