@@ -35,7 +35,7 @@ export class CreateCoursePage{
         //Make sure all the fields are not empty
         if(this.displayName != null && this.createCourse.value.courseTitle != '' && this.createCourse.value.description != '' && this.createCourse.value.courseID != ''
             && this.createCourse.value.professor != '' && this.createCourse.value.university != ''){
-                let newCourse = new Course(this.displayName, this.createCourse.value.courseTitle, ' ',
+                let newCourse = new Course(this.displayName,this.createCourse.value.courseTitle.toLowerCase(), this.createCourse.value.courseTitle, ' ',
                     this.createCourse.value.description, this.createCourse.value.professor, this.createCourse.value.university,
                     this.createCourse.value.courseID,1,0);
             //get the users id
