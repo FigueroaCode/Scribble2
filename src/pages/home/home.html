@@ -1,20 +1,23 @@
-<ion-content class="background" padding wrap>
-  <body>
-    <ion-grid>
-      <!-- Need to Align these buttons to the right -->
-      <ion-row>
-        <button ion-button (click)="signIn()" color="danger"> Sign In </button>
-        <button ion-button (click)="register()" color="danger"> Register </button>
-      </ion-row>
+<ion-header>
+  <ion-col align="center" col-xs-3 col-sm-3 col-md-3 col-lg-3 col-xl-3>
+    <button id="buttons" ion-button (click)="signIn()" color="danger"> Sign In </button>
+    <button id="buttons" ion-button (click)="register()" color="danger"> Register </button>
+  </ion-col>
+</ion-header>
 
-      <!-- Actual Site Content -->
+<ion-content class="background" wrap>
+  <ion-grid>
+
+    <div class="initialContent">
       <ion-row>
         <ion-col>
-          <h1 id="title">Written notes are</h1>
-          <h1 id="changingWord">{{wordBank[0]}}</h1>
+          <h1 id="homePageTitle"></h1>
+          <ion-col align="center">
+            <h1 id="changingWord">{{wordBank[0]}}</h1>
+          </ion-col>
         </ion-col>
       </ion-row>
+    </div>
 
-    </ion-grid>
-  </body>
+  </ion-grid>
 </ion-content>

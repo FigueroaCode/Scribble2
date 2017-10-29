@@ -14,6 +14,9 @@
 // for the .md, .ios, or .wp mode classes. The mode class is
 // automatically applied to the <body> element in the app.
 
+::-webkit-scrollbar {
+  display: none;
+}
 
 .background{
     background-color: map-get($colors, secondary);
@@ -44,4 +47,11 @@
   font-weight: normal;
   font-style: normal;
   src: url("../assets/fonts/Blacksword.otf");
+}
+
+@font-face {
+  font-family: "ToThePoint";
+  font-weight: normal;
+  font-style: normal;
+  src: url("../assets/fonts/ToThePoint.ttf");
 }

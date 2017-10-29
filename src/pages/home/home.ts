@@ -45,14 +45,38 @@ export class HomePage {
 
   ionViewDidLoad(){
     let that = this;
+    //Spell out this word character by character.
+    let word = "";
+    let finalWord = "Written notes are";
+    let index = 0;
     this.interval = self.setInterval(function(){
-      $('#changingWord').slideToggle(1000);
+      if(index < finalWord.length){
+        word += finalWord[index];
+        $('#homePageTitle').html(word);
+        index++;
+      }else{
+        this.interval = null;
+      }
+    }, 100);
+
+    this.interval = self.setInterval(function(){
+      $('#changingWord').slideToggle();
       that.counter++;
       if(that.counter >= that.wordBank.length){
-        that.counter = 0;
+        this.interval = null;
       }
-      $('#changingWord').delay(1000).html(that.wordBank[that.counter]);
-    },3000);
+    }, 2000);
+
+    //$('.header').delay(10000).slideToggle();
+
+    // this.interval = self.setInterval(function(){
+    //   $('#changingWord').slideToggle(1000);
+    //   that.counter++;
+    //   if(that.counter >= that.wordBank.length){
+    //     that.counter = 0;
+    //   }
+    //   $('#changingWord').delay(1000).html(that.wordBank[that.counter]);
+    // },2000);
   }
 
   ionViewDidLeave(){
