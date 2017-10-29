@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, AlertController } from 'ionic-angular';
+import { NavController, AlertController, ToastController } from 'ionic-angular';
 import { FirebaseService } from '../../providers/firebase-service';
 //import { FirebaseListObservable } from 'angularfire2/database';
 import { AuthService } from '../../providers/auth-service';
@@ -22,7 +22,7 @@ export class JoinCoursePage {
 
 
     constructor(public navCtrl: NavController, public firebaseService: FirebaseService,
-        public authService: AuthService, public alertCtrl: AlertController) {
+        public authService: AuthService, public alertCtrl: AlertController, public toastCtrl: ToastController) {
         //check that user exists
         if(this.authService.getFireAuth().currentUser)
             this.displayName = this.authService.getFireAuth().currentUser.displayName;
@@ -85,6 +85,13 @@ export class JoinCoursePage {
     joinCourse(courseKey, courseOwner){
         //its going to send a request instead later
         this.firebaseService.sendJoinRequest(courseKey, this.displayName, courseOwner);
+
+        let toast = this.toastCtrl.create({
+          message: "Request Sent",
+          duration: 3000
+        });
+
+        toast.present();
     }
 
     checkNotes(courseKey){
@@ -94,5 +101,12 @@ export class JoinCoursePage {
 
     saveCourse(course){
       this.firebaseService.favoriteCourse(course,this.displayName);
+
+      let toast = this.toastCtrl.create({
+        message: "Course Saved",
+        duration: 3000
+      });
+
+      toast.present();
     }
 }
