@@ -84,8 +84,13 @@ export class FirebaseService {
       return textPromise;
   }
 
-  getFavoriteCourses(){
-    return this.fireDB.list('/FavoriteCourses/');
+  getFavoriteCourses(username){
+    return this.fireDB.list('/FavoriteCourses/', {
+      query: {
+        orderByChild: 'favUser',
+        equalTo: username
+      }
+    });
   }
 
   getChangeLog(chapterKey: string){
@@ -265,8 +270,8 @@ export class FirebaseService {
 
   favoriteCourse(course, username){
     //need to be sorted by person that favorited it
-    this.fireDB.object('/FavoriteCourses/'+course.key).$ref.set(course);
-    this.fireDB.object('/FavoriteCourses/'+course.key).$ref.update({'favUser': username});
+    let key = this.fireDB.list('/FavoriteCourses/').push(course).key;
+    this.fireDB.object('/FavoriteCourses/'+key).$ref.update({'favUser': username});
   }
 
 
