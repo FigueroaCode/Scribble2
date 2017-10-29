@@ -1,16 +1,38 @@
 page-home {
 
-  .slides {
-    align-self: center;
-    align-content: center;
-    word-wrap: normal;
-    color: map-get($colors, primary);
-    height: 85vh;
+  #homePageTitle {
+    color: black;
+    font-size: 20vw;
+    font-family: ToThePoint;
+    margin-left: 5vw;
   }
 
-  .arrow-icons {
-    margin-top: 42vh;
-    font-size: 10vw;
+  #buttons {
+    float: right;
+    margin-right: 1vw;
+    background-color: black;//map-get($colors, );
   }
-  
+
+  #changingWord {
+    margin-top: 0vh;
+    font-family: ToThePoint;
+    font-size: 12vw;
+    display: none;
+  }
+
+  .initialContent {
+    background-image: url('../../../assets/images/paperlines.png');
+    height: 90vh;
+  }
+
+  .background {
+    background-color: white;
+  }
+
+  .header {
+    margin-bottom: 0px;
+    height: 8vh;
+    padding: .5vh;
+    background-color: map-get($colors, primary);
+  }
 }

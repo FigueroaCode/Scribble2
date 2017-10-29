@@ -22,15 +22,12 @@ $font-path: "../assets/fonts";
 // The "primary" color is the only required color in the map.
 
 $colors: (
-  primary:    #00003c, //Dark Blue
-  secondary:  #f7eeee, //Beige
-  danger:     #800020, //Dark Red
-  light:      #ffffff, //White
-  dark:       #cccccc //Grey
+  primary:    #032B2F,//Hunter-Green
+  secondary:  #DDE2E3,//Some sort of grey - Background Color
+  danger:     #D73A31,//Tomato
 );
 
-$list-md-background-color: map-get($colors, light);
-
+$list-md-background-color: map-get($colors, white);
 $toolbar-ios-title-text-color: map-get($colors, light);
 $toolbar-md-title-text-color: map-get($colors, light);
 

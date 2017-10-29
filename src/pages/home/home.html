@@ -1,46 +1,23 @@
-<ion-content class="background" padding wrap>
+<ion-header>
+  <ion-col align="center" col-xs-3 col-sm-3 col-md-3 col-lg-3 col-xl-3>
+    <button id="buttons" ion-button (click)="signIn()" color="danger"> Sign In </button>
+    <button id="buttons" ion-button (click)="register()" color="danger"> Register </button>
+  </ion-col>
+</ion-header>
+
+<ion-content class="background" wrap>
   <ion-grid>
-    <ion-row row-12>
-      <ion-col align="right" col-xs-1 col-sm-1 col-md-1 col-lg-1>
-        <ion-icon (click)="previousSlide()" class="arrow-icons" name="ios-arrow-back"></ion-icon>
-      </ion-col>
 
-      <ion-col col-xs-10 col-sm-10 col-md-10 col-lg-10>
-        <ion-slides class="slides" spaceBetween="80px" pager="false" loop="true">
-          <ion-slide>
-              <h1 class="titles">{{appName}}</h1>
-          </ion-slide>
+    <div class="initialContent">
+      <ion-row>
+        <ion-col>
+          <h1 id="homePageTitle"></h1>
+          <ion-col align="center">
+            <h1 id="changingWord">{{wordBank[0]}}</h1>
+          </ion-col>
+        </ion-col>
+      </ion-row>
+    </div>
 
-          <ion-slide>
-            <h1 class="titles" style="font-size: 8vh">What is {{appName}}?</h1>
-            <h3 class="bodyText">{{appName}} is a platform meant to encourage and facilitate group studying and note-taking</h3>
-          </ion-slide>
-
-          <ion-slide>
-            <h1 class="titles" style="font-size: 8vh" >How does it work?</h1>
-            <div class="bodyText">
-              <p>
-                {{appName}} uses an algorithm to compare your notes to that of others, and then merges them into a single document. It
-                recognizes similarities between sentences found in both documents as well as unique sentences, then allows users to
-                decide which sentences to replace, update, or append.
-              </p>
-            </div>
-          </ion-slide>
-        </ion-slides>
-      </ion-col>
-
-      <ion-col align="left" col-xs-1 col-sm-1 col-md-1 col-lg-1>
-        <ion-icon (click)="nextSlide()" class="arrow-icons" name="ios-arrow-forward"></ion-icon>
-      </ion-col>
-
-    </ion-row>
-
-    <ion-row>
-      <ion-col align="center" col-12>
-        <button ion-button (click)="signIn()" color="danger"> Sign In</button>
-        <button ion-button (click)="register()" color="danger"> Register</button>
-      </ion-col>
-    </ion-row>
-
-    </ion-grid>
+  </ion-grid>
 </ion-content>

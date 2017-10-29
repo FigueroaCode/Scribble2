@@ -11,7 +11,7 @@
           <h1>Search Criteria</h1>
         </ion-col>
         <ion-col col-10 align="right">
-          <button ion-button (click)="clearFilters()">Clear Filters</button>
+          <button ion-button color="danger" (click)="clearFilters()">Clear Filters</button>
         </ion-col>
       </ion-row>
       <ion-row>
@@ -73,17 +73,21 @@
                     <ion-col>
                         <ion-row>
                             <ion-col align='right'>
+<<<<<<< HEAD
+                                <button ion-button round color="primary" (click)="checkNotes(course.$key)">Check Notes</button>
+=======
                                 <button ion-button round color="light" (click)="checkNotes(course.$key)">View Course</button>
+>>>>>>> 21e613b8a1c6159cea513a154c6015f79a63ea54
                             </ion-col>
                         </ion-row>
                         <ion-row>
                             <ion-col align='right'>
-                                <button ion-button round color="light" (click)="saveCourse(course)">Save Course</button>
+                                <button ion-button round color="primary" (click)="saveCourse(course)">Save Course</button>
                             </ion-col>
                         </ion-row>
                         <ion-row>
                             <ion-col align='right'>
-                                <button ion-button round color="light" (click)="joinCourse(course.$key, course.owner)">Join Course</button>
+                                <button ion-button round color="danger" (click)="joinCourse(course.$key, course.owner)">Join Course</button>
                             </ion-col>
                         </ion-row>
                     </ion-col>
