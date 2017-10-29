@@ -305,6 +305,10 @@ export class FirebaseService {
     this.fireDB.list('/courseChapters/'+courseKey).remove(id);
   }
 
+  removeFromFavorite(id){
+    this.fireDB.list('/FavoriteCourses/').remove(id);
+  }
+
   removePendingRequest(id, courseKey: string){
     //decrement request counter
     let that = this;

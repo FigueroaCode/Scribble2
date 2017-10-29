@@ -15,7 +15,7 @@
             {{ course.title }}
         </ion-col>
         <ion-col align="right">
-            <button ion-button (click)="joinCourse(course.key, course.owner)">Join Course</button>
+            <button ion-button (click)="joinCourse(course.$key,course.key, course.owner)">Join Course</button>
         </ion-col>
       </ion-row>
     </ion-card-header>

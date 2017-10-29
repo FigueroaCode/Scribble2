@@ -31,9 +31,11 @@ export class SavedCoursesPage {
       }
 
       //Joining a course
-      joinCourse(courseKey, courseOwner){
+      joinCourse(id,courseKey, courseOwner){
           //its going to send a request instead later
           this.firebaseService.sendJoinRequest(courseKey, this.displayName, courseOwner);
+          //remove from favorite list
+           this.firebaseService.removeFromFavorite(id);
       }
 
 }
