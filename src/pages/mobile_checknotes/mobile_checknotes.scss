@@ -1,0 +1,115 @@
+.no-scroll .scroll-content{
+  overflow: hidden;
+}
+
+#changeLog {
+  font-size: 14px;
+  color: black;
+}
+
+#approveBtn {
+  height : 25px;
+  width : 25px;
+  background-color: #007c14;
+}
+
+#disapproveBtn {
+  height : 25px;
+  width : 25px;
+  background-color: #bc0505;
+}
+
+#changeLog-Title {
+  padding-top: 10px;
+  height: 40px;
+  color: map-get($colors, light);
+  background-color: map-get($colors, primary);
+}
+
+#fileIcon {
+  position: absolute;
+  left: 90%;
+  top: 10px;
+}
+
+#ionTextInput {
+  position: absolute;
+  align-items: center;
+}
+
+#inputOuterField {
+  position: relative;
+}
+
+#fakeInput {
+  position: absolute;
+  top: 0px;
+  z-index: -1;
+  width: 150%;
+  background-color: map-get($colors,primary);
+  color: map-get($colors,light);
+}
+
+#fileInput {
+   z-index: 2;
+   margin-top: 10px;
+   opacity: 0;
+}
+
+#noteText{
+  background-color: map-get($colors,secondary);
+  //border: solid 1px black;
+  font-size: 20px;
+}
+
+/* Show the dropdown menu on hover */
+.chapter-dropdown:enabled .chapter-dropdown-content {
+    display: block;
+}
+
+.chapter-dropdown:disabled .chapter-dropdown-content {
+    display: none;
+}
+
+/* Dropdown Button */
+.dropbutton {
+    min-width: 160px;
+    background-color: map-get($colors,primary);
+    color: white;
+    padding: 16px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+}
+
+.chapter-dropdown:hover .chapter-dropdown-content{
+  display: block;
+}
+
+.chapter-dropdown-content .ion-button:hover{
+  //$button-md-background-color-hover: map-get($colors, primary);
+}
+
+/* Dropdown Content (Hidden by Default) */
+.chapter-dropdown-content {
+    display: none;
+    position: absolute;
+    min-width: 160px;
+    z-index: 1;
+}
+
+/* The container <div> - needed to position the dropdown content */
+.chapter-dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.chapter-dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+/* Show the dropdown menu */
+.show {display:block;}

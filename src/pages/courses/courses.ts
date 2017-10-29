@@ -24,8 +24,7 @@ export class CoursesPage {
     courses: FirebaseListObservable<any[]>;
     displayName: string;
     currentUser: User;
-    memberCourses: Array<any>;
-
+    empty: boolean=false;
 
     constructor(public navCtrl: NavController, public firebaseService: FirebaseService,
         public authService: AuthService, public alertCtrl: AlertController,
@@ -44,6 +43,17 @@ export class CoursesPage {
       let that = this;
       this.firebaseService.getMembersCourses(this.displayName).then(function(memberCourses){
         that.courses = memberCourses as FirebaseListObservable<any[]>;
+        //keep track whether or nto there are any courses
+        let size = that.courses.map(x => {
+          return x.length;
+        });
+          size.subscribe(function(val){
+          if(val <= 0){
+            that.empty = true;
+          }else{
+            that.empty = false;
+          }
+        });
       });
     }
 
@@ -85,20 +95,26 @@ export class CoursesPage {
 
     //Filter Items for Search Bar
     getItems(ev: any) {
-      this.initializeCourses();
       // set val to the value of the searchbar
       let val = ev.target.value;
 
       // if the value is an empty string don't filter the items
       if (val && val.trim() != '') {
-          this.courses = this.firebaseService.getDB().list('/courses', {
-              query:
-              {
-                  orderByChild: 'title',
-                  equalTo: val
+        val = val.trim();
+        val = val.toLowerCase();
+        let that = this;
+          this.firebaseService.getCurrentUserID(this.displayName).then(function(userID){
+            that.courses = that.firebaseService.getDB().list('/Users/'+userID+'/courses', {
+                query:
+                {
+                    orderByChild: 'searchTitle',
+                    equalTo: val
 
-              }
+                }
+            });
           });
+      }else{
+        this.initializeCourses();
       }
   }
 

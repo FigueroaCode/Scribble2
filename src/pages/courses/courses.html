@@ -8,7 +8,7 @@
 </ion-header>
 <ion-content class="background">
     <ion-grid>
-        <ion-row row-12>
+        <ion-row row-12 *ngIf="empty">
           <ion-col align="center">
             <h1 >Welcome. Below you may search through, and access courses you are already a member of.</h1>
           </ion-col>
@@ -20,9 +20,9 @@
             </ion-col>
         </ion-row>
             <!-- Display courses -->
-        <ion-row>
+        <ion-row style="height: 70vh">
             <ion-col>
-                <ion-scroll style="width:100%;height:59vh" scrollY="true">
+                <ion-scroll style="width:100%;height:70vh" scrollY="true">
                 <ion-card scroll="true"  *ngFor="let course of courses | async">
                     <ion-grid>
                         <!-- Header -->

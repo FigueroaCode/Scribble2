@@ -1,0 +1,26 @@
+<ion-header>
+  <ion-navbar color="primary">
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <h2 id="title">Saved Courses</h2>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding class="background">
+  <ion-card *ngFor="let course of courses | async">
+    <ion-card-header>
+      <ion-row>
+        <ion-col>
+            {{ course.title }}
+        </ion-col>
+        <ion-col align="right">
+            <button ion-button (click)="joinCourse(course.key, course.owner)">Join Course</button>
+        </ion-col>
+      </ion-row>
+    </ion-card-header>
+    <ion-card-content>
+      {{ course.description }}
+    </ion-card-content>
+  </ion-card>
+</ion-content>

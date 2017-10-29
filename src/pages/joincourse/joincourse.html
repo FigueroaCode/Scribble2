@@ -73,12 +73,12 @@
                     <ion-col>
                         <ion-row>
                             <ion-col align='right'>
-                                <button ion-button round color="primary">Check Notes</button>
+                                <button ion-button round color="primary" (click)="checkNotes(course.$key)">Check Notes</button>
                             </ion-col>
                         </ion-row>
                         <ion-row>
                             <ion-col align='right'>
-                                <button ion-button round color="primary">Save Course</button>
+                                <button ion-button round color="primary" (click)="saveCourse(course)">Save Course</button>
                             </ion-col>
                         </ion-row>
                         <ion-row>

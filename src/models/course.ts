@@ -1,10 +1,10 @@
 import { Chapter } from './chapter';
-import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 
 export class Course {
 
     owner: string;
+    searchTitle: string;
     title: string;
     key: string;
     description: string;
@@ -15,9 +15,10 @@ export class Course {
     memberCount: number;
     requestCounter: number;
 
-    constructor(owner: string, title: string,key: string,description: string, professor: string,
+    constructor(owner: string,searchTitle: string, title: string,key: string,description: string, professor: string,
         university: string, courseID: string,memberCount: number, requestCounter: number){
         this.owner = owner;
+        this.searchTitle = searchTitle;
         this.title = title;
         this.key = key;
         this.description = description;
@@ -35,9 +36,9 @@ export class Course {
     }
 
     //add more parameters depending on your database entries and Hero constructor
-    static fromJson({owner, title,description, professor,university,courseID,memberCount, requestCounter}): Course {
+    static fromJson({owner,searchTitle,title,description, professor,university,courseID,memberCount, requestCounter}): Course {
 
-      return new Course(owner, title,description, professor, '',
+      return new Course(owner,searchTitle, title,description, professor, '',
           university, courseID,memberCount, requestCounter);
     }
 
@@ -57,6 +58,9 @@ export class Course {
     //Getters
     getOwner(){
         return this.owner;
+    }
+    getSearchTitle(){
+      return this.searchTitle;
     }
     getTitle(){
         return this.title;
@@ -86,6 +90,9 @@ export class Course {
     //Setters
     set Owner(newOwner: string){
       this.owner = newOwner;
+    }
+    set SearchTitle(newTitle: string){
+      this.searchTitle = newTitle;
     }
     set Title(newTitle: string){
         this.title = newTitle;

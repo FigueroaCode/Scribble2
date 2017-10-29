@@ -11,6 +11,7 @@ import { HttpModule } from '@angular/http';
 import { IonicStorageModule } from '@ionic/storage';
 import firebase from 'firebase';
 import { Autosize } from '../providers/textarea-directive';
+import { WebSize } from '../providers/textarea-directive-web';
 import { File } from '@ionic-native/file';
 
 import { MyApp } from './app.component';
@@ -21,10 +22,17 @@ import { CoursesPage } from '../pages/courses/courses';
 import { CreateCoursePage } from '../pages/courses/create_course';
 import { CenterPage } from '../pages/center/center';
 import { NotesPage } from '../pages/notes/notes';
+import { CheckNotesPage } from '../pages/checknotes/checknotes';
+import { MobileNotesPage } from '../pages/mobile_notes/mobile_notes';
+import { MobileCheckNotesPage } from '../pages/mobile_checknotes/mobile_checknotes';
+import { ChangeLogPage } from '../pages/mobile_notes/changelogPage';
 import { ResetPasswordPage } from '../pages/resetpassword/resetpassword';
 import { JoinCoursePage } from '../pages/joincourse/joincourse';
 import { PendingRequestPage } from '../pages/pendingrequest/pendingrequest';
+import { SavedCoursesPage } from '../pages/savedcourses/savedcourses';
 import { User } from '../models/user';
+
+import { WebWorkerService } from '../web-worker.service';
 
 export const firebaseConfig = {
     apiKey: "AIzaSyAzEAPiDw8-K235uSq_wfrNPIAZyRivsAE",
@@ -49,8 +57,14 @@ firebase.initializeApp(firebaseConfig);
     ResetPasswordPage,
     JoinCoursePage,
     NotesPage,
+    CheckNotesPage,
+    MobileNotesPage,
+    MobileCheckNotesPage,
+    ChangeLogPage,
     PendingRequestPage,
-    Autosize
+    SavedCoursesPage,
+    Autosize,
+    WebSize
   ],
   imports: [
     BrowserModule,
@@ -72,7 +86,12 @@ firebase.initializeApp(firebaseConfig);
     ResetPasswordPage,
     JoinCoursePage,
     NotesPage,
-    PendingRequestPage
+    CheckNotesPage,
+    MobileNotesPage,
+    MobileCheckNotesPage,
+    ChangeLogPage,
+    PendingRequestPage,
+    SavedCoursesPage
   ],
   providers: [
     StatusBar,
@@ -80,7 +99,8 @@ firebase.initializeApp(firebaseConfig);
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     AuthService,
     FirebaseService,
-    File
+    File,
+    WebWorkerService
   ]
 })
 export class AppModule {}

@@ -1,13 +1,14 @@
 import { Component, ViewChild } from '@angular/core';
-import { NavController, AlertController, NavParams, ModalController, ToastController } from 'ionic-angular';
+import { Platform, NavController, AlertController, NavParams, ModalController, ToastController } from 'ionic-angular';
 import { FirebaseService } from '../../providers/firebase-service';
 import { FirebaseListObservable } from 'angularfire2/database';
 import { AuthService } from '../../providers/auth-service';
 import { File } from '@ionic-native/file';
 
 import { Chapter } from '../../models/chapter';
+import { Change } from '../../models/change';
 import { MergeHandler } from '../../models/mergeHandler';
-
+import { MobileNotesPage } from '../mobile_notes/mobile_notes';
 
 @Component({
   selector: 'page-notes',
@@ -25,15 +26,23 @@ export class NotesPage {
     currentChapterKey: string;
     inPublicNote: boolean;
     //Set defualt Segment to the main Note
-    noteSegment: string = "publicNote";
+    noteSegment: string = "privateNote";
     getFirstChapterKey: Promise<any>;
     getFirebase: Promise<any>;
     dropDownTitle: string;
     chosenFileName: string;
+    isApp: boolean;
 
-    constructor(public navCtrl: NavController, public firebaseService: FirebaseService,
+    constructor(public navCtrl: NavController, public firebaseService: FirebaseService, public platform: Platform,
     public authService: AuthService, public alertCtrl: AlertController, public toastCtrl: ToastController,
     public modalCtrl: ModalController, public navParams: NavParams, private file: File) {
+        //check which platform i am on
+        if(this.platform.is('core') || this.platform.is('mobileweb')) {
+          this.isApp = false;
+        } else {
+          this.isApp = true;
+        }
+
         //need to wrap this in a promise in order to use it in another promise
         let getCourseKey = new Promise(function(resolve, reject){
             let key = navParams.get('key');
@@ -86,7 +95,7 @@ export class NotesPage {
 
     initializeChangeLog(){
       let that = this;
-      //TODO: this should be done on another thread later
+
       if((this.currentChapterKey == null || this.currentChapterKey == '') && this.courseKey != null){
           //needs to be done in order for the promise to recognize which object 'this' is referring
           this.getFirstChapterKey.then(function(firstKey){
@@ -204,12 +213,10 @@ export class NotesPage {
     //Switching Between Notes
     publicNoteClicked(){
         this.inPublicNote = true;
-        this.updateNoteText();
     }
 
     privateNoteClicked(){
         this.inPublicNote = false;
-        this.updateNoteText();
     }
 
     toggleDropDown() {
@@ -265,6 +272,12 @@ export class NotesPage {
           }
 
       }
+    }
+
+    //-----------------------Mobile----------------//
+    sendToNotes(chapterName, chapterKey){
+      let data = {'chapterName': chapterName, 'chapterKey': chapterKey, 'courseKey': this.courseKey};
+      this.navCtrl.push(MobileNotesPage, data);
     }
 
 }

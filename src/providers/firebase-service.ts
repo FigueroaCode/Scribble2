@@ -2,8 +2,7 @@ import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
 import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
-import { AngularFireModule } from 'angularfire2';
-import { AngularFireDatabaseModule, AngularFireDatabase, FirebaseListObservable } from 'angularfire2/database';
+import { AngularFireDatabase, FirebaseListObservable } from 'angularfire2/database';
 
 import { Course } from '../models/course';
 import { Chapter } from '../models/chapter';
@@ -83,6 +82,15 @@ export class FirebaseService {
           }
       });
       return textPromise;
+  }
+
+  getFavoriteCourses(username){
+    return this.fireDB.list('/FavoriteCourses/', {
+      query: {
+        orderByChild: 'favUser',
+        equalTo: username
+      }
+    });
   }
 
   getChangeLog(chapterKey: string){
@@ -258,6 +266,12 @@ export class FirebaseService {
           }
         });
     }
+  }
+
+  favoriteCourse(course, username){
+    //need to be sorted by person that favorited it
+    let key = this.fireDB.list('/FavoriteCourses/').push(course).key;
+    this.fireDB.object('/FavoriteCourses/'+key).$ref.update({'favUser': username});
   }
 
 

@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { ViewController, NavParams } from 'ionic-angular';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, Validators } from '@angular/forms';
 import { FirebaseService } from '../../providers/firebase-service';
 import { AuthService } from '../../providers/auth-service';
 
@@ -35,7 +35,7 @@ export class CreateCoursePage{
         //Make sure all the fields are not empty
         if(this.displayName != null && this.createCourse.value.courseTitle != '' && this.createCourse.value.description != '' && this.createCourse.value.courseID != ''
             && this.createCourse.value.professor != '' && this.createCourse.value.university != ''){
-                let newCourse = new Course(this.displayName, this.createCourse.value.courseTitle, ' ',
+                let newCourse = new Course(this.displayName,this.createCourse.value.courseTitle.toLowerCase(), this.createCourse.value.courseTitle, ' ',
                     this.createCourse.value.description, this.createCourse.value.professor, this.createCourse.value.university,
                     this.createCourse.value.courseID,1,0);
             //get the users id

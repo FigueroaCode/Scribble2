@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
 import { NavController, AlertController } from 'ionic-angular';
 import { FirebaseService } from '../../providers/firebase-service';
-import { FirebaseListObservable } from 'angularfire2/database';
+//import { FirebaseListObservable } from 'angularfire2/database';
 import { AuthService } from '../../providers/auth-service';
+import { CheckNotesPage } from '../checknotes/checknotes';
 
 @Component({
   selector: 'page-joincourse',
@@ -84,5 +85,14 @@ export class JoinCoursePage {
     joinCourse(courseKey, courseOwner){
         //its going to send a request instead later
         this.firebaseService.sendJoinRequest(courseKey, this.displayName, courseOwner);
+    }
+
+    checkNotes(courseKey){
+      let data = {'key': courseKey};
+      this.navCtrl.push(CheckNotesPage, data);
+    }
+
+    saveCourse(course){
+      this.firebaseService.favoriteCourse(course,this.displayName);
     }
 }
