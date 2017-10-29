@@ -46,13 +46,12 @@ export class HomePage {
   ionViewDidLoad(){
     let that = this;
     this.interval = self.setInterval(function(){
-      $('#changingWord').slideUp(3000);
+      $('#changingWord').slideToggle(1000);
       that.counter++;
       if(that.counter >= that.wordBank.length){
         that.counter = 0;
       }
-      that.changingWord = that.wordBank[that.counter];
-      $('#changingWord').slideDown(3000);
+      $('#changingWord').delay(1000).html(that.wordBank[that.counter]);
     },3000);
   }
 
