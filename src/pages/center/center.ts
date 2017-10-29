@@ -6,6 +6,7 @@ import firebase from 'firebase';
 import { HomePage } from '../home/home';
 import { CoursesPage } from '../courses/courses';
 import { SignInPage } from '../sign_in/sign_in';
+import { SavedCoursesPage } from '../savedcourses/savedcourses';
 
 @Component({
   selector: 'page-center',
@@ -31,10 +32,10 @@ export class CenterPage {
                 title: 'Courses',
                 component: CoursesPage
             },
-            // {
-            //     title: 'Pending Requests',
-            //     component: PendingPage
-            // },
+            {
+                title: 'Saved Courses',
+                component: SavedCoursesPage
+            },
             {
                 title: 'Sign Out',
                 component: HomePage

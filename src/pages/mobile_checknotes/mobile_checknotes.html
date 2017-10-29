@@ -1,0 +1,20 @@
+<ion-header>
+  <ion-navbar color="primary">
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <h2 id="title">{{chapterName}}</h2>
+  </ion-navbar>
+</ion-header>
+<ion-content class="no-scroll">
+    <ion-grid padding>
+      <ion-row>
+        <!-- PUBLIC NOTE -->
+        <ion-col>
+          <ion-row>
+              <ion-textarea style="height: 100vh" readonly autosize [(ngModel)]="publicText" [value]="publicText"></ion-textarea>
+          </ion-row>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+</ion-content>

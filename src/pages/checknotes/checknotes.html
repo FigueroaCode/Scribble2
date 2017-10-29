@@ -1,0 +1,46 @@
+<ion-header>
+  <ion-navbar color="primary">
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <h2 id="title"> Public Notes </h2>
+  </ion-navbar>
+</ion-header>
+<ion-content class="background">
+    <ion-grid *ngIf="isApp">
+      <ion-list>
+        <ion-item *ngFor="let chapter of chapters | async" (click)="sendToNotes(chapter.chapterName, chapter.$key)" >
+          {{ chapter.chapterName }}
+          <ion-icon name="ios-exit-outline" item-end></ion-icon>
+        </ion-item>
+      </ion-list>
+    </ion-grid>
+    <ion-grid padding *ngIf="!isApp">
+        <!-- PUBLIC NOTE -->
+      <!-- Choose a chapter area -->
+      <ion-row>
+        <div class="chapter-dropdown">
+          <ion-row>
+            <ion-col>
+              <h1 style="margin-top: 6px">Chapter: </h1>
+            </ion-col>
+            <ion-col>
+              <button ion-button (click)="toggleDropDown()" class="dropbutton">{{this.dropDownTitle}}</button>
+              <div id="chapterDropdown" class="chapter-dropdown-content">
+                <button (click)="showNote(chapter.$key, chapter.chapterName)" color="danger" ion-button full *ngFor="let chapter of chapters | async">
+                    {{ chapter.chapterName }}
+                </button>
+              </div>
+            </ion-col>
+          </ion-row>
+        </div>
+      </ion-row>
+      <ion-row>
+          <ion-card style="height: 62vh">
+            <ion-card-content>
+              <ion-textarea readonly websize [(ngModel)]="publicText" [value]="publicText"></ion-textarea>
+            </ion-card-content>
+          </ion-card>
+      </ion-row>
+    </ion-grid>
+</ion-content>

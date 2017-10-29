@@ -22,11 +22,14 @@ import { CoursesPage } from '../pages/courses/courses';
 import { CreateCoursePage } from '../pages/courses/create_course';
 import { CenterPage } from '../pages/center/center';
 import { NotesPage } from '../pages/notes/notes';
+import { CheckNotesPage } from '../pages/checknotes/checknotes';
 import { MobileNotesPage } from '../pages/mobile_notes/mobile_notes';
+import { MobileCheckNotesPage } from '../pages/mobile_checknotes/mobile_checknotes';
 import { ChangeLogPage } from '../pages/mobile_notes/changelogPage';
 import { ResetPasswordPage } from '../pages/resetpassword/resetpassword';
 import { JoinCoursePage } from '../pages/joincourse/joincourse';
 import { PendingRequestPage } from '../pages/pendingrequest/pendingrequest';
+import { SavedCoursesPage } from '../pages/savedcourses/savedcourses';
 import { User } from '../models/user';
 
 import { WebWorkerService } from '../web-worker.service';
@@ -54,9 +57,12 @@ firebase.initializeApp(firebaseConfig);
     ResetPasswordPage,
     JoinCoursePage,
     NotesPage,
+    CheckNotesPage,
     MobileNotesPage,
+    MobileCheckNotesPage,
     ChangeLogPage,
     PendingRequestPage,
+    SavedCoursesPage,
     Autosize,
     WebSize
   ],
@@ -80,9 +86,12 @@ firebase.initializeApp(firebaseConfig);
     ResetPasswordPage,
     JoinCoursePage,
     NotesPage,
+    CheckNotesPage,
     MobileNotesPage,
+    MobileCheckNotesPage,
     ChangeLogPage,
-    PendingRequestPage
+    PendingRequestPage,
+    SavedCoursesPage
   ],
   providers: [
     StatusBar,
