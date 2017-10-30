@@ -40,6 +40,7 @@ export class AuthService {
 
 
     doLogin(email: string, password: string): any {
+    this.fireDB.database.goOnline();
     return this.fireAuth.signInWithEmailAndPassword(email, password);
     }
 
@@ -61,6 +62,7 @@ export class AuthService {
     }
 
     doLogout(): any {
+        this.fireDB.database.goOffline();
         return this.fireAuth.signOut();
     }
 }
