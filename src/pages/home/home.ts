@@ -60,25 +60,92 @@ export class HomePage {
     }, 100);
 
     //Timer by 1600
-
+    //Hide the title after it is spelled out
     this.interval = self.setTimeout(function(){
       $('#homePageTitle').slideToggle(500);
     },1700);
 
+    //Change the background, show the title
     this.interval = self.setTimeout(function(){
       $('#homePageTitle').slideToggle(500);
       $('.background').css('background-image','none');
+      $('.background').css('background-color','#DDE2E3');
     }, 1800);
 
+    //Change the font, font-size, and re-center the title
     this.interval = self.setTimeout(function(){
       $('#homePageTitle').css('font-family','Zekton');
       $('#homePageTitle').css('font-size','10vw');
       $('#homePageTitle').css('margin-left','10vw');
     },2200);
 
+    //Change the position and size of the title.
+
     this.interval = self.setTimeout(function(){
-      $('#homePageTitle').transition({ y: '-20vh', duration: 2000, scale: 0.8 });
+      $('#homePageTitle').transition({ y: '-22vh', duration: 2000, scale: 0.6 });
     },2400);
+
+    //Cards Slide Upwards
+
+    this.interval = self.setTimeout(function(){
+      $('#card1').transition({
+        opacity: '100%',
+        marginTop : '0vh',
+        position: 'relative',
+        duration: 2000
+      });
+    },2600);
+
+    this.interval = self.setTimeout(function(){
+      $('#card2').transition({
+        opacity: '100%',
+        marginTop : '0vh',
+        position: 'relative',
+        duration: 2000
+      });
+    },2800);
+
+    this.interval = self.setTimeout(function(){
+      $('#card3').transition({
+        opacity: '100%',
+        marginTop : '0vh',
+        position: 'relative',
+        duration: 2000
+      });
+    },3000);
+
+    //On-Hover Animations
+    //TODO: Maybe this should be in a Timeout.
+    $('#card1').hover(function(){
+      // IN-FUNCTION
+      $('#card3').transition({
+        opacity: '0%',
+        marginTop : '80vh',
+        position: 'relative',
+        duration: 500
+      });
+      $('#card2').transition({
+        opacity: '0%',
+        marginTop : '80vh',
+        position: 'relative',
+        duration: 500
+      });
+      this.interval = self.setTimeout(function(){
+        $('#card1').transition({
+          float: 'left',
+          width: '80vw',
+          duration: 500
+        });
+      },550);
+    },function(){
+      // OUT-FUNCTION
+      $('#card1').transition({
+        float: 'none',
+        width: '25vw',
+        duration: 500
+      });
+    });
+
   }
 
   ionViewDidLeave(){

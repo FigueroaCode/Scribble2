@@ -14,6 +14,27 @@ page-home {
     background-color: map-get($colors, danger);
   }
 
+  #cards {
+    position: fixed;
+    margin-top: 12%;
+    padding-left: 8vw;
+    padding-right: 8vw;
+  }
+
+  #card1,#card2,#card3 {
+    position: fixed;
+    margin-top: 100vh;
+    height: 60vh;
+    width: 25vw;
+    opacity: 0%;
+  }
+
+  .cardTitle {
+    margin-top: 3vh;
+    font-size: 40px;
+    font-family: Zekton;
+  }
+
   .initialContent {
     height: 90vh;
   }

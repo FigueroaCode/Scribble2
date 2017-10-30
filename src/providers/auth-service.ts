@@ -37,7 +37,7 @@ export class AuthService {
           // ...
         });
     }
-
+    
 
     doLogin(email: string, password: string): any {
     this.fireDB.database.goOnline();
