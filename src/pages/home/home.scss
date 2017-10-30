@@ -2,31 +2,25 @@ page-home {
 
   #homePageTitle {
     color: black;
-    font-size: 20vw;
+    font-size: 23vw;
     font-family: ToThePoint;
     margin-left: 5vw;
+    margin-top: 20vh;
   }
 
   #buttons {
     float: right;
     margin-right: 1vw;
-    background-color: black;//map-get($colors, );
-  }
-
-  #changingWord {
-    margin-top: 0vh;
-    font-family: ToThePoint;
-    font-size: 12vw;
-    display: none;
+    background-color: map-get($colors, danger);
   }
 
   .initialContent {
-    background-image: url('../../../assets/images/paperlines.png');
     height: 90vh;
   }
 
   .background {
     background-color: white;
+    background-image: url('../../../assets/images/paperlines.png');
   }
 
   .header {

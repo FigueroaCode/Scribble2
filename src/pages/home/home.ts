@@ -8,7 +8,7 @@ import { SignInPage } from '../sign_in/sign_in';
 import { CenterPage } from '../center/center';
 import { RegisterPage } from '../register/register';
 
-import * as $ from 'jquery'
+import * as $ from 'jquery.transit';
 
 @Component({
   selector: 'page-home',
@@ -47,7 +47,7 @@ export class HomePage {
     let that = this;
     //Spell out this word character by character.
     let word = "";
-    let finalWord = "Written notes are";
+    let finalWord = "Scribble Platform";
     let index = 0;
     this.interval = self.setInterval(function(){
       if(index < finalWord.length){
@@ -59,24 +59,26 @@ export class HomePage {
       }
     }, 100);
 
-    this.interval = self.setInterval(function(){
-      $('#changingWord').slideToggle();
-      that.counter++;
-      if(that.counter >= that.wordBank.length){
-        this.interval = null;
-      }
-    }, 2000);
+    //Timer by 1600
 
-    //$('.header').delay(10000).slideToggle();
+    this.interval = self.setTimeout(function(){
+      $('#homePageTitle').slideToggle(500);
+    },1700);
 
-    // this.interval = self.setInterval(function(){
-    //   $('#changingWord').slideToggle(1000);
-    //   that.counter++;
-    //   if(that.counter >= that.wordBank.length){
-    //     that.counter = 0;
-    //   }
-    //   $('#changingWord').delay(1000).html(that.wordBank[that.counter]);
-    // },2000);
+    this.interval = self.setTimeout(function(){
+      $('#homePageTitle').slideToggle(500);
+      $('.background').css('background-image','none');
+    }, 1800);
+
+    this.interval = self.setTimeout(function(){
+      $('#homePageTitle').css('font-family','Zekton');
+      $('#homePageTitle').css('font-size','10vw');
+      $('#homePageTitle').css('margin-left','10vw');
+    },2200);
+
+    this.interval = self.setTimeout(function(){
+      $('#homePageTitle').transition({ y: '-20vh', duration: 2000, scale: 0.8 });
+    },2400);
   }
 
   ionViewDidLeave(){
