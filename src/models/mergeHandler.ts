@@ -21,6 +21,7 @@ export class MergeHandler{
 
     let text = privateNoteText.trim();
     let length = text.length;
+
     if( text[length-1] != "." && text[length-1] != "?" && text[length-1] != "!"){
       text += "\n";
     }
@@ -62,7 +63,7 @@ export class MergeHandler{
     let length = text.length;
 
     for(let index = 0; index < length; index++){
-      if(text[index] != '.' && text[index] != '?' && text[index] != "!"){
+      if(text[index] != '.' && text[index] != '?' && text[index] != "!" && text[index] != "\n"){
         sentence += text[index];
       }else{
         sentences.push(sentence);
@@ -164,24 +165,26 @@ export class MergeHandler{
 
     for(let s1Index = 0; s1Index < this.ePrivateNS.length; s1Index++){
       let sentence1 = this.ePrivateNS[s1Index];
-      for(let s2Index = 0; s2Index < this.ePublicNS.length; s2Index++){
-        let sentence2 = this.ePublicNS[s2Index];
-        let currentSimiliarity = this.compareSentences(sentence1, sentence2);
-        if( currentSimiliarity > highestSimilarity){
-          highestSimilarity = currentSimiliarity;
-          previousIndexOfChange = indexOfChange;
-          indexOfChange = s2Index;
+      if(sentence1.length > 0){
+        for(let s2Index = 0; s2Index < this.ePublicNS.length; s2Index++){
+          let sentence2 = this.ePublicNS[s2Index];
+          let currentSimiliarity = this.compareSentences(sentence1, sentence2);
+          if( currentSimiliarity > highestSimilarity){
+            highestSimilarity = currentSimiliarity;
+            previousIndexOfChange = indexOfChange;
+            indexOfChange = s2Index;
+          }
         }
+        if(highestSimilarity < this.similarityCeiling && highestSimilarity > this.similarityFloor){
+          let change = new Change(this.publicSentences[indexOfChange], this.privateSentences[s1Index], indexOfChange, "", 0, 0);
+          this.changeLog.push(change);
+        }else if(highestSimilarity <= this.similarityFloor){
+          //If something has a similarity of ___ % or less, find a proper index for it.
+          let change = new Change("N/A", this.privateSentences[s1Index], previousIndexOfChange, "", 0, 0);
+          this.changeLog.push(change);
+        }
+        highestSimilarity = 0;
       }
-      if(highestSimilarity < this.similarityCeiling && highestSimilarity > this.similarityFloor){
-        let change = new Change(this.publicSentences[indexOfChange], this.privateSentences[s1Index], indexOfChange, "", 0, 0);
-        this.changeLog.push(change);
-      }else if(highestSimilarity <= this.similarityFloor){
-        //If something has a similarity of ___ % or less, find a proper index for it.
-        let change = new Change("N/A", this.privateSentences[s1Index], previousIndexOfChange, "", 0, 0);
-        this.changeLog.push(change);
-      }
-      highestSimilarity = 0;
     }
   }//End of Method
 
