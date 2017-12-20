@@ -32,6 +32,7 @@ export class NotesPage {
     dropDownTitle: string;
     chosenFileName: string;
     isApp: boolean;
+    timeLimit: number;
 
     constructor(public navCtrl: NavController, public firebaseService: FirebaseService, public platform: Platform,
     public authService: AuthService, public alertCtrl: AlertController, public toastCtrl: ToastController,
@@ -260,7 +261,13 @@ export class NotesPage {
               if(that.publicText == null || that.publicText == ''){
                 that.firebaseService.saveNotes(that.displayName,that.courseKey,firstKey, that.privateText, true);
               }else{
-                let mergeHandler = new MergeHandler(that.privateText, that.publicText,firstKey, that.firebaseService);
+                that.firebaseService.isVoteInProgress(firstKey).then(function(state){
+                  if(!state){
+                    let mergeHandler = new MergeHandler(that.privateText, that.publicText,firstKey, that.firebaseService);
+                  }else{
+                    //tell user that a vote is in progress, and maybe how much time is left on it
+                  }
+                });
               }
           });
       }else if(this.courseKey != null && (this.privateText != null && this.privateText != '') && this.currentChapterKey != ''){
@@ -268,7 +275,13 @@ export class NotesPage {
           if(this.publicText == null || this.publicText == ''){
             this.firebaseService.saveNotes(this.displayName,this.courseKey,this.currentChapterKey, this.privateText, true);
           }else{
-            let mergeHandler = new MergeHandler(that.privateText, that.publicText,that.currentChapterKey, this.firebaseService);
+            this.firebaseService.isVoteInProgress(this.currentChapterKey).then(function(state){
+              if(!state || state != null){
+                let mergeHandler = new MergeHandler(that.privateText, that.publicText,this.currentChapterKey, this.firebaseService);
+              }else{
+                //tell user that a vote is in progress, and maybe how much time is left on it
+              }
+            });
           }
 
       }

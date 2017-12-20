@@ -23,7 +23,8 @@ export class CreateCoursePage{
             description: ['', Validators.required],
             courseID: ['', Validators.required],
             professor: ['', Validators.required],
-            university: ['', Validators.required]
+            university: ['', Validators.required],
+            timeLimit: ['', Validators.required]
         });
 
         //check that user exists
@@ -37,7 +38,7 @@ export class CreateCoursePage{
             && this.createCourse.value.professor != '' && this.createCourse.value.university != ''){
                 let newCourse = new Course(this.displayName,this.createCourse.value.courseTitle.toLowerCase(), this.createCourse.value.courseTitle, ' ',
                     this.createCourse.value.description, this.createCourse.value.professor, this.createCourse.value.university,
-                    this.createCourse.value.courseID,1,0);
+                    this.createCourse.value.courseID,1,0, this.createCourse.value.timeLimit);
             //get the users id
             let that = this;
             this.firebaseService.getCurrentUserID(this.displayName).then(function(key){

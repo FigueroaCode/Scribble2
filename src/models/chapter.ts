@@ -36,4 +36,5 @@ export class Chapter {
       this.dateUpdated = date;
     }
 
+
 }

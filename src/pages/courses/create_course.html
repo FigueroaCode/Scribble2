@@ -26,6 +26,14 @@
                         <ion-label floating>University</ion-label>
                         <ion-input formControlName="university" type="text"></ion-input>
                     </ion-item>
+                    <ion-item>
+                      <ion-label>How long would you like the Voting Process to take Max?</ion-label>
+                      <ion-badge item-end>{{ timeLimit }}</ion-badge>
+                      <ion-range min="1" max="24" formControlName="timeLimit" [(ngModel)]="timeLimit">
+                        <ion-label range-left>1 Hr</ion-label>
+                        <ion-label range-right>24 Hrs </ion-label>
+                      </ion-range>
+                    </ion-item>
                 </form>
             </ion-col>
         </ion-row>
