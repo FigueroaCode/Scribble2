@@ -38,13 +38,21 @@ export class MergeHandler{
     this.oPublicNS = this.separateSentences(this.publicNoteText);
     this.ePrivateNS = this.filterSentences(this.oPrivateNS);
     this.ePublicNS = this.filterSentences(this.oPublicNS);
-    this.publicSentences = this.breakIntoSentences(publicNoteText);
-    this.privateSentences = this.breakIntoSentences(privateNoteText);
+    this.publicSentences = this.breakIntoSentences(this.publicNoteText);
+    this.privateSentences = this.breakIntoSentences(this.privateNoteText);
+
+    console.log('edited private',this.ePrivateNS)
+    console.log('edited public',this.ePublicNS)
+    console.log('public',this.publicSentences)
+    console.log('private', this.privateSentences)
+
     this.findDifferences();
 
     for(let i = 0; i < this.changeLog.length; i++){
       fireDB.addChange(chapterKey, this.changeLog[i]);
     }
+
+    fireDB.queueChangeLog(chapterKey);
   }
 
   getePrivateNS(){
@@ -66,7 +74,9 @@ export class MergeHandler{
       if(text[index] != '.' && text[index] != '?' && text[index] != "!" && text[index] != "\n"){
         sentence += text[index];
       }else{
-        sentences.push(sentence);
+        if(sentence.length > 0){
+          sentences.push(sentence);
+        }
         sentence = "";
       }
     }
@@ -101,9 +111,11 @@ export class MergeHandler{
         words.push(chara);
         chara = "";
       }
-
       if(temp[i] == '.' || temp[i] == '!' || temp[i] == '?' || temp[i] == '\n'){
-        sentences.push(words);
+        //stop blank sentences from being added
+        if(words.length > 0){
+          sentences.push(words);
+        }
         words = Array<string>();
       }
     }
@@ -126,11 +138,11 @@ export class MergeHandler{
           wIndex--;
         }
       }
-      temp[sIndex] = sentence;
+      if(sentence.length > 0){
+        temp[sIndex] = sentence;
+      }
     }
-
     temp = this.removeDuplicateWords(temp);
-
     return temp;
   }//End of Method
 
@@ -149,7 +161,9 @@ export class MergeHandler{
           }
         }
       }
-      temp[sIndex] = currentSentence;
+      if(currentSentence.length > 0){
+        temp[sIndex] = currentSentence;
+      }
     }
 
     return temp;
@@ -162,7 +176,8 @@ export class MergeHandler{
     let highestSimilarity = 0;
     let indexOfChange = 0;
     let previousIndexOfChange = 0; //To be honest, the way the previousIndexOfChange is recorded may not be effective and needs testing.
-
+    // console.log('private',this.ePrivateNS)
+    // console.log('public',this.ePublicNS)
     for(let s1Index = 0; s1Index < this.ePrivateNS.length; s1Index++){
       let sentence1 = this.ePrivateNS[s1Index];
       if(sentence1.length > 0){
@@ -180,6 +195,7 @@ export class MergeHandler{
           this.changeLog.push(change);
         }else if(highestSimilarity <= this.similarityFloor){
           //If something has a similarity of ___ % or less, find a proper index for it.
+          console.log('NA', this.privateSentences[s1Index])
           let change = new Change("N/A", this.privateSentences[s1Index], previousIndexOfChange, "", 0, 0);
           this.changeLog.push(change);
         }

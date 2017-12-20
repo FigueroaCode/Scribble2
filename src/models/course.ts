@@ -14,9 +14,10 @@ export class Course {
     chapters: Array<Chapter>;
     memberCount: number;
     requestCounter: number;
+    timeLimit: number;
 
     constructor(owner: string,searchTitle: string, title: string,key: string,description: string, professor: string,
-        university: string, courseID: string,memberCount: number, requestCounter: number){
+        university: string, courseID: string,memberCount: number, requestCounter: number, timeLimit: number){
         this.owner = owner;
         this.searchTitle = searchTitle;
         this.title = title;
@@ -27,6 +28,7 @@ export class Course {
         this.courseID = courseID;
         this.memberCount = memberCount;
         this.requestCounter = requestCounter;
+        this.timeLimit = timeLimit;
 
         this.chapters = new Array<Chapter>();
     }
@@ -36,10 +38,10 @@ export class Course {
     }
 
     //add more parameters depending on your database entries and Hero constructor
-    static fromJson({owner,searchTitle,title,description, professor,university,courseID,memberCount, requestCounter}): Course {
+    static fromJson({owner,searchTitle,title,description, professor,university,courseID,memberCount, requestCounter, timeLimit}): Course {
 
       return new Course(owner,searchTitle, title,description, professor, '',
-          university, courseID,memberCount, requestCounter);
+          university, courseID,memberCount, requestCounter, timeLimit);
     }
 
 
@@ -86,6 +88,9 @@ export class Course {
     getRequestCounter(){
         return this.requestCounter;
     }
+    getTimeLimit(){
+      return this.timeLimit;
+    }
 
     //Setters
     set Owner(newOwner: string){
@@ -114,6 +119,9 @@ export class Course {
     }
     set RequestCounter(newCount: number){
       this.requestCounter = newCount;
+    }
+    set TimeLimit(time: number){
+      this.timeLimit = time;
     }
     incrementMemberCount(){
         this.memberCount++;

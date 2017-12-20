@@ -3,6 +3,7 @@ import { Http } from '@angular/http';
 import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import { AngularFireDatabase, FirebaseListObservable } from 'angularfire2/database';
+import * as firebase from 'firebase';
 
 import { Course } from '../models/course';
 import { Chapter } from '../models/chapter';
@@ -180,6 +181,31 @@ export class FirebaseService {
     this.fireDB.object('/ChangeLog/'+chapterKey+'/'+key).$ref.update({'key': key});
   }
 
+  queueChangeLog(chapterKey: string){
+    let state = {'startedAt': firebase.database.ServerValue.TIMESTAMP, 'state': true};
+
+    this.fireDB.object('/ChangeLogQueue/'+chapterKey).$ref.set(state);
+  }
+
+  isVoteInProgress(chapterKey: string){
+    let that = this;
+    let state = new Promise(function(resolve, reject){
+      that.fireDB.object('/ChangeLogQueue/'+chapterKey).$ref.once('value').then(function(snapshot){
+        if(snapshot.val() == null){
+          resolve(false);
+        }else{
+          resolve(snapshot.val().state);
+        }
+      });
+    });
+
+    return state;
+  }
+
+  checkTimeLimit(courseKey: string, limit: number){
+
+  }
+
   sendJoinRequest(courseKey: string, username: string, owner: string){
       let that = this;
       this.fireDB.object('/courses/'+courseKey).$ref.once('value').then(function(snapshot){
@@ -272,6 +298,10 @@ export class FirebaseService {
     //need to be sorted by person that favorited it
     let key = this.fireDB.list('/FavoriteCourses/').push(course).key;
     this.fireDB.object('/FavoriteCourses/'+key).$ref.update({'favUser': username});
+  }
+
+  clearChangeLog(chapterKey: string){
+    this.fireDB.list('/ChangeLog/').remove(chapterKey);
   }
 
 
