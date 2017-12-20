@@ -1,0 +1,36 @@
+<ion-header id="homePageHeader">
+  <ion-col align="center" col-xs-3 col-sm-3 col-md-3 col-lg-3 col-xl-3>
+    <!-- <h1 id="headerTitle">Scribble Platform</h1> -->
+    <button id="buttons" ion-button (click)="signIn()" color="danger"> Sign In </button>
+    <button id="buttons" ion-button (click)="register()" color="danger"> Register </button>
+  </ion-col>
+</ion-header>
+
+<ion-content wrap>
+  <ion-grid>
+    <div class="initialContent">
+      <ion-row row-xs-12 row-sm-12 row-md-12 row-lg-12>
+        <ion-col id="titleCol">
+          <h1 id="homePageTitle"></h1>
+        </ion-col>
+      </ion-row>
+    </div>
+
+    <ion-icon id="PaperIcon" name="ios-paper-outline"></ion-icon>
+    <ion-icon id="FileIcon" name="ios-document-outline"></ion-icon>
+    <ion-icon id="MergeIcon" name="ios-copy-outline"></ion-icon>
+    <ion-icon id="PeopleIcon" name="ios-people-outline"></ion-icon>
+    <ion-icon id="CloudIcon" name="ios-cloud-outline"></ion-icon>
+
+    <h1 id="title1">Forget written notes</h1>
+    <h1 id="title2">Type all your notes</h1>
+    <h1 id="title3">Merge and collaborate</h1>
+    <h1 id="title4">Store them in the cloud</h1>
+
+    <img id="laptopScreenshot" src="assets/images/laptopScreenshot.png"/>
+    <img id="phoneScreenshot1" src="assets/images/phoneScreenshot1.png"/>
+
+    <h1 id="title5">Your notes on any device, anywhere.</h1>
+
+  </ion-grid>
+</ion-content>

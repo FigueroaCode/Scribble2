@@ -1,40 +1,43 @@
-<ion-header>
-  <ion-col align="center" col-xs-3 col-sm-3 col-md-3 col-lg-3 col-xl-3>
-    <button id="buttons" ion-button (click)="signIn()" color="danger"> Sign In </button>
-    <button id="buttons" ion-button (click)="register()" color="danger"> Register </button>
-  </ion-col>
+<ion-header id="homePageHeader">
+  <ion-row>
+    <button id="signInButton" ion-button (click)="signIn()" color="danger"> Sign In </button>
+    <button id="registerButton" ion-button (click)="register()" color="danger"> Register </button>
+    <h1 id="headerTitle">Scribble Platform</h1>
+  </ion-row>
 </ion-header>
 
-<ion-content class="background" wrap>
-  <ion-grid>
+<ion-content id="ionContent" wrap>
 
-    <div class="initialContent">
-      <ion-row>
-        <ion-col id="titleCol">
-          <h1 id="homePageTitle"></h1>
-        </ion-col>
-      </ion-row>
+  <ion-row>
+    <div id="item1">
+      <ion-icon id="DocumentIcon" name="ios-document-outline"></ion-icon>
+      <h1 id="iconText">Type all your notes</h1>
     </div>
-
-    <!-- Static Content -->
-    <ion-row id="cards">
-        <ion-col col-4>
-            <ion-card wrap id="card1" align="center">
-              <h1 class="cardTitle"> Organized </h1>
-            </ion-card>
-        </ion-col>
-
-        <ion-col col-4>
-            <ion-card wrap id="card2" align="center">
-              <h1 class="cardTitle"> Accessible </h1>
-            </ion-card>
-        </ion-col>
-
-        <ion-col col-4>
-            <ion-card wrap id="card3" align="center">
-              <h1 class="cardTitle"> Cooperative </h1>
-            </ion-card>
-        </ion-col>
-      </ion-row>
-  </ion-grid>
+    <div id="item2">
+      <ion-icon id="CopyIcon" name="ios-copy-outline"></ion-icon>
+      <ion-icon id="PeopleIcon" name="ios-people-outline"></ion-icon>
+      <h1 id="iconText">Automatically merge notes with peers</h1>
+    </div>
+  </ion-row>
+  <ion-row>
+    <div id="item3">
+      <ion-icon id="CloudIcon" name="ios-cloud-outline"></ion-icon>
+      <h1 id="iconText">Store your notes on the cloud</h1>
+    </div>
+    <div id="item4">
+      <ion-icon id="DocumentIcon" name="ios-document-outline"></ion-icon>
+      <ion-icon id="SearchIcon" name="ios-search-outline"></ion-icon>
+      <h1 id="iconText">Easily sort through notes</h1>
+    </div>
+  </ion-row>
+  <ion-row>
+    <div id="item5">
+      <ion-icon id="FolderIcon" name="ios-folder-open-outline"></ion-icon>
+      <h1 id="iconText">Keep things organized</h1>
+    </div>
+    <div id="item6">
+      <ion-icon id="FlashcardIcon" name="ios-albums-outline"></ion-icon>
+      <h1 id="iconText">Automatically create flash cards to study</h1>
+    </div>
+  </ion-row>
 </ion-content>

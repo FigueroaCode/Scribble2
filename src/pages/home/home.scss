@@ -1,53 +1,120 @@
 page-home {
 
-  #homePageTitle {
-    color: black;
-    font-size: 23vw;
-    font-family: ToThePoint;
-    margin-left: 5vw;
-    margin-top: 20vh;
-  }
-
-  #buttons {
-    float: right;
-    margin-right: 1vw;
-    background-color: map-get($colors, danger);
-  }
-
-  #cards {
-    position: fixed;
-    margin-top: 12%;
-    padding-left: 8vw;
-    padding-right: 8vw;
-  }
-
-  #card1,#card2,#card3 {
-    position: fixed;
-    margin-top: 100vh;
-    height: 60vh;
-    width: 25vw;
-    opacity: 0%;
-  }
-
-  .cardTitle {
-    margin-top: 3vh;
-    font-size: 40px;
-    font-family: Zekton;
-  }
-
-  .initialContent {
-    height: 90vh;
-  }
-
-  .background {
-    background-color: white;
-    background-image: url('../../../assets/images/paperlines.png');
-  }
+// HEADER + BACKGROUND CONTENT
 
   .header {
     margin-bottom: 0px;
-    height: 8vh;
+    height: 6vh;
     padding: .5vh;
     background-color: map-get($colors, primary);
   }
+
+  #headerTitle {
+    position: fixed;
+    margin-top: 0vh;
+    margin-left: 41.5%;
+    font-size: 4vh;
+    font-family: Zekton;
+    color: white;
+  }
+
+  #signInButton {
+    margin-top: 0.4vh;
+    background-color: map-get($colors, danger);
+    height: 4vh;
+    font-size: 1.5vh;
+  }
+
+  #registerButton {
+    margin-top: 0.4vh;
+    background-color: map-get($colors, danger);
+    height: 4vh;
+    font-size: 1.5vh;
+  }
+
+  #ionContent {
+    background-color: map-get($colors, secondary);
+  }
+
+//  WRITTEN TEXT
+
+#iconText {
+  font-size: 2vw;
+  margin-top: -2%;
+  font-family: zekton;
+  color: black;
+}
+
+// ICONS
+
+  #DocumentIcon, #CopyIcon, #PeopleIcon, #CloudIcon, #FolderIcon,
+  #FlashcardIcon {
+    font-size: 15vw;
+    color: black;
+  }
+
+  #DocumentIcon {
+    margin-left: 35%;
+  }
+
+  #CloudIcon {
+    margin-left: 30%;
+  }
+
+  #CopyIcon {
+    margin-left: 20%;
+  }
+
+  #SearchIcon {
+    margin-left: -18%;
+    font-size: 9vw;
+    color: map-get($colors, danger);
+  }
+
+  #FolderIcon {
+    margin-left: 18%;
+  }
+
+  #FlashcardIcon {
+    margin-left: 35%;
+  }
+
+// ITEM GROUPS
+
+  #item1 {
+    align-content: center;
+    margin-left: 20%;
+    margin-top: 2%;
+  }
+
+  #item2 {
+    align-content: center;
+    margin-left: 13%;
+    margin-top: 2.5%;
+  }
+
+  #item3 {
+    align-content: center;
+    margin-left: 15%;
+    margin-top: 2.2%;
+  }
+
+  #item4 {
+    align-content: center;
+    margin-left: 15%;
+    margin-top: 2.2%;
+  }
+
+  #item5 {
+    align-content: center;
+    margin-left: 20%;
+    margin-top: 2.2%;
+  }
+
+  #item6 {
+    align-content: center;
+    margin-left: 9%;
+    margin-top: 2.5%;
+  }
+
 }
