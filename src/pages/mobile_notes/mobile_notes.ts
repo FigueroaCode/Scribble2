@@ -18,7 +18,7 @@ import { ChangeLogPage } from './changelogPage';
 export class MobileNotesPage {
     @ViewChild("fileInput") fileInput;
     @ViewChild(Slides) slides: Slides;
-    changeLog: FirebaseListObservable<any[]>;
+    //changeLog: Array<any>;
     displayName: string;
     publicText: string;
     privateText: string;
@@ -56,14 +56,17 @@ export class MobileNotesPage {
         });
         this.chosenFileName = "IMPORT TEXT FILE";
 
-        this.initializeChangeLog();
+      //  this.initializeChangeLog();
     }
 
-    initializeChangeLog(){
-      if(this.courseKey != null && this.chapterKey != ''){
-        this.changeLog = this.firebaseService.getChangeLog(this.chapterKey);
-      }
-    }
+    // initializeChangeLog(){
+    //   let that = this;
+    //   if(this.courseKey != null && this.chapterKey != ''){
+    //     this.firebaseService.getChangeLog(this.chapterKey).then(function(change_array){
+    //       that.changeLog = change_array as Array<any>
+    //     });
+    //   }
+    // }
 
     setPublicNoteText(newText: string){
         this.publicText = newText;
@@ -140,7 +143,7 @@ export class MobileNotesPage {
           if(this.publicText == null || this.publicText == ''){
             this.firebaseService.saveNotes(this.displayName,this.courseKey,this.chapterKey, this.privateText, true);
           }else{
-            let mergeHandler = new MergeHandler(this.privateText, this.publicText,this.chapterKey, this.firebaseService);
+            let mergeHandler = new MergeHandler(this.privateText, this.publicText,this.chapterKey,this.courseKey, this.firebaseService);
           }
 
       }

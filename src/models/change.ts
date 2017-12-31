@@ -6,11 +6,11 @@ export class Change {
     proposedSentence: string;
     key: string;
     approvedVotes: number;
-    totalVotes: number;
+    disapprovedVotes: number;
     indexOfChange: number;
     similarity: number;
 
-    constructor(originalSentence: string, proposedSentence: string, indexOfChange: number, key: string, approvedVotes: number, totalVotes: number){
+    constructor(originalSentence: string, proposedSentence: string, indexOfChange: number, key: string, approvedVotes: number, disapprovedVotes: number){
       if(originalSentence != ''){
         this.originalSentence = originalSentence;
       }else{
@@ -21,7 +21,7 @@ export class Change {
       this.indexOfChange = indexOfChange;
       this.key = key;
       this.approvedVotes = approvedVotes;
-      this.totalVotes = totalVotes;
+      this.disapprovedVotes = disapprovedVotes;
     }
 
     setSimilarity(similarity: number){

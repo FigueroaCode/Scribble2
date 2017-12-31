@@ -1,0 +1,74 @@
+<ion-header>
+  <ion-navbar color="primary">
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <h2 id="title"> Change Log </h2>
+  </ion-navbar>
+</ion-header>
+<ion-content class="background">
+    <ion-grid padding>
+      <ion-segment [(ngModel)]="changeSegment">
+        <ion-segment-button value="voteView" (click)="voteViewClicked()">
+          Vote on Changes
+        </ion-segment-button>
+        <ion-segment-button value="statusView" (click)="statusViewClicked()">
+          View Vote Count
+        </ion-segment-button>
+      </ion-segment>
+
+      <ion-row [ngSwitch]="changeSegment">
+        <!-- Vote View -->
+        <ion-col col-xs-12 col-sm-12 col-md-12 col-lg-12 *ngSwitchCase="'voteView'">
+          <ion-row>
+            <button ion-button full (click)="confirmVotes()"> Confirm </button>
+          </ion-row>
+          <ion-row row-xs-12 row-sm-12 row-md-12 row-lg-12>
+              <!-- Change Log -->
+              <ion-card *ngFor="let change of changeLog">
+                    <ion-row>
+                      <ion-col>
+                        <div *ngIf="change.originalSentence != 'N/A'">
+                          <p id="changeLog"><b>Would you like to replace: </b> {{ change.originalSentence }}</p>
+                          <p id="changeLog"><b>With the following sentence: </b> {{ change.proposedSentence }}</p>
+                        </div>
+                        <p id="changeLog" *ngIf="change.originalSentence == 'N/A'"><b>Would you like to insert the following sentence: </b> {{ change.proposedSentence }}</p>
+                      </ion-col>
+                    </ion-row>
+                    <ion-row>
+                      <ion-col align="right">
+                        <button id="disapproveBtn"ion-button icon-only (click)="downVote(change)"><ion-icon name="thumbs-down"></ion-icon></button>
+                      </ion-col>
+                      <ion-col>
+                        <button id="approveBtn" ion-button icon-only (click)="upVote(change)"><ion-icon name="thumbs-up"></ion-icon></button>
+                      </ion-col>
+                    </ion-row>
+              </ion-card>
+          </ion-row>
+        </ion-col>
+
+        <!-- Status View -->
+        <ion-col col-xs-12 col-sm-12 col-md-12 col-lg-12 *ngSwitchCase="'statusView'">
+          <ion-card *ngFor="let change of changeLogAsync | async">
+            <ion-row>
+              <ion-col>
+                <div *ngIf="change.originalSentence != 'N/A'">
+                  <p id="changeLog"><b>Would you like to replace: </b> {{ change.originalSentence }}</p>
+                  <p id="changeLog"><b>With the following sentence: </b> {{ change.proposedSentence }}</p>
+                </div>
+                <p id="changeLog" *ngIf="change.originalSentence == 'N/A'"><b>Would you like to insert the following sentence: </b> {{ change.proposedSentence }}</p>
+              </ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col align="right">
+                <button id="disapproveBtn"ion-button icon-only>{{ change.disapprovedVotes }}</button>
+              </ion-col>
+              <ion-col>
+                <button id="approveBtn" ion-button icon-only>{{ change.approvedVotes }}</button>
+              </ion-col>
+            </ion-row>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+</ion-content>

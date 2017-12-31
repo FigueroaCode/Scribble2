@@ -4,6 +4,7 @@ import { FirebaseService } from '../../providers/firebase-service';
 import { FirebaseListObservable } from 'angularfire2/database';
 import { AuthService } from '../../providers/auth-service';
 import { File } from '@ionic-native/file';
+import { ChangesPage } from '../changelog/changelog';
 
 import { Chapter } from '../../models/chapter';
 import { Change } from '../../models/change';
@@ -18,7 +19,6 @@ import { MobileNotesPage } from '../mobile_notes/mobile_notes';
 export class NotesPage {
     @ViewChild("fileInput") fileInput;
     chapters: FirebaseListObservable<any[]>;
-    changeLog: FirebaseListObservable<any[]>;
     displayName: string;
     publicText: string;
     privateText: string;
@@ -33,6 +33,7 @@ export class NotesPage {
     chosenFileName: string;
     isApp: boolean;
     timeLimit: number;
+    voteInProgress: boolean = false;
 
     constructor(public navCtrl: NavController, public firebaseService: FirebaseService, public platform: Platform,
     public authService: AuthService, public alertCtrl: AlertController, public toastCtrl: ToastController,
@@ -52,10 +53,18 @@ export class NotesPage {
         this.getFirebase = new Promise(function(resolve, reject){
              resolve(firebaseService);
         });
+
         //Get the key of the course this belongs to
         this.courseKey = navParams.get('key');
         this.currentChapterKey = '';
         this.inPublicNote = true;
+
+        let that = this;
+        //get time limit for voting in this course
+        firebaseService.getTimeLimit(this.courseKey).then(function(timelimit){
+          that.timeLimit = timelimit as number;
+        });
+
         //check that user exists
         if(this.authService.getFireAuth().currentUser)
             this.displayName = this.authService.getFireAuth().currentUser.displayName;
@@ -73,7 +82,6 @@ export class NotesPage {
             });
         });
         //Set the textbox to the text of the first chapter
-        let that = this;
         this.getFirstChapterKey.then(function(chapterKey){
             firebaseService.getDB().object('/courseChapters/' + that.courseKey + '/' + chapterKey).$ref.once('value').then(function(getChapterName){
               that.dropDownTitle = getChapterName.val().chapterName;
@@ -86,30 +94,34 @@ export class NotesPage {
             .then(function(noteText){
                 that.setPrivateNoteText(noteText);
             });
+
+            that.changeVoteState(chapterKey);
         });
+
+
 
         this.dropDownTitle = "No Chapters Exist";
         this.chosenFileName = "IMPORT TEXT FILE";
-
-        this.initializeChangeLog();
-    }
-
-    initializeChangeLog(){
-      let that = this;
-
-      if((this.currentChapterKey == null || this.currentChapterKey == '') && this.courseKey != null){
-          //needs to be done in order for the promise to recognize which object 'this' is referring
-          this.getFirstChapterKey.then(function(firstKey){
-              //default chapter is the first one
-              that.changeLog = that.firebaseService.getChangeLog(firstKey);
-          });
-      }else if(this.courseKey != null && this.currentChapterKey != ''){
-        this.changeLog = this.firebaseService.getChangeLog(this.currentChapterKey);
-      }
     }
 
     initializeChapters(){
         this.chapters = this.firebaseService.getChapters(this.courseKey);
+    }
+
+    turnOffVoteListener(chapterKey: string){
+      this.firebaseService.getDB().object('/ChangeLogQueue/'+chapterKey).$ref.off();
+    }
+
+    changeVoteState(chapterKey: string){
+      //constantly check if there is a vote in progress
+      let that = this;
+      this.firebaseService.getDB().object('/ChangeLogQueue/'+chapterKey).$ref.on('value', function(snapshot){
+        if(snapshot.val() != null && snapshot.val().state){
+          that.voteInProgress = true;
+        }else{
+          that.voteInProgress = false;
+        }
+      });
     }
 
     setPublicNoteText(newText: string){
@@ -146,9 +158,19 @@ export class NotesPage {
                 let chapterKey = this.firebaseService.addChapter(newChapter, this.courseKey, {owner: this.displayName, privateNoteText: "", dateUpdated: dateCreated});
                 //if its the first chapter then set it as the selected one
                 if(this.dropDownTitle == "No Chapters Exist"){
+                  //turn off old chapter vote listener
+                  if(this.currentChapterKey != null || this.currentChapterKey != ''){
+                    this.turnOffVoteListener(this.currentChapterKey);
+                  }else{
+                    let that = this;
+                    this.getFirstChapterKey.then(function(chapterKey){
+                       that.turnOffVoteListener(chapterKey);
+                    });
+                  }
                   this.currentChapterKey = chapterKey;
                   this.updateNoteText();
                   this.dropDownTitle = newChapter.getName();
+                  this.changeVoteState(this.currentChapterKey);
                 }
               }else{
                 //let the user know later that it wasnt created because they didnt put a field
@@ -193,9 +215,19 @@ export class NotesPage {
     }
 
     showNote(chapterKey, chapterName){
+        //turn off old chapter vote listener
+        if(this.currentChapterKey != null || this.currentChapterKey != ''){
+          this.turnOffVoteListener(this.currentChapterKey);
+        }else{
+          let that = this;
+          this.getFirstChapterKey.then(function(chapterKey){
+             that.turnOffVoteListener(chapterKey);
+          });
+        }
         this.currentChapterKey = chapterKey;
         this.updateNoteText();
         this.dropDownTitle = chapterName;
+        this.changeVoteState(this.currentChapterKey);
     }
 
     saveNote(){
@@ -263,7 +295,7 @@ export class NotesPage {
               }else{
                 that.firebaseService.isVoteInProgress(firstKey).then(function(state){
                   if(!state){
-                    let mergeHandler = new MergeHandler(that.privateText, that.publicText,firstKey, that.firebaseService);
+                    let mergeHandler = new MergeHandler(that.privateText, that.publicText,firstKey,that.courseKey, that.firebaseService);
                   }else{
                     //tell user that a vote is in progress, and maybe how much time is left on it
                   }
@@ -277,13 +309,27 @@ export class NotesPage {
           }else{
             this.firebaseService.isVoteInProgress(this.currentChapterKey).then(function(state){
               if(!state || state != null){
-                let mergeHandler = new MergeHandler(that.privateText, that.publicText,this.currentChapterKey, this.firebaseService);
+                let mergeHandler = new MergeHandler(that.privateText, that.publicText,this.currentChapterKey,this.courseKey, this.firebaseService);
               }else{
                 //tell user that a vote is in progress, and maybe how much time is left on it
               }
             });
           }
 
+      }
+    }
+
+    viewChangeLog(){
+      let that = this;
+      if((this.currentChapterKey == null || this.currentChapterKey == '') && this.courseKey != null){
+          //needs to be done in order for the promise to recognize which object 'this' is referring
+          this.getFirstChapterKey.then(function(firstKey){
+            let data = {'chapterKey': firstKey, 'timelimit': that.timeLimit};
+            that.navCtrl.push(ChangesPage,data);
+          });
+      }else if(this.courseKey != null && this.currentChapterKey != ''){
+        let data = {'chapterKey':this.currentChapterKey, 'timelimit': this.timeLimit};
+        this.navCtrl.push(ChangesPage, data);
       }
     }
 

@@ -49,42 +49,16 @@
             <ion-col col-xs-12 col-sm-12 col-md-3 col-lg-3>
               <button ion-button full (click)="createChapter()">CREATE CHAPTER</button>
             </ion-col>
+            <ion-col>
+              <button ion-button full (click)="viewChangeLog()"> View Change Log</button>
+            </ion-col>
           </ion-row>
           <ion-row row-xs-12 row-sm-12 row-md-12 row-lg-12>
-            <ion-col col-xs-12 col-sm-12 col-md-12 col-lg-9>
+            <ion-col>
               <ion-card style="height: 62vh">
                 <ion-card-content>
                   <ion-textarea readonly websize [(ngModel)]="publicText" [value]="publicText"></ion-textarea>
                 </ion-card-content>
-              </ion-card>
-            </ion-col>
-            <ion-col col-xs-12 col-sm-12 col-md-12 col-lg-3>
-              <!-- Change Log -->
-              <ion-card style="height: 62vh">
-                <ion-card-header class="bodyText" align="center" id="changeLog-Title">CHANGE LOG</ion-card-header>
-                <ion-scroll style="width:100%;height:100%" scrollY="true">
-                <ion-list scroll="true" *ngFor="let change of changeLog | async">
-                  <ion-item text-wrap>
-                    <ion-row>
-                      <ion-col col-xs-2 col-sm-1 col-md-1 col-lg-2 col-xl-2>
-                        <ion-row>
-                          <button id="approveBtn" ion-button icon-only><ion-icon name="thumbs-up"></ion-icon></button>
-                        </ion-row>
-                        <ion-row>
-                          <button id="disapproveBtn"ion-button icon-only><ion-icon name="thumbs-down"></ion-icon></button>
-                        </ion-row>
-                      </ion-col>
-                      <ion-col col-xs-10 col-sm-11 col-md-11 col-lg-10 col-xl-10>
-                        <div *ngIf="change.originalSentence != 'N/A'">
-                          <p id="changeLog"><b>Would you like to replace: </b> {{ change.originalSentence }}</p>
-                          <p id="changeLog"><b>With the following sentence: </b> {{ change.proposedSentence }}</p>
-                        </div>
-                        <p id="changeLog" *ngIf="change.originalSentence == 'N/A'"><b>Would you like to insert the following sentence: </b> {{ change.proposedSentence }}</p>
-                      </ion-col>
-                    </ion-row>
-                  </ion-item>
-                </ion-list>
-                </ion-scroll>
               </ion-card>
             </ion-col>
           </ion-row>
@@ -115,8 +89,11 @@
             <ion-col>
               <button ion-button full (click)="saveNote()">SAVE CHANGES</button>
             </ion-col>
-            <ion-col>
+            <ion-col *ngIf="!voteInProgress">
               <button ion-button full (click)="prepareMerge()">SUBMIT CHANGES TO PUBLIC NOTE</button>
+            </ion-col>
+            <ion-col *ngIf="voteInProgress">
+              <button ion-button full color="danger">Vote in Progress</button>
             </ion-col>
             <ion-col>
               <div id="inputOuterField">

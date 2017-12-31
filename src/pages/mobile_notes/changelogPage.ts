@@ -11,13 +11,16 @@ import { FirebaseListObservable } from 'angularfire2/database';
 
 export class ChangeLogPage {
 
-  changes: FirebaseListObservable<any[]>;
+  changes: Array<any>;
   chaperKey: string;
 
   constructor(public viewCtrl: ViewController, public params: NavParams, public firebaseService: FirebaseService){
     this.chaperKey = params.get('chapterKey');
+    let that = this;
 
-    this.changes = firebaseService.getChangeLog(this.chaperKey);
+    firebaseService.getChangeLog(this.chaperKey).then(function(change_array){
+      that.changes = change_array as Array<any>;
+    });
   }
 
   close(){

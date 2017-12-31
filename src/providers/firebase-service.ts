@@ -95,6 +95,18 @@ export class FirebaseService {
   }
 
   getChangeLog(chapterKey: string){
+    //return this.fireDB.list('/ChangeLog/'+chapterKey);
+    let that = this;
+    let changeLog = new Promise(function(resolve,reject){
+      let changes = that.fireDB.list('/ChangeLog/'+chapterKey).forEach(function(change){
+        resolve(change)
+      });
+    });
+
+    return changeLog;
+  }
+  
+  getChangeLogAsync(chapterKey: string){
     return this.fireDB.list('/ChangeLog/'+chapterKey);
   }
 
@@ -181,10 +193,87 @@ export class FirebaseService {
     this.fireDB.object('/ChangeLog/'+chapterKey+'/'+key).$ref.update({'key': key});
   }
 
-  queueChangeLog(chapterKey: string){
-    let state = {'startedAt': firebase.database.ServerValue.TIMESTAMP, 'state': true};
+  getTimeLimit(courseKey: string){
+    let that = this;
+    let timeLimit = new Promise(function(resolve,reject){
+      that.fireDB.object('/courses/'+courseKey).$ref.once('value').then(function(snapshot){
+        resolve(snapshot.val().timeLimit);
+      });
+    });
+    return timeLimit;
+  }
+  //record that this user voted already for a specific chapter
+  userVoted(username,chapterKey){
+    this.fireDB.object('/Voted/'+chapterKey).$ref.set({'name':username});
+  }
 
-    this.fireDB.object('/ChangeLogQueue/'+chapterKey).$ref.set(state);
+  getMemberCount(chapterKey){
+    let that = this;
+    let memberCount = new Promise(function(resolve,reject){
+      that.fireDB.object('/ChangeLogQueue/'+chapterKey).$ref.once('value').then(function(snapshot){
+        resolve(snapshot.val().membersToVote);
+      });
+    });
+
+    return memberCount;
+  }
+
+  withinTimeLimit(timeLimit, chapterKey){
+    //get current time and time vote was started to see how much time has passed
+    let that = this;
+    let withinTime = new Promise(function(resolve,reject){
+      that.fireDB.object('/ChangeLogQueue/'+chapterKey).$ref.once('value').then(function(snapshot){
+        let startTime = new Date(snapshot.val().startedAt);
+        //to get current date, need to send a timestamp to db, then retreive it and convert it to a Date
+        that.fireDB.object('/CurrentTime/').$ref.set({'time':firebase.database.ServerValue.TIMESTAMP});
+        that.fireDB.object('/CurrentTime/').$ref.once('value').then(function(snapshot){
+          let currentTime = new Date(snapshot.val().time);
+          let timeDiff = currentTime.getTime() - startTime.getTime();
+          //convert from milliseconds to hours
+          timeDiff = timeDiff / (3.6 * Math.pow(10,6));
+          if(timeDiff >= timeLimit){
+            resolve(false);
+          }else{
+            resolve(true);
+          }
+        });
+        //delete the currentTime
+         that.fireDB.list('/').remove('CurrentTime/');
+      });
+    });
+
+    return withinTime;
+  }
+
+  queueChangeLog(chapterKey: string, courseKey: string){
+    let that = this;
+    this.getMembersCount(courseKey).then(function(memberCount){
+      let state = {'startedAt': firebase.database.ServerValue.TIMESTAMP,'membersToVote':memberCount as number, 'state': true};
+
+      that.fireDB.object('/ChangeLogQueue/'+chapterKey).$ref.set(state);
+    });
+  }
+
+  updateVoteCount(chapterKey: string, change: Change){
+    let changeKey = change.key;
+    this.fireDB.object('/ChangeLog/'+chapterKey+'/'+changeKey).$ref.update(change);
+  }
+
+  updateMemberCount(chapterKey: string){
+    let that = this;
+
+    let membersToVote = new Promise(function(resolve,reject){
+      that.fireDB.object('/ChangeLogQueue/'+chapterKey).$ref.once('value').then(function(snapshot){
+        let memberCount = snapshot.val().membersToVote;
+        memberCount--;
+        //update on db
+        that.fireDB.object('/ChangeLogQueue/'+chapterKey+'/membersToVote/').$ref.set(memberCount);
+        //return value in case its needed
+        resolve(memberCount);
+      });
+    });
+
+    return membersToVote;
   }
 
   isVoteInProgress(chapterKey: string){
@@ -202,8 +291,8 @@ export class FirebaseService {
     return state;
   }
 
-  checkTimeLimit(courseKey: string, limit: number){
-
+  setVoteStatus(chapterKey: string, state: boolean){
+    this.fireDB.object('/ChangeLogQueue/'+chapterKey+'/state/').set(state);
   }
 
   sendJoinRequest(courseKey: string, username: string, owner: string){
@@ -239,6 +328,18 @@ export class FirebaseService {
       });
   }
 
+  getMembersCount(courseID: string){
+    let that = this;
+
+    let memberCount = new Promise(function(resolve,reject){
+      that.fireDB.object('/courses/'+courseID+'/memberCount/').$ref.once('value').then(function(snapshot){
+          resolve(snapshot.val());
+      });
+    });
+
+    return memberCount;
+  }
+
   joinCourse(courseID: string, username: string){
       let that = this;
       //check that they arent already in the course, check that they arent the owner
@@ -253,6 +354,12 @@ export class FirebaseService {
           });
 
           if(!exists){
+            //increment member count
+            that.getMembersCount(courseID).then(function(count){
+              let newCount = count as number;
+              newCount++;
+              that.fireDB.object('/courses/'+courseID+'/memberCount/').$ref.set(newCount);
+            });
             //get the course and make another one in this user
             that.fireDB.object('/courses/').$ref.once('value').then(function(snapshot){
               snapshot.forEach(function(child){

@@ -16,7 +16,7 @@ export class MergeHandler{
   similarityFloor = 40; //Something below this % is not similar enough to any sentences.
   // fireDB : FirebaseService;
 
-  constructor(privateNoteText: string, publicNoteText: string, chapterKey: string, fireDB: FirebaseService){
+  constructor(privateNoteText: string, publicNoteText: string, chapterKey: string,courseKey:string, fireDB: FirebaseService){
     this.changeLog = Array<Change>();
 
     let text = privateNoteText.trim();
@@ -41,18 +41,13 @@ export class MergeHandler{
     this.publicSentences = this.breakIntoSentences(this.publicNoteText);
     this.privateSentences = this.breakIntoSentences(this.privateNoteText);
 
-    console.log('edited private',this.ePrivateNS)
-    console.log('edited public',this.ePublicNS)
-    console.log('public',this.publicSentences)
-    console.log('private', this.privateSentences)
-
     this.findDifferences();
 
     for(let i = 0; i < this.changeLog.length; i++){
       fireDB.addChange(chapterKey, this.changeLog[i]);
     }
 
-    fireDB.queueChangeLog(chapterKey);
+    fireDB.queueChangeLog(chapterKey,courseKey);
   }
 
   getePrivateNS(){
@@ -195,7 +190,6 @@ export class MergeHandler{
           this.changeLog.push(change);
         }else if(highestSimilarity <= this.similarityFloor){
           //If something has a similarity of ___ % or less, find a proper index for it.
-          console.log('NA', this.privateSentences[s1Index])
           let change = new Change("N/A", this.privateSentences[s1Index], previousIndexOfChange, "", 0, 0);
           this.changeLog.push(change);
         }

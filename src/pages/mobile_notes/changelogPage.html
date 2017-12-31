@@ -11,7 +11,7 @@
   </ion-navbar>
 </ion-header>
 <ion-content padding class="background">
-  <ion-card *ngFor="let change of changes | async">
+  <ion-card *ngFor="let change of changes">
     <ion-row>
       <ion-col>
         <div *ngIf="change.originalSentence != 'N/A'">

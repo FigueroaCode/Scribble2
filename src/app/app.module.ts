@@ -28,6 +28,7 @@ import { MobileCheckNotesPage } from '../pages/mobile_checknotes/mobile_checknot
 import { ChangeLogPage } from '../pages/mobile_notes/changelogPage';
 import { ResetPasswordPage } from '../pages/resetpassword/resetpassword';
 import { JoinCoursePage } from '../pages/joincourse/joincourse';
+import { ChangesPage } from '../pages/changelog/changelog';
 import { PendingRequestPage } from '../pages/pendingrequest/pendingrequest';
 import { SavedCoursesPage } from '../pages/savedcourses/savedcourses';
 import { User } from '../models/user';
@@ -64,6 +65,7 @@ firebase.initializeApp(firebaseConfig);
     PendingRequestPage,
     SavedCoursesPage,
     Autosize,
+    ChangesPage,
     WebSize
   ],
   imports: [
@@ -91,7 +93,8 @@ firebase.initializeApp(firebaseConfig);
     MobileCheckNotesPage,
     ChangeLogPage,
     PendingRequestPage,
-    SavedCoursesPage
+    SavedCoursesPage,
+    ChangesPage
   ],
   providers: [
     StatusBar,
