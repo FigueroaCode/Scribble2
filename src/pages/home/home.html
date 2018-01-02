@@ -7,63 +7,69 @@
 </ion-header>
 
 <ion-content id="ionContent" wrap>
-
   <!-- Decorative Blocks -->
   <div id="block1"></div>
 
   <!-- Algorithm Tester -->
-  <div id="merger">
-    <h1 id="mergeTitle">Merge Two Note Documents:</h1>
-    <ion-card id="card1" style="height: 20vw">
-      <ion-card-content>
-        <ion-textarea placeholder="Type your sample text here." websize [(ngModel)]="document1" [value]="document1"></ion-textarea>
-      </ion-card-content>
-    </ion-card>
+  <h1 id="mergeTitle">Here's how we merge your notes:</h1>
 
-    <ion-card id="card2" style="height: 20vw">
-      <ion-card-content>
-        <ion-textarea placeholder="Type your sample text here." websize [(ngModel)]="document2" [value]="document2"></ion-textarea>
-      </ion-card-content>
-    </ion-card>
+  <ion-card id="card1" style="height: 20vw">
+    <ion-card-content>
+      <ion-textarea placeholder="Type your sample text here." websize [(ngModel)]="document1" [value]="document1"></ion-textarea>
+    </ion-card-content>
+  </ion-card>
 
-    <button id="mergeButton" ion-button>Merge Documents</button>
+  <ion-card id="card2" style="height: 20vw">
+    <ion-card-content>
+      <ion-textarea placeholder="Type your sample text here." websize [(ngModel)]="document2" [value]="document2"></ion-textarea>
+    </ion-card-content>
+  </ion-card>
 
-    <ion-card id="card3" style="height: 20vw">
-      <ion-card-content>
-        <ion-textarea readonly placeholder="Result" websize [(ngModel)]="result" [value]="result"></ion-textarea>
-      </ion-card-content>
-    </ion-card>
-  </div>
+  <ion-card id="changeLogCard">
+    <ion-card-content>
 
-  <h1 id="doc1Title">Document One</h1>
-  <h1 id="doc2Title">Document Two</h1>
-  <h1 id="resultTitle">Result</h1>
+    </ion-card-content>
+  </ion-card>
+
+  <button id="mergeButton" ion-button>CONFIRM AND MERGE</button>
+
+  <h1 id="doc1Title">Your Notes</h1>
+  <h1 id="doc2Title">Your Friend's Notes</h1>
+  <h1 id="resultTitle">Resulting Document</h1>
+  <h1 id="changeLogTitle">Differences We Detected</h1>
 
   <!-- Icons and Page Content -->
-  <div id="item1">
-    <ion-icon id="DocumentIcon" name="ios-document-outline"></ion-icon>
-    <h1 id="iconText">Type all your notes</h1>
-  </div>
-  <div id="item2">
-    <ion-icon id="CopyIcon" name="ios-copy-outline"></ion-icon>
-    <ion-icon id="PeopleIcon" name="ios-people-outline"></ion-icon>
-    <h1 id="iconText">Automatically merge notes with peers</h1>
-  </div>
-  <div id="item3">
-    <ion-icon id="CloudIcon" name="ios-cloud-outline"></ion-icon>
-    <h1 id="iconText">Store your notes on the cloud</h1>
-  </div>
-  <div id="item4">
-    <ion-icon id="DocumentIcon2" name="ios-document-outline"></ion-icon>
-    <ion-icon id="SearchIcon" name="ios-search-outline"></ion-icon>
-    <h1 id="iconText">Easily sort through notes</h1>
-  </div>
-  <div id="item5">
-    <ion-icon id="FolderIcon" name="ios-folder-open-outline"></ion-icon>
-    <h1 id="iconText">Keep things organized</h1>
-  </div>
-  <div id="item6">
-    <ion-icon id="FlashcardIcon" name="ios-albums-outline"></ion-icon>
-    <h1 id="iconText">Automatically create flash cards to study</h1>
+  <div id="scroller">
+    <div id="item1">
+      <ion-icon id="DocumentIcon" name="ios-document-outline"></ion-icon>
+      <h1 id="iconText">Type all your notes</h1>
+    </div>
+
+    <div id="item2">
+      <ion-icon id="CopyIcon" name="ios-copy-outline"></ion-icon>
+      <ion-icon id="PeopleIcon" name="ios-people-outline"></ion-icon>
+      <h1 id="iconText">Automatically merge notes with peers</h1>
+    </div>
+
+    <div id="item3">
+      <ion-icon id="CloudIcon" name="ios-cloud-outline"></ion-icon>
+      <h1 id="iconText">Store your notes on the cloud</h1>
+    </div>
+
+    <div id="item4">
+      <ion-icon id="DocumentIcon2" name="ios-document-outline"></ion-icon>
+      <ion-icon id="SearchIcon" name="ios-search-outline"></ion-icon>
+      <h1 id="iconText">Easily sort through notes</h1>
+    </div>
+
+    <div id="item5">
+      <ion-icon id="FolderIcon" name="ios-folder-open-outline"></ion-icon>
+      <h1 id="iconText">Keep things organized</h1>
+    </div>
+
+    <div id="item6">
+      <ion-icon id="FlashcardIcon" name="ios-albums-outline"></ion-icon>
+      <h1 id="iconText">Automatically create flash cards to study</h1>
+    </div>
   </div>
 </ion-content>

@@ -44,9 +44,28 @@ export class HomePage {
   }
 
   ionViewDidLoad(){
+    let that = this;
 
-  //End of onLoad animations.
-  }
+    this.interval = self.setInterval(function(){
+
+      //Move Left
+      this.interval = self.setTimeout(function(){
+         $('#item1').transit({
+           marginLeft: '18%',
+           duration: 15000,
+         });
+      },1000);
+      //Move Right
+      this.interval = self.setTimeout(function(){
+        $('#item1').transit({
+          marginLeft: '52%',
+          duration: 15000,
+        })
+      },1000);
+
+    },1000);
+
+  }//End of onLoad animations.
 
   ionViewDidLeave(){
     window.clearInterval(this.interval)

@@ -38,147 +38,161 @@ page-home {
 
 // MERGER AREA
 
-#mergeTitle {
-  font-size: 2.5vw;
-  font-family: Zekton;
-}
-
-#merger {
-  position: absolute;
-  margin-left: 65%;
-  margin-top: 0%;
-}
-
-#mergeButton {
-  font-family: Zekton;
-  width: 30vw;
-}
-
-#doc1Title {
-  position: absolute;
-  margin-left: 57%;
-  margin-top: 12%;
-  font-size: 2vw;
-  font-family: Zekton;
-  transform: rotate(-90deg);
-}
-
-#doc2Title {
-  position: absolute;
-  margin-left: 57%;
-  margin-top: 33%;
-  font-size: 2vw;
-  font-family: Zekton;
-  transform: rotate(-90deg);
-}
-
-#resultTitle {
-  position: absolute;
-  margin-left: 61%;
-  margin-top: 57%;
-  font-size: 2vw;
-  font-family: Zekton;
-  transform: rotate(-90deg);
-}
-
-// BLOCKS
-
-#block1 {
-  position: absolute;
-  background-color: map-get($colors, primary);//#e5e7e8;
-  height: 110vw;
-  width: 50vw;
-  margin-top: 0%;
-  margin-left: 5%;
-  z-index: -5;
-  box-shadow: 10px 10px 15px rgba(0, 0, 0, 0.3);
-}
-
-//  WRITTEN TEXT
-
-#iconText {
-  font-size: 2vw;
-  margin-top: -2%;
-  font-family: zekton;
-  color: white;
-}
-
-// ICONS
-
-  #DocumentIcon, #CopyIcon, #PeopleIcon, #CloudIcon, #FolderIcon,
-  #FlashcardIcon, #DocumentIcon2 {
-    font-size: 15vw;
-    color: white;
-    text-shadow: 5px 5px 15px rgb(0,0,0.3);
+  #mergeTitle {
+    position: absolute;
+    margin-left: 30%;
+    margin-top: 16%;
+    font-size: 2.5vw;
+    font-family: Zekton;
   }
 
-  #DocumentIcon {
-    margin-left: 7%;
+  #mergeButton {
+    font-family: Zekton;
+    width: 30vw;
   }
 
-  #CloudIcon {
-    margin-left: 8%;
-  }
-
-  #CopyIcon {
-    margin-left: 9%;
-  }
-
-  #SearchIcon {
-    margin-left: -6%;
-    font-size: 9vw;
-    color: map-get($colors, danger);
-    text-shadow: 5px 5px 15px rgb(0,0,0.3);
-  }
-
-  #FolderIcon {
+  #card1 {
+    position: absolute;
     margin-left: 5%;
+    margin-top: 20%;
+    width: 20vw;
   }
 
-  #FlashcardIcon {
-    margin-left: 14%;
+  #doc1Title {
+    position: absolute;
+    margin-left: 10%;
+    margin-top: 40%;
+    font-size: 2vw;
+    font-family: Zekton;
   }
 
-  #DocumentIcon2{
-    margin-left: 9%;
+  #card2 {
+    position: absolute;
+    margin-left: 30%;
+    margin-top: 20%;
+    width: 20vw;
   }
 
-// ITEM GROUPS
-
-  #item1 {
-    align-content: center;
-    margin-left: 21%;
-    margin-top: 2%;
+  #doc2Title {
+    position: absolute;
+    margin-left: 31%;
+    margin-top: 40%;
+    font-size: 2vw;
+    font-family: Zekton;
   }
 
-  #item2 {
-    align-content: center;
-    margin-left: 12%;
-    margin-top: 2.5%;
+  #changeLogCard {
+    position: absolute;
+    margin-left: 55%;
+    margin-top: 20%;
+    width: 35vw;
+    height: 20vw;
   }
 
-  #item3 {
-    align-content: center;
-    margin-left: 16%;
-    margin-top: 2.2%;
+  #resultTitle {
+    position: absolute;
+    margin-left: 65%;
+    margin-top: 40%;
+    font-size: 2vw;
+    font-family: Zekton;
+    display: none;
   }
 
-  #item4 {
-    align-content: center;
-    margin-left: 18%;
-    margin-top: 2.2%;
+  #changeLogTitle {
+    position: absolute;
+    margin-left: 61%;
+    margin-top: 40%;
+    font-size: 2vw;
+    font-family: Zekton;
   }
 
-  #item5 {
-    align-content: center;
-    margin-left: 19%;
-    margin-top: 2.2%;
+  #mergeButton {
+    position: absolute;
+    margin-left: 81%;
+    margin-top: 29%;
+    font-size: 2vw;
+    font-family: Zekton;
+    width: 20vw;
+    transform: rotate(90deg);
+  }
+  // BLOCKS
+
+  #block1 {
+    position: absolute;
+    background-color: map-get($colors, primary);//#e5e7e8;
+    height: 23vh;
+    width: 120vw;
+    margin-top: 3%;
+    margin-left: -10%;
+    z-index: -5;
+    box-shadow: 10px 10px 15px rgba(0, 0, 0, 0.3);
   }
 
-  #item6 {
-    align-content: center;
-    margin-left: 11%;
-    margin-top: 2.5%;
+  //  WRITTEN TEXT
+
+  #iconText {
+    font-size: 3vh;
+    margin-top: -2%;
+    font-family: zekton;
+    color: white;
   }
+
+  // ICONS
+
+    #DocumentIcon, #CopyIcon, #PeopleIcon, #CloudIcon, #FolderIcon,
+    #FlashcardIcon, #DocumentIcon2 {
+      font-size: 10vw;
+      color: white;
+      text-shadow: 5px 5px 15px rgb(0,0,0.3);
+    }
+
+    #DocumentIcon {
+      margin-left: 30%;
+    }
+
+    #CopyIcon {
+      margin-left: 25%;
+    }
+
+    #CloudIcon {
+      margin-left: 30%;
+    }
+
+    #DocumentIcon2 {
+      margin-left: 30%;
+    }
+
+    #SearchIcon {
+      font-size: 6vw;
+      margin-left: -15%;
+      color: map-get($colors, danger);
+    }
+
+    #FolderIcon {
+      margin-left: 25%;
+    }
+
+    #FlashcardIcon {
+      margin-left: 35%;
+    }
+
+    #scroller {
+      margin-top: 3%;
+      margin-left: -150vw;
+      width: 300vw;
+      height: 12vw;
+      overflow: hidden;
+      align-items: left;
+    }
+
+    #item1 {
+      float: left;
+      margin-left: 52%;
+    }
+
+    #item2, #item3, #item4, #item5, #item6 {
+      float: left;
+      margin-left: 4%;
+    }
 
 }
