@@ -105,7 +105,7 @@ export class FirebaseService {
 
     return changeLog;
   }
-  
+
   getChangeLogAsync(chapterKey: string){
     return this.fireDB.list('/ChangeLog/'+chapterKey);
   }
@@ -203,8 +203,8 @@ export class FirebaseService {
     return timeLimit;
   }
   //record that this user voted already for a specific chapter
-  userVoted(username,chapterKey){
-    this.fireDB.object('/Voted/'+chapterKey).$ref.set({'name':username});
+  userVoted(username: string,chapterKey: string){
+    this.fireDB.list('/Voted/'+chapterKey).push({'name':username});
   }
 
   getMemberCount(chapterKey){
@@ -216,6 +216,26 @@ export class FirebaseService {
     });
 
     return memberCount;
+  }
+//TODO: Test this with luis
+  hasUserVoted(chapterKey: string, username: string){
+    let that = this;
+    let voted = new Promise(function(resolve,reject){
+      that.fireDB.object('/Voted/'+chapterKey).$ref.once('value').then(function(snapshot){
+        console.log(snapshot.val())
+        if(snapshot.val() != null){
+          snapshot.val().forEach(function(username){
+            console.log(username);
+          });
+        }
+      });
+    });
+
+    return voted;
+  }
+
+  removeUserVoted(chapterKey: string){
+    this.fireDB.list('/Voted/').remove(chapterKey);
   }
 
   withinTimeLimit(timeLimit, chapterKey){

@@ -47,6 +47,9 @@ export class ChangesPage {
         //check that user exists
         if(this.authService.getFireAuth().currentUser)
             this.displayName = this.authService.getFireAuth().currentUser.displayName;
+        else{
+          this.displayName = "";
+        }
 
         this.initializeChangeLog();
         this.initializeChangeLogAsync();
@@ -62,6 +65,8 @@ export class ChangesPage {
             }
           }
         });
+        //TODO: remember to remove this
+        firebaseService.hasUserVoted(this.chapterKey,this.displayName);
     }
 
     initializeChangeLogAsync(){
@@ -105,7 +110,7 @@ export class ChangesPage {
       //update the amount of members left to vote
       //if there are no more members left to vote or time limit is up, then start merge to public noteText
       //then clear the changes
-      //TODO: make db branch for storing that the this user voted for this chapter already
+      //TODO:check if this user voted already
       if(this.chapterKey != null){
         if(this.changeQueue.length > 0){
           for(let i = 0; i < this.changeQueue.length; i++){
@@ -125,7 +130,8 @@ export class ChangesPage {
                 that.changeQueue.splice(0,that.changeQueue.length);
                 // set the ChangeLogQueue status to false
                 that.firebaseService.setVoteStatus(that.chapterKey,false);
-                //delete chapter from voted branch
+                //TODO:delete chapter from voted branch
+                that.firebaseService.removeUserVoted(that.chapterKey);
               }
             });
           });
