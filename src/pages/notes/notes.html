@@ -93,7 +93,7 @@
               <button ion-button full (click)="prepareMerge()">SUBMIT CHANGES TO PUBLIC NOTE</button>
             </ion-col>
             <ion-col *ngIf="voteInProgress">
-              <button ion-button full color="danger">Vote in Progress</button>
+              <button ion-button full color="danger" (click)="viewChangeLog()">Vote in Progress</button>
             </ion-col>
             <ion-col>
               <div id="inputOuterField">

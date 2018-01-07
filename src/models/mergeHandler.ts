@@ -186,11 +186,11 @@ export class MergeHandler{
           }
         }
         if(highestSimilarity < this.similarityCeiling && highestSimilarity > this.similarityFloor){
-          let change = new Change(this.publicSentences[indexOfChange], this.privateSentences[s1Index], indexOfChange, "", 0, 0);
+          let change = new Change(this.publicSentences[indexOfChange], this.privateSentences[s1Index], indexOfChange, "", 0, 0,false);
           this.changeLog.push(change);
         }else if(highestSimilarity <= this.similarityFloor){
           //If something has a similarity of ___ % or less, find a proper index for it.
-          let change = new Change("N/A", this.privateSentences[s1Index], previousIndexOfChange, "", 0, 0);
+          let change = new Change("N/A", this.privateSentences[s1Index], previousIndexOfChange, "", 0, 0,false);
           this.changeLog.push(change);
         }
         highestSimilarity = 0;

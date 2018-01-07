@@ -18,7 +18,6 @@ import { MobileNotesPage } from '../mobile_notes/mobile_notes';
 export class ChangesPage {
     changeLogAsync: FirebaseListObservable<any[]>;
     changeLog: Array<any>;
-    changeQueue: Array<Change>;
     displayName: string;
     chapterKey: string;
     inVoteView: boolean;
@@ -41,7 +40,6 @@ export class ChangesPage {
         this.chapterKey = navParams.get('chapterKey');
         this.timeLimit = navParams.get('timelimit');
         this.inVoteView = true;
-        this.changeQueue = [];
         this.changeLog = [];
 
         //check that user exists
@@ -60,13 +58,8 @@ export class ChangesPage {
             if(that.changeLog.length > 0){
               that.changeLog.splice(0,that.changeLog.length);
             }
-            if(that.changeQueue.length > 0){
-              that.changeQueue.splice(0,that.changeQueue.length);
-            }
           }
         });
-        //TODO: remember to remove this
-        firebaseService.hasUserVoted(this.chapterKey,this.displayName);
     }
 
     initializeChangeLogAsync(){
@@ -75,34 +68,33 @@ export class ChangesPage {
 
     initializeChangeLog(){
       let that = this;
-
-      if(this.chapterKey != null){
-        this.firebaseService.getChangeLog(this.chapterKey).then(function(change_array){
-            that.changeLog = change_array as Array<any>;
-        });
-      }
-    }
-
-    removeChange(key){
-      let that = this;
-      this.changeLog.splice(this.changeLog.findIndex(function(change){
-        if(change.key == key){
-          that.changeQueue.push(change as Change);
-          return true;
-        }else{
-           return false;
+      this.firebaseService.hasUserVoted(this.chapterKey,this.displayName).then(function(voted){
+        if(that.chapterKey != null && !voted){
+          that.firebaseService.getChangeLog(that.chapterKey).then(function(change_array){
+              that.changeLog = change_array as Array<any>;
+          });
         }
-      }), 1);
+      });
     }
+
+    // removeChange(key){
+    //   let that = this;
+    //   this.changeLog.splice(this.changeLog.findIndex(function(change){
+    //     if(change.key == key){
+    //       that.changeQueue.push(change as Change);
+    //       return true;
+    //     }else{
+    //        return false;
+    //     }
+    //   }), 1);
+    // }
 
     upVote(change){
-      change.approvedVotes += 1;
-      this.removeChange(change.key);
+      change.upVoted = true;
     }
 
     downVote(change){
-      change.disapprovedVotes += 1;
-      this.removeChange(change.key);
+      change.upVoted = false;
     }
     confirmVotes(){
       //check that there is a vote in progress
@@ -110,35 +102,46 @@ export class ChangesPage {
       //update the amount of members left to vote
       //if there are no more members left to vote or time limit is up, then start merge to public noteText
       //then clear the changes
-      //TODO:check if this user voted already
-      if(this.chapterKey != null){
-        if(this.changeQueue.length > 0){
-          for(let i = 0; i < this.changeQueue.length; i++){
-            this.firebaseService.updateVoteCount(this.chapterKey,this.changeQueue[i]);
-          }
-          //record user has voted
-          this.firebaseService.userVoted(this.displayName, this.chapterKey);
-          let that = this;
-          this.firebaseService.updateMemberCount(this.chapterKey).then(function(memberCount){
-            that.firebaseService.withinTimeLimit(that.timeLimit,that.chapterKey).then(function(withinTime){
-              if(memberCount <= 0 || !withinTime){
-                // then start merge to public noteText
-                console.log('do some merge magic');
-                // then clear the changes
-                that.firebaseService.clearChangeLog(that.chapterKey);
-                that.changeLog.splice(0,that.changeLog.length);
-                that.changeQueue.splice(0,that.changeQueue.length);
-                // set the ChangeLogQueue status to false
-                that.firebaseService.setVoteStatus(that.chapterKey,false);
-                //delete chapter from voted branch
-                that.firebaseService.removeUserVoted(that.chapterKey);
+      let that = this;
+      this.firebaseService.hasUserVoted(this.chapterKey,this.displayName).then(function(voted){
+        if(!voted){
+          if(that.chapterKey != null){
+            if(that.changeLog.length > 0){
+              for(let i = 0; i < that.changeLog.length; i++){
+                if(that.changeLog[i].upVoted){
+                  that.changeLog[i].approvedVotes += 1;
+                }else{
+                  that.changeLog[i].disapprovedVotes += 1;
+                }
+                //keep it false on the database
+                that.changeLog[i].upVoted = false;
+                that.firebaseService.updateVoteCount(that.chapterKey,that.changeLog[i]);
               }
-            });
-          });
-        }else{
-          //theres no changes
+              //record user has voted
+              that.firebaseService.userVoted(that.displayName, that.chapterKey);
+              that.firebaseService.updateMemberCount(that.chapterKey).then(function(memberCount){
+                that.firebaseService.withinTimeLimit(that.timeLimit,that.chapterKey).then(function(withinTime){
+                  if(memberCount <= 0 || !withinTime){
+                    // then start merge to public noteText
+                    console.log('do some merge magic');
+                    // then clear the changes
+                    that.firebaseService.clearChangeLog(that.chapterKey);
+                    that.changeLog.splice(0,that.changeLog.length);
+                    //that.changeQueue.splice(0,that.changeQueue.length);
+                    // set the ChangeLogQueue status to false
+                    that.firebaseService.setVoteStatus(that.chapterKey,false);
+                    //delete chapter from voted branch
+                    that.firebaseService.removeUserVoted(that.chapterKey);
+                  }
+                });
+              });
+            }else{
+              //theres no changes
+            }
+          }
         }
-      }
+      });
+
     }
 
     //Switching Between Notes

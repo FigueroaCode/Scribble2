@@ -221,13 +221,14 @@ export class FirebaseService {
   hasUserVoted(chapterKey: string, username: string){
     let that = this;
     let voted = new Promise(function(resolve,reject){
-      that.fireDB.object('/Voted/'+chapterKey).$ref.once('value').then(function(snapshot){
-        console.log(snapshot.val())
-        if(snapshot.val() != null){
-          snapshot.val().forEach(function(username){
-            console.log(username);
-          });
+      let usersVoted = that.fireDB.list('/Voted/'+chapterKey);
+      usersVoted.forEach(function(user){
+        for(let i = 0; i < user.length; i++){
+          if(user[i].name == username){
+            resolve(true);
+          }
         }
+        resolve(false);
       });
     });
 
