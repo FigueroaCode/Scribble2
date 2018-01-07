@@ -10,28 +10,28 @@
   <!-- Decorative Blocks -->
   <div id="block1"></div>
 
-  <!-- Algorithm Tester -->
   <h1 id="mergeTitle">Here's how we merge your notes:</h1>
 
   <ion-card id="card1" style="height: 20vw">
     <ion-card-content>
-      <ion-textarea placeholder="Type your sample text here." websize [(ngModel)]="document1" [value]="document1"></ion-textarea>
+      <ion-textarea id="textArea" placeholder="Type your sample text here." websize [(ngModel)]="document1" [value]="document1"></ion-textarea>
     </ion-card-content>
   </ion-card>
 
   <ion-card id="card2" style="height: 20vw">
     <ion-card-content>
-      <ion-textarea placeholder="Type your sample text here." websize [(ngModel)]="document2" [value]="document2"></ion-textarea>
+      <ion-textarea id="textArea" placeholder="Type your sample text here." websize [(ngModel)]="document2" [value]="document2"></ion-textarea>
     </ion-card-content>
   </ion-card>
 
-  <ion-card id="changeLogCard">
-    <ion-card-content>
+  <div id="changeLogDiv">
+    <ion-card id="changeLogCard">
+      <ion-card-content>
 
-    </ion-card-content>
-  </ion-card>
-
-  <button id="mergeButton" ion-button>CONFIRM AND MERGE</button>
+      </ion-card-content>
+    </ion-card>
+    <button id="mergeButton" ion-button>CONFIRM AND MERGE</button>
+  </div>
 
   <h1 id="doc1Title">Your Notes</h1>
   <h1 id="doc2Title">Your Friend's Notes</h1>

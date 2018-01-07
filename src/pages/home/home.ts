@@ -51,14 +51,14 @@ export class HomePage {
       //Move Left
       this.interval = self.setTimeout(function(){
          $('#item1').transit({
-           marginLeft: '18%',
+           marginLeft: '80rem',
            duration: 15000,
          });
       },1000);
       //Move Right
       this.interval = self.setTimeout(function(){
         $('#item1').transit({
-          marginLeft: '52%',
+          marginLeft: '260rem',
           duration: 15000,
         })
       },1000);
