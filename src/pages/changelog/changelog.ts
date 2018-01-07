@@ -130,7 +130,7 @@ export class ChangesPage {
                 that.changeQueue.splice(0,that.changeQueue.length);
                 // set the ChangeLogQueue status to false
                 that.firebaseService.setVoteStatus(that.chapterKey,false);
-                //TODO:delete chapter from voted branch
+                //delete chapter from voted branch
                 that.firebaseService.removeUserVoted(that.chapterKey);
               }
             });
