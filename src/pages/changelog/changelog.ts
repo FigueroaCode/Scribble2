@@ -126,7 +126,6 @@ export class ChangesPage {
                     console.log('do some merge magic');
                     // then clear the changes
                     that.firebaseService.clearChangeLog(that.chapterKey);
-                    that.changeLog.splice(0,that.changeLog.length);
                     //that.changeQueue.splice(0,that.changeQueue.length);
                     // set the ChangeLogQueue status to false
                     that.firebaseService.setVoteStatus(that.chapterKey,false);
@@ -134,6 +133,7 @@ export class ChangesPage {
                     that.firebaseService.removeUserVoted(that.chapterKey);
                   }
                 });
+                that.changeLog.splice(0,that.changeLog.length);
               });
             }else{
               //theres no changes
