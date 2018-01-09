@@ -10,6 +10,7 @@ import { CenterPage } from '../center/center';
 })
 export class RegisterPage {
     username: string;
+    university: string;
     email: string;
     password: string;
     loading: any;
@@ -25,6 +26,10 @@ export class RegisterPage {
         this.username = input._value;
     }
 
+    universityChanged(input){
+        this.university = input._value;
+    }
+
     emailChanged(input){
         this.email = input._value;
     }
@@ -35,7 +40,7 @@ export class RegisterPage {
 
     registerUser(){
         if(this.email != '' && this.password != ''){
-            this.authService.register(this.username,this.email,this.password).then(
+            this.authService.register(this.username,this.university,this.email,this.password).then(
                 authService => {
                     this.navCtrl.setRoot(CenterPage);
                 }, error => {

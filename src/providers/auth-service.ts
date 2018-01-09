@@ -44,7 +44,7 @@ export class AuthService {
     return this.fireAuth.signInWithEmailAndPassword(email, password);
     }
 
-    register(username: string, email: string, password: string): any {
+    register(username: string, university: string, email: string, password: string): any {
         return this.fireAuth.createUserWithEmailAndPassword(email, password)
             .then((newUser) => {
                 //Save username
@@ -53,7 +53,7 @@ export class AuthService {
                 });
 
                 //create a user profile in the database
-                let user = {'name': username, 'courses': ''};
+                let user = {'name': username, 'courses': '','university': university};
                 this.fireDB.list('/Users/').push(user);
             });
     }

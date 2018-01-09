@@ -23,6 +23,16 @@
           <ion-col>
               <div  align="center">
                   <ion-item class="fixedWidth" align="center">
+                      <ion-label floating>University</ion-label>
+                      <ion-input type="text" #university (change)="universityChanged(university)"></ion-input>
+                  </ion-item>
+              </div>
+          </ion-col>
+      </ion-row>
+      <ion-row>
+          <ion-col>
+              <div  align="center">
+                  <ion-item class="fixedWidth" align="center">
                       <ion-label floating>Email</ion-label>
                       <ion-input type="text" #email (change)="emailChanged(email)"></ion-input>
                   </ion-item>
