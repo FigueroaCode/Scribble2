@@ -12,8 +12,8 @@ export class Change {
     similarity: number;
 
     constructor(originalSentence: string, proposedSentence: string, indexOfChange: number, key: string, approvedVotes: number, disapprovedVotes: number, upVoted: boolean){
-      if(originalSentence != ''){
-        this.originalSentence = originalSentence;
+      if(originalSentence != 'N/A'){
+        this.originalSentence = " " + originalSentence;
       }else{
         this.originalSentence = "None";
       }

@@ -77,19 +77,26 @@ page-home {
       }
   }
 
-  #cardDiv {
+  #card1Div, #card2Div {
     min-height: 20rem;
     max-height: 37rem;
     width: 40%;
   }
 
-  #card {
+  #card1, #card2, #changeLogCard {
     width: 100%;
     height: 40vh;
     margin: 0vh;
   }
 
-  #doc1Title {
+  #changeLogDiv {
+    display: none;
+    min-height: 20rem;
+    max-height: 37rem;
+    width: 100%;
+  }
+
+  #doc1Title, #doc2Title, #changeLogTitle {
     text-align: center;
     font-family: Zekton;
     font-size: 2.5vw;
@@ -103,6 +110,7 @@ page-home {
     font-family: Zekton;
     margin-top: 55vh;
   }
+
   // BLOCKS
 
   #block1 {

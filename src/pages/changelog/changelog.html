@@ -28,11 +28,11 @@
               <ion-card *ngFor="let change of changeLog">
                     <ion-row>
                       <ion-col>
-                        <div *ngIf="change.originalSentence != 'N/A'">
+                        <div *ngIf="change.originalSentence != 'None'">
                           <p id="changeLog"><b>Would you like to replace: </b> {{ change.originalSentence }}</p>
                           <p id="changeLog"><b>With the following sentence: </b> {{ change.proposedSentence }}</p>
                         </div>
-                        <p id="changeLog" *ngIf="change.originalSentence == 'N/A'"><b>Would you like to insert the following sentence: </b> {{ change.proposedSentence }}</p>
+                        <p id="changeLog" *ngIf="change.originalSentence == 'None'"><b>Would you like to insert the following sentence: </b> {{ change.proposedSentence }}</p>
                       </ion-col>
                     </ion-row>
                     <ion-row>

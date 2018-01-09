@@ -143,7 +143,7 @@ export class MobileNotesPage {
           if(this.publicText == null || this.publicText == ''){
             this.firebaseService.saveNotes(this.displayName,this.courseKey,this.chapterKey, this.privateText, true);
           }else{
-            let mergeHandler = new MergeHandler(this.privateText, this.publicText,this.chapterKey,this.courseKey, this.firebaseService);
+            let mergeHandler = new MergeHandler(this.privateText, this.publicText,this.chapterKey,this.courseKey, false, this.firebaseService);
           }
 
       }

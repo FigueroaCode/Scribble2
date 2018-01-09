@@ -46,30 +46,58 @@
   </div>
 
   <div class="center" id="content">
-    <h1 id="mergeTitle">Here's how we merge your notes:</h1>
+    <h1 id="mergeTitle">{{erasedTitle}}</h1>
   </div>
 
   <div class="center">
-    <ion-fab center>
-      <button ion-fab id="buttonFAB" >Merge</button>
+    <ion-fab id="fab" center>
+      <button ion-fab id="buttonFAB" (click)="mergeDocuments()" >Merge</button>
     </ion-fab>
   </div>
 
   <div class="center">
-    <div id="cardDiv">
+    <div id="card1Div">
       <h2 id="doc1Title">Your Notes</h2>
-      <ion-card id="card">
+      <ion-card id="card1">
         <ion-card-content>
           <ion-textarea id="textArea" placeholder="Type some sample text here." websize [(ngModel)]="document1" [value]="document1"></ion-textarea>
         </ion-card-content>
       </ion-card>
     </div>
 
-    <div id="cardDiv">
-      <h2 id="doc1Title">Your Friend's Notes</h2>
-      <ion-card id="card">
+    <div id="card2Div">
+      <h2 id="doc2Title">Your Friend's Notes</h2>
+      <ion-card id="card2">
         <ion-card-content>
           <ion-textarea id="textArea" placeholder="Type some sample text here." websize [(ngModel)]="document2" [value]="document2"></ion-textarea>
+        </ion-card-content>
+      </ion-card>
+    </div>
+
+    <div id="changeLogDiv">
+      <ion-card id="changeLogCard">
+        <ion-card-content>
+            <button id="confirmButton" ion-button full (click)="confirmVotes()"> Confirm </button>
+            <!-- Change Log -->
+            <ion-card id="changeCard" *ngFor="let change of changeLog">
+              <ion-row>
+                <ion-col col-xs-1 col-sm-1 col-md-1 col-lg-1 col-xl-1>
+                  <div>
+                    <button id="disapproveBtn"ion-button icon-only (click)="downVote(change)"><ion-icon name="thumbs-down"></ion-icon></button>
+                  </div>
+                  <div>
+                    <button id="approveBtn" ion-button icon-only (click)="upVote(change)"><ion-icon name="thumbs-up"></ion-icon></button>
+                  </div>
+                </ion-col>
+                <ion-col col-xs-11 col-sm-11 col-md-11 col-lg-11 col-xl-11>
+                  <div *ngIf="change.originalSentence != 'None'">
+                    <p id="changeLog"><b>Would you like to replace: </b> {{ change.originalSentence }}</p>
+                    <p id="changeLog"><b>With the following sentence: </b> {{ change.proposedSentence }}</p>
+                  </div>
+                  <p id="changeLog" *ngIf="change.originalSentence == 'None'"><b>Would you like to insert the following sentence: </b> {{ change.proposedSentence }}</p>
+                </ion-col>
+              </ion-row>
+            </ion-card>
         </ion-card-content>
       </ion-card>
     </div>

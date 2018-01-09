@@ -295,7 +295,7 @@ export class NotesPage {
               }else{
                 that.firebaseService.isVoteInProgress(firstKey).then(function(state){
                   if(!state){
-                    let mergeHandler = new MergeHandler(that.privateText, that.publicText,firstKey,that.courseKey, that.firebaseService);
+                    let mergeHandler = new MergeHandler(that.privateText, that.publicText,firstKey,that.courseKey, false, that.firebaseService);
                   }else{
                     //tell user that a vote is in progress, and maybe how much time is left on it
                   }
@@ -309,7 +309,7 @@ export class NotesPage {
           }else{
             this.firebaseService.isVoteInProgress(this.currentChapterKey).then(function(state){
               if(!state || state != null){
-                let mergeHandler = new MergeHandler(that.privateText, that.publicText,this.currentChapterKey,this.courseKey, this.firebaseService);
+                let mergeHandler = new MergeHandler(that.privateText, that.publicText,this.currentChapterKey,this.courseKey, false, this.firebaseService);
               }else{
                 //tell user that a vote is in progress, and maybe how much time is left on it
               }

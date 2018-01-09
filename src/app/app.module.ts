@@ -32,6 +32,7 @@ import { ChangesPage } from '../pages/changelog/changelog';
 import { PendingRequestPage } from '../pages/pendingrequest/pendingrequest';
 import { SavedCoursesPage } from '../pages/savedcourses/savedcourses';
 import { User } from '../models/user';
+import { MiniHandler } from '../pages/home/miniHandler';
 
 import { WebWorkerService } from '../web-worker.service';
 

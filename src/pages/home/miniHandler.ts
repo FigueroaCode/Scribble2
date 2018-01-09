@@ -1,7 +1,6 @@
-import { Change } from './change';
-import { FirebaseService } from '../providers/firebase-service';
+import { Change } from '../../models/change';
 
-export class MergeHandler{
+export class MiniHandler {
 
   oPrivateNS: Array<Array<string>>; //Original Private Note Sentence-Word Array
   oPublicNS: Array<Array<string>>; //Original Public Note Sentence-Word Array
@@ -15,7 +14,7 @@ export class MergeHandler{
   similarityCeiling = 80; //Something above this % is too similar to another sentence.
   similarityFloor = 40; //Something below this % is not similar enough to any sentences.
 
-  constructor(privateNoteText: string, publicNoteText: string, chapterKey: string,courseKey:string,isMerging: boolean, fireDB: FirebaseService){
+  constructor(privateNoteText: string, publicNoteText: string){
     this.changeLog = Array<Change>();
 
     let text = privateNoteText.trim();
@@ -40,25 +39,7 @@ export class MergeHandler{
     this.publicSentences = this.breakIntoSentences(this.publicNoteText);
     this.privateSentences = this.breakIntoSentences(this.privateNoteText);
 
-    //Only do this if not trying to merge already.
-    if( !isMerging){
-      this.findDifferences();
-
-      for(let i = 0; i < this.changeLog.length; i++){
-        fireDB.addChange(chapterKey, this.changeLog[i]);
-      }
-
-      fireDB.queueChangeLog(chapterKey,courseKey);
-    }
-
-  }
-
-  getePrivateNS(){
-    return this.ePrivateNS;
-  }
-
-  getePublicNS(){
-    return this.ePublicNS;
+    this.findDifferences();
   }
 
   breakIntoSentences(originalText: string){
@@ -251,4 +232,5 @@ export class MergeHandler{
     }
   }//End of Method
 
-}
+
+}//End of Class
