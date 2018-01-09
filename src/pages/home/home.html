@@ -10,34 +10,6 @@
   <!-- Decorative Blocks -->
   <div id="block1"></div>
 
-  <h1 id="mergeTitle">Here's how we merge your notes:</h1>
-
-  <ion-card id="card1" style="height: 20vw">
-    <ion-card-content>
-      <ion-textarea id="textArea" placeholder="Type your sample text here." websize [(ngModel)]="document1" [value]="document1"></ion-textarea>
-    </ion-card-content>
-  </ion-card>
-
-  <ion-card id="card2" style="height: 20vw">
-    <ion-card-content>
-      <ion-textarea id="textArea" placeholder="Type your sample text here." websize [(ngModel)]="document2" [value]="document2"></ion-textarea>
-    </ion-card-content>
-  </ion-card>
-
-  <div id="changeLogDiv">
-    <ion-card id="changeLogCard">
-      <ion-card-content>
-
-      </ion-card-content>
-    </ion-card>
-    <button id="mergeButton" ion-button>CONFIRM AND MERGE</button>
-  </div>
-
-  <h1 id="doc1Title">Your Notes</h1>
-  <h1 id="doc2Title">Your Friend's Notes</h1>
-  <h1 id="resultTitle">Resulting Document</h1>
-  <h1 id="changeLogTitle">Differences We Detected</h1>
-
   <!-- Icons and Page Content -->
   <div id="scroller">
     <div id="item1">
@@ -72,4 +44,46 @@
       <h1 id="iconText">Automatically create flash cards to study</h1>
     </div>
   </div>
+
+  <div class="center" id="content">
+    <h1 id="mergeTitle">Here's how we merge your notes:</h1>
+  </div>
+
+  <div class="center">
+    <ion-fab center>
+      <button ion-fab id="buttonFAB" >Merge</button>
+    </ion-fab>
+  </div>
+
+  <div class="center">
+    <div id="cardDiv" style="margin-left: -1.55%">
+      <h2 id="doc1Title">Your Notes</h2>
+      <ion-card id="card">
+        <ion-card-content>
+          <ion-textarea id="textArea" placeholder="Type some sample text here." websize [(ngModel)]="document1" [value]="document1"></ion-textarea>
+        </ion-card-content>
+      </ion-card>
+    </div>
+
+    <div id="cardDiv" style="margin-left: 5%">
+      <h2 id="doc1Title">Your Friend's Notes</h2>
+      <ion-card id="card">
+        <ion-card-content>
+          <ion-textarea id="textArea" placeholder="Type some sample text here." websize [(ngModel)]="document2" [value]="document2"></ion-textarea>
+        </ion-card-content>
+      </ion-card>
+    </div>
+  </div>
+
+  <!-- <ion-card id="changeLogCard">
+    <ion-card-content>
+
+    </ion-card-content>
+  </ion-card>
+  <button id="mergeButton" ion-button>CONFIRM AND MERGE</button> -->
+
+  <!-- <h1 id="doc1Title">Your Notes</h1>
+  <h1 id="doc2Title">Your Friend's Notes</h1>
+  <h1 id="changeLogTitle">Differences We Detected</h1> -->
+
 </ion-content>

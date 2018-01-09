@@ -236,10 +236,10 @@ export class NotesPage {
             let that = this;
             this.getFirstChapterKey.then(function(firstKey){
                 //default chapter is the first one
-                that.firebaseService.saveNotes(that.displayName,that.courseKey,firstKey, that.privateText, that.inPublicNote);
+                that.firebaseService.saveNotes(that.displayName,that.courseKey,firstKey, that.privateText, false);
             });
         }else if(this.courseKey != null && (this.privateText != null || this.privateText != '') && this.currentChapterKey != ''){
-            this.firebaseService.saveNotes(this.displayName,this.courseKey,this.currentChapterKey, this.privateText, this.inPublicNote);
+            this.firebaseService.saveNotes(this.displayName,this.courseKey,this.currentChapterKey, this.privateText, false);
         }
     }
 
