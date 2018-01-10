@@ -190,14 +190,26 @@ export class HomePage {
   }//END OF METHOD
 
   upVote(item: Change){
-    item.approvedVotes++;
+    item.upVoted = true;
   }
 
   downVote(item: Change){
-    item.disapprovedVotes++;
+    item.upVoted = false;
+  }
+
+  updateVoteCount(){
+    for(let change of this.changeLog){
+      if(change.upVoted){
+        change.approvedVotes += 1;
+      }else{
+        change.disapprovedVotes += 1;
+      }
+    }
   }
 
   confirmVotes(){
+    this.updateVoteCount();
+    this.mergeHandler.changeLog = this.changeLog;
     this.mergeHandler.mergeNotes();
     console.log(this.mergeHandler.publicSentences);
   }
