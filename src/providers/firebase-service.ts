@@ -217,7 +217,7 @@ export class FirebaseService {
 
     return memberCount;
   }
-//TODO: Test this with luis
+
   hasUserVoted(chapterKey: string, username: string){
     let that = this;
     let voted = new Promise(function(resolve,reject){
