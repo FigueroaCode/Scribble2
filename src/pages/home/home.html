@@ -6,7 +6,7 @@
   </ion-row>
 </ion-header>
 
-<ion-content id="ionContent" wrap>
+<ion-content id="ionContent" class="no-scroll" wrap>
   <!-- Decorative Blocks -->
   <div id="block1"></div>
 
@@ -66,8 +66,13 @@
     </div>
 
     <div id="card2Div">
+<<<<<<< HEAD
       <h2 id="doc2Title">Your Friend's Notes</h2>
       <ion-card id="card2" class="no-scroll" >
+=======
+      <h2 id="doc2Title">A Public Note Document</h2>
+      <ion-card id="card2">
+>>>>>>> d87379f2892d6d165ce884b59fe6d6b8001b3a16
         <ion-card-content>
           <ion-textarea id="textArea" placeholder="Type some sample text here." websize [(ngModel)]="document2" [value]="document2"></ion-textarea>
         </ion-card-content>
@@ -101,6 +106,15 @@
         </ion-card-content>
       </ion-card>
     </div>
+
+    <div id="resultsDiv">
+      <ion-card id="resultsCard">
+        <ion-card-content>
+          <ion-textarea id="textArea" readonly websize [(ngModel)]="document2" [value]="document2"></ion-textarea>
+        </ion-card-content>
+      </ion-card>
+    </div>
+
   </div>
 
 </ion-content>
