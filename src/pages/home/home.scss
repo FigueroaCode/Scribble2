@@ -2,6 +2,10 @@ page-home {
 
 // HEADER + BACKGROUND CONTENT
 
+.no-scroll .scroll-content{
+  overflow: hidden;
+}
+
   .center {
     display: flex;
     justify-content: center;
