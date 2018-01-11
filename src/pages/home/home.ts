@@ -38,6 +38,8 @@ export class HomePage {
         this.erasedTitle = "Here's how we merge your notes:";
         this.newTitle = "Vote on which changes to keep:";
 
+        this.document1 = "Example: These are your notes, that you took in class. If you were more attentive than your classmates, your notes may be better, but it's possible you missed certain things. Feel free to erase this text, and try out your own combinations. By clicking the merge button, Scribble will merge your notes into the public notes.";
+        this.document2 = "Example: These are other classmates'  notes, that they took in class. They may have written some things that you missed. By using Scribble to combine your notes, you ensure that no details are left out. Feel free to erase this text, and try out your own combinations. By clicking the merge button, Scribble will merge your notes into the public notes."
         //Send User to Course Page if hes already signed in
         firebase.auth().onAuthStateChanged((user) => {
             this.zone.run( () => {
