@@ -61,6 +61,7 @@ page-home {
 
   #ionContent {
     background-color: map-get($colors, secondary);
+    overflow-y: scroll;
   }
 
   #content {
