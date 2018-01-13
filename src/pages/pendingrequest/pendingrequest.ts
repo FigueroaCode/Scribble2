@@ -34,6 +34,7 @@ export class PendingRequestPage {
         //remove them from the list
         this.firebaseService.removePendingRequest(id, this.courseKey);
         //increment members to vote for all the chapters in this course
+        //TODO: needs to be tested
         this.firebaseService.incrementMemberCount(this.courseKey);
       }
 

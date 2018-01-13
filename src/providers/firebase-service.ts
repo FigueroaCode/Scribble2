@@ -300,6 +300,23 @@ export class FirebaseService {
   incrementMemberCount(courseKey: string){
     //find all the chapter keys, then look for them in the ChangeLogQueue,
     //then incrementMemberCount for the ones that exist
+    let that = this;
+    let chapters = this.fireDB.list('/courseChapters/'+courseKey);
+    chapters.forEach(function(snapshot){
+      let queue = that.fireDB.list('/ChangeLogQueue/');
+      queue.forEach(function(snapshot2){
+        for(let i = 0; i < snapshot.length; i++){
+          for(let j = 0; j < snapshot2.length; j++){
+            if(snapshot[i].$key == snapshot2[j].$key){
+              //increment its memberCount of snapshot2 if there is a vote in progress
+              if(snapshot2[j].state){
+                snapshot2[j].membersToVote += 1;
+              }
+            }
+          }
+        }
+      });
+    });
   }
 
   isVoteInProgress(chapterKey: string){
@@ -413,14 +430,19 @@ export class FirebaseService {
     }else{
       let that = this;
       //get just the notes for this owner
-        this.fireDB.object('/PrivateNotes/'+chapterKey).$ref.orderByChild('owner').limitToLast(1).once('value').then(function(snapshot){
-          if(snapshot.val() != undefined && snapshot.val() != null){
-            let noteKey = Object.keys(snapshot.val())[0];
-            if(text != undefined && text != null && text != "" && noteKey != null && noteKey != undefined){
-              that.fireDB.object('/PrivateNotes/'+chapterKey+'/'+noteKey+'/privateNoteText').$ref.set(text);
+        let privateNotes = this.fireDB.list('/PrivateNotes/'+chapterKey);
+        let noteKey = null;
+        privateNotes.forEach(function(snapshot){
+          for(let i = 0; i < snapshot.length; i++){
+            if(snapshot[i].owner == owner){
+              noteKey = snapshot[i].$key;
+            }
+          }
+          if(noteKey != null){
+            if(text != undefined && text != null && text != ""){
+              that.fireDB.object('/PrivateNotes'+chapterKey+'/'+noteKey+'/privateNoteText').$ref.set(text);
             }
           }else{
-            //create a private note for this user if it doesnt exist
             that.fireDB.list('/PrivateNotes/'+chapterKey).push({'owner': owner, 'privateNoteText': '', 'dateUpdated': new Date().toString()});
           }
         });

@@ -6,7 +6,7 @@
   </ion-row>
 </ion-header>
 
-<body>
+<body id="ionContent">
   <!-- Decorative Blocks -->
   <div id="block1"></div>
 
@@ -103,6 +103,7 @@
     </div>
 
     <div id="resultsDiv">
+      <h2 id="resultsTitle">Here are the results of your merges</h2>
       <ion-card id="resultsCard">
         <ion-card-content>
           <ion-textarea id="textArea" readonly websize [(ngModel)]="document2" [value]="document2"></ion-textarea>

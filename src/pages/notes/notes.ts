@@ -98,8 +98,6 @@ export class NotesPage {
             that.changeVoteState(chapterKey);
         });
 
-
-
         this.dropDownTitle = "No Chapters Exist";
         this.chosenFileName = "IMPORT TEXT FILE";
     }

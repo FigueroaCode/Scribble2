@@ -220,10 +220,17 @@ export class HomePage {
         x: '-100vw',
         duration: 1000,
       });
+      $('#mergeTitle').transit({
+        x: '-100vw',
+        duration: 1000,
+      });
     }, 200);
 
     this.interval = self.setTimeout(function(){
       $('#changeLogDiv').transit({
+        display: 'none',
+      });
+      $('#mergeTitle').transit({
         display: 'none',
       });
       $('#resultsDiv').transit({

@@ -117,7 +117,7 @@ page-home {
     margin-bottom: 1rem;
   }
 
-  #doc1Title, #doc2Title {
+  #doc1Title, #doc2Title, #resultsTitle {
     text-align: center;
     font-family: Zekton;
     font-size: 2.5rem;
@@ -129,6 +129,11 @@ page-home {
       font-size: 1.1rem;
       margin-bottom: 0;
     }
+  }
+
+  #resultsTitle {
+    font-size: 4rem;
+    margin-top: 5rem;
   }
 
   #buttonFAB {
@@ -147,7 +152,7 @@ page-home {
       height: 15rem;
     }
     width: 120vw;
-    margin-top: 3%;
+    margin-top: 6.5%;
     margin-left: -10%;
     z-index: -5;
     box-shadow: 10px 10px 15px rgba(0, 0, 0, 0.3);
@@ -208,7 +213,7 @@ page-home {
   }
 
   #scroller {
-    margin-top: 3%;
+    margin-top: 6.5%;
     margin-left: -250rem;
     width: 500rem;
     height: 20rem;
