@@ -213,7 +213,40 @@ export class HomePage {
     this.updateVoteCount();
     this.mergeHandler.changeLog = this.changeLog;
     this.mergeHandler.mergeNotes();
-    console.log(this.mergeHandler.publicSentences);
-  }
+
+    //Hide the change log, and reveal the results.
+    this.interval = self.setTimeout(function(){
+      $('#changeLogDiv').transit({
+        x: '-100vw',
+        duration: 1000,
+      });
+    }, 200);
+
+    this.interval = self.setTimeout(function(){
+      $('#changeLogDiv').transit({
+        display: 'none',
+      });
+      $('#resultsDiv').transit({
+        x: '100vw',
+      });
+    }, 200);
+
+    this.interval = self.setTimeout(function(){
+      $('#resultsDiv').transit({
+        display: 'block',
+      });
+      $('#resultsCard').transit({
+        display: 'block',
+      });
+    }, 200);
+
+    this.interval = self.setTimeout(function(){
+      $('#resultsDiv').transit({
+        x: '0',
+        duration: 1000,
+      })
+    }, 300);
+
+  }//END OF METHOD
 
 }
