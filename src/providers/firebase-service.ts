@@ -297,6 +297,11 @@ export class FirebaseService {
     return membersToVote;
   }
 
+  incrementMemberCount(courseKey: string){
+    //find all the chapter keys, then look for them in the ChangeLogQueue,
+    //then incrementMemberCount for the ones that exist
+  }
+
   isVoteInProgress(chapterKey: string){
     let that = this;
     let state = new Promise(function(resolve, reject){
