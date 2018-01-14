@@ -118,6 +118,10 @@ export class CoursesPage {
       }
   }
 
+  leaveCourse(courseKey){
+    this.firebaseService.leaveCourse(courseKey,this.displayName);
+  }
+
   //go to note page
   notes(courseKey){
       let info = {'key': courseKey};

@@ -310,7 +310,8 @@ export class FirebaseService {
             if(snapshot[i].$key == snapshot2[j].$key){
               //increment its memberCount of snapshot2 if there is a vote in progress
               if(snapshot2[j].state){
-                snapshot2[j].membersToVote += 1;
+                let memberCount = snapshot2[j].membersToVote += 1;
+                that.fireDB.object('/ChangeLogQueue/'+snapshot2[j].$key+'/membersToVote').$ref.set(memberCount);
               }
             }
           }
@@ -430,19 +431,21 @@ export class FirebaseService {
     }else{
       let that = this;
       //get just the notes for this owner
-        let privateNotes = this.fireDB.list('/PrivateNotes/'+chapterKey);
+        let privateNotes = this.fireDB.list('/PrivateNotes/'+chapterKey, { query: {
+          orderByChild: 'owner',
+          equalTo: owner
+        }});
         let noteKey = null;
         privateNotes.forEach(function(snapshot){
           for(let i = 0; i < snapshot.length; i++){
             if(snapshot[i].owner == owner){
               noteKey = snapshot[i].$key;
+              if(text != undefined && text != null && text != "" && noteKey != null){
+                that.fireDB.object('/PrivateNotes/'+chapterKey+'/'+noteKey+'/privateNoteText/').$ref.set(text);
+              }
             }
           }
-          if(noteKey != null){
-            if(text != undefined && text != null && text != ""){
-              that.fireDB.object('/PrivateNotes'+chapterKey+'/'+noteKey+'/privateNoteText').$ref.set(text);
-            }
-          }else{
+          if(noteKey == null){
             that.fireDB.list('/PrivateNotes/'+chapterKey).push({'owner': owner, 'privateNoteText': '', 'dateUpdated': new Date().toString()});
           }
         });
@@ -459,6 +462,27 @@ export class FirebaseService {
     this.fireDB.list('/ChangeLog/').remove(chapterKey);
   }
 
+  leaveCourse(courseKey: string,username: string){
+    //take it away from their courses
+    let that = this;
+    this.getCurrentUserID(username).then(function(userID){
+      //that.fireDB.list('/Users/'+userID+'/courses/').remove(courseKey);
+    });
+    //remove their private notes
+    //get all the chapters they belong to
+    let courseChapters = this.fireDB.list('/courseChapters/'+courseKey);
+    courseChapters.forEach(function(chapters){
+      for(let i = 0; i < chapters.length; i++){
+        let userNotes = that.fireDB.list('/PrivateNotes/'+chapters[i].$key, { query: {
+          orderByChild: "owner",
+          equalTo: username
+        }});
+
+        userNotes.remove('/');
+      }
+    });
+    //decrement member count on course, and on vote if there is a vote in progress if they havent voted
+  }
 
   removeCourse(id, username: string){
     let that = this;

@@ -57,7 +57,7 @@ export class NotesPage {
         //Get the key of the course this belongs to
         this.courseKey = navParams.get('key');
         this.currentChapterKey = '';
-        this.inPublicNote = true;
+        this.inPublicNote = false;
 
         let that = this;
         //get time limit for voting in this course
@@ -258,10 +258,12 @@ export class NotesPage {
     //Switching Between Notes
     publicNoteClicked(){
         this.inPublicNote = true;
+        this.updateNoteText();
     }
 
     privateNoteClicked(){
         this.inPublicNote = false;
+        this.updateNoteText();
     }
 
     toggleDropDown() {
@@ -321,7 +323,7 @@ export class NotesPage {
           }else{
             this.firebaseService.isVoteInProgress(this.currentChapterKey).then(function(state){
               if(!state || state != null){
-                let mergeHandler = new MergeHandler(that.privateText, that.publicText,this.currentChapterKey,this.courseKey, false, this.firebaseService);
+                let mergeHandler = new MergeHandler(that.privateText, that.publicText,that.currentChapterKey,that.courseKey, false, that.firebaseService);
               }else{
                 //tell user that a vote is in progress, and maybe how much time is left on it
               }
