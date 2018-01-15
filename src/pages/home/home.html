@@ -77,19 +77,19 @@
     <div id="changeLogDiv">
       <ion-card id="changeLogCard">
         <ion-card-content>
-            <button id="confirmButton" ion-button full (click)="confirmVotes()"> Confirm </button>
+            <button id="confirmButton" ion-button full (click)="confirmVotes()">Confirm</button>
             <!-- Change Log -->
             <ion-card id="changeCard" *ngFor="let change of changeLog">
               <ion-row>
-                <ion-col col-xs-1 col-sm-1 col-md-1 col-lg-1 col-xl-1>
-                  <div>
+                <ion-col col-xs-2 col-sm-2 col-md-1 col-lg-1 col-xl-1>
+                  <ion-row id="buttonRow">
                     <button id="disapproveBtn"ion-button icon-only (click)="downVote(change)"><ion-icon name="thumbs-down"></ion-icon></button>
-                  </div>
-                  <div>
+                  </ion-row>
+                  <ion-row id="buttonRow">
                     <button id="approveBtn" ion-button icon-only (click)="upVote(change)"><ion-icon name="thumbs-up"></ion-icon></button>
-                  </div>
+                  </ion-row>
                 </ion-col>
-                <ion-col col-xs-11 col-sm-11 col-md-11 col-lg-11 col-xl-11>
+                <ion-col col-xs-10 col-sm-10 col-md-11 col-lg-11 col-xl-11>
                   <div *ngIf="change.originalSentence != 'None'">
                     <p id="changeLog"><b>Would you like to replace: </b> {{ change.originalSentence }}</p>
                     <p id="changeLog"><b>With the following sentence: </b> {{ change.proposedSentence }}</p>
@@ -103,10 +103,10 @@
     </div>
 
     <div id="resultsDiv">
-      <h2 id="resultsTitle">Here are the results of your merges</h2>
+      <h2 id="resultsTitle">Here are the results of your merge</h2>
       <ion-card id="resultsCard">
         <ion-card-content>
-          <ion-textarea id="textArea" readonly websize [(ngModel)]="document2" [value]="document2"></ion-textarea>
+          <ion-textarea id="textArea2" readonly minsize [(ngModel)]="document2" [value]="document2"></ion-textarea>
         </ion-card-content>
       </ion-card>
     </div>

@@ -12,6 +12,7 @@ import { IonicStorageModule } from '@ionic/storage';
 import firebase from 'firebase';
 import { Autosize } from '../providers/textarea-directive';
 import { WebSize } from '../providers/textarea-directive-web';
+import { Minsize } from '../providers/textarea-resize';
 import { File } from '@ionic-native/file';
 
 import { MyApp } from './app.component';
@@ -67,7 +68,8 @@ firebase.initializeApp(firebaseConfig);
     SavedCoursesPage,
     Autosize,
     ChangesPage,
-    WebSize
+    WebSize,
+    Minsize,
   ],
   imports: [
     BrowserModule,

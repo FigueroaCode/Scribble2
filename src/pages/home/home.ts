@@ -4,6 +4,7 @@ import { AuthService } from '../../providers/auth-service';
 import { global } from '../../app/global';
 import { ToastController } from 'ionic-angular';
 import firebase from 'firebase';
+import { Minsize } from '../../../src/providers/textarea-resize';
 
 import { SignInPage } from '../sign_in/sign_in';
 import { CenterPage } from '../center/center';
@@ -100,6 +101,9 @@ export class HomePage {
           duration: '500',
         });
         $('#buttonFAB').prop('disabled', true);
+        $('#buttonFAB').transit({
+          zIndex: '-10',
+        });
         $('#card1').transit({
           x: '-100vw',
           opacity: 0,
@@ -230,6 +234,7 @@ export class HomePage {
       $('#changeLogDiv').transit({
         display: 'none',
       });
+      $('#confirmButton').prop('disabled', true);
       $('#mergeTitle').transit({
         display: 'none',
       });
@@ -250,7 +255,7 @@ export class HomePage {
     this.interval = self.setTimeout(function(){
       $('#resultsDiv').transit({
         x: '0',
-        duration: 1000,
+        duration: '1000',
       })
     }, 300);
 

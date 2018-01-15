@@ -2,9 +2,9 @@ page-home {
 
 // HEADER + BACKGROUND CONTENT
 
-.no-scroll .scroll-content{
-  overflow: hidden;
-}
+  .no-scroll .scroll-content{
+    overflow: hidden;
+  }
 
   .center {
     display: flex;
@@ -73,8 +73,8 @@ page-home {
 // MERGER AREA
 
   #textArea {
-    height: 37.2rem;
     font-size: 2vh;
+    overflow: scroll;
   }
 
   #mergeTitle {
@@ -92,7 +92,7 @@ page-home {
   #card1Div, #card2Div {
     min-height: 20rem;
     max-height: 37rem;
-    width: 40%;
+    width: 100%;
     padding-bottom: 1rem;
   }
 
@@ -109,12 +109,16 @@ page-home {
     margin-bottom: 1rem;
   }
 
-  #changeLogDiv, #resultsCard, #resultsDiv {
+  #changeLogDiv{
     display: none;
     min-height: 20rem;
     width: 100%;
     margin: 0;
     margin-bottom: 1rem;
+  }
+
+  #buttonRow {
+    height: 50%;
   }
 
   #doc1Title, #doc2Title, #resultsTitle {
@@ -133,13 +137,31 @@ page-home {
 
   #resultsTitle {
     font-size: 4rem;
-    margin-top: 5rem;
+    margin-top: -29rem;
+    padding-bottom: 5rem;
+    @media screen and (max-width: 600px){
+      font-size: 3rem;
+      margin-bottom: 3rem;
+    }
   }
 
+  #resultsDiv, #resultsCard {
+    display: none;
+    width: 100%;
+    margin: 0;
+    padding-bottom: 1rem;
+  }
+
+
   #buttonFAB {
+    position: absolute;
     font-size: 1.5vh;
     font-family: Zekton;
-    margin-top: 48vh;
+    margin-top: 21vh;
+  }
+
+  #row {
+    width: 100vw;
   }
 
   // BLOCKS
@@ -150,6 +172,7 @@ page-home {
     height: 22rem;
     @media screen and (max-width: 600px) {
       height: 15rem;
+      margin-top: 6rem;
     }
     width: 120vw;
     margin-top: 6.5%;
@@ -221,6 +244,7 @@ page-home {
     align-items: left;
     @media screen and (max-width: 600px) {
       height: 15rem;
+      margin-top: 6rem;
     }
   }
 
