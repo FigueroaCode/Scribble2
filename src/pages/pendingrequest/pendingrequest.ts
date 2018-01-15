@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { NavController, AlertController, LoadingController, NavParams } from 'ionic-angular';
 import { AuthService } from '../../providers/auth-service';
 import { FirebaseService } from '../../providers/firebase-service';
-import { FirebaseListObservable } from 'angularfire2/database';
+import { AngularFireList } from 'angularfire2/database';
 
 import { HomePage } from '../home/home';
 
@@ -13,7 +13,7 @@ import { HomePage } from '../home/home';
 })
 export class PendingRequestPage {
 
-    requests: FirebaseListObservable<any[]>;
+    requests: AngularFireList<any[]>;
     courseKey: string;
 
       constructor(public navCtrl: NavController, public authService: AuthService, public firebaseService: FirebaseService,

@@ -1,7 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 import { NavController, AlertController, NavParams, ModalController, ToastController, Slides } from 'ionic-angular';
 import { FirebaseService } from '../../providers/firebase-service';
-import { FirebaseListObservable } from 'angularfire2/database';
 import { AuthService } from '../../providers/auth-service';
 import { File } from '@ionic-native/file';
 

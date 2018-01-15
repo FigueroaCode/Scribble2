@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { ViewController, NavParams } from 'ionic-angular';
 import { FirebaseService } from '../../providers/firebase-service';
-import { FirebaseListObservable } from 'angularfire2/database';
 
 
 @Component({

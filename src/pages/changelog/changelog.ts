@@ -1,7 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { Platform, NavController, AlertController, NavParams, ModalController, ToastController } from 'ionic-angular';
 import { FirebaseService } from '../../providers/firebase-service';
-import { FirebaseListObservable } from 'angularfire2/database';
+import { AngularFireList } from 'angularfire2/database';
 import { AuthService } from '../../providers/auth-service';
 import { File } from '@ionic-native/file';
 
@@ -16,7 +16,7 @@ import { MobileNotesPage } from '../mobile_notes/mobile_notes';
 })
 
 export class ChangesPage {
-    changeLogAsync: FirebaseListObservable<any[]>;
+    changeLogAsync: AngularFireList<any[]>;
     changeLog: Array<any>;
     displayName: string;
     chapterKey: string;

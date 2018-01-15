@@ -1,7 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { Platform, NavController, AlertController, NavParams, ModalController, ToastController } from 'ionic-angular';
 import { FirebaseService } from '../../providers/firebase-service';
-import { FirebaseListObservable } from 'angularfire2/database';
+import { AngularFireList } from 'angularfire2/database';
 import { AuthService } from '../../providers/auth-service';
 import { File } from '@ionic-native/file';
 import { ChangesPage } from '../changelog/changelog';
@@ -18,7 +18,7 @@ import { MobileNotesPage } from '../mobile_notes/mobile_notes';
 
 export class NotesPage {
     @ViewChild("fileInput") fileInput;
-    chapters: FirebaseListObservable<any[]>;
+    chapters: AngularFireList<any[]>;
     displayName: string;
     publicText: string;
     privateText: string;
@@ -363,7 +363,7 @@ export class NotesPage {
     }
 
     deleteChapter(){
-      
+
     }
 
     //-----------------------Mobile----------------//

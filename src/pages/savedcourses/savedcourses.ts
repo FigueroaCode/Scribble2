@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { NavController, AlertController, LoadingController, NavParams, ToastController } from 'ionic-angular';
 import { AuthService } from '../../providers/auth-service';
 import { FirebaseService } from '../../providers/firebase-service';
-import { FirebaseListObservable } from 'angularfire2/database';
+import { AngularFireList } from 'angularfire2/database';
 
 import { HomePage } from '../home/home';
 import { CheckNotesPage } from '../checknotes/checknotes';
@@ -14,7 +14,7 @@ import { CheckNotesPage } from '../checknotes/checknotes';
 })
 export class SavedCoursesPage {
 
-    courses: FirebaseListObservable<any[]>;
+    courses: AngularFireList<any[]>;
     courseKey: string;
     displayName: string;
 

@@ -1,7 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { Platform, NavController, AlertController, NavParams, ModalController, ToastController } from 'ionic-angular';
 import { FirebaseService } from '../../providers/firebase-service';
-import { FirebaseListObservable } from 'angularfire2/database';
+import { AngularFireList } from 'angularfire2/database';
 import { AuthService } from '../../providers/auth-service';
 import { File } from '@ionic-native/file';
 
@@ -17,7 +17,7 @@ import { MobileCheckNotesPage } from '../mobile_checknotes/mobile_checknotes';
 
 export class CheckNotesPage {
     @ViewChild("fileInput") fileInput;
-    chapters: FirebaseListObservable<any[]>;
+    chapters: AngularFireList<any[]>;
     displayName: string;
     publicText: string;
     courseKey: string;

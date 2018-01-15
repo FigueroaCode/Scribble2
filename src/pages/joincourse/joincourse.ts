@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController, AlertController, ToastController } from 'ionic-angular';
 import { FirebaseService } from '../../providers/firebase-service';
-//import { FirebaseListObservable } from 'angularfire2/database';
 import { AuthService } from '../../providers/auth-service';
 import { CheckNotesPage } from '../checknotes/checknotes';
 

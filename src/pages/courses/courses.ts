@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController, AlertController, ModalController } from 'ionic-angular';
 import { FirebaseService } from '../../providers/firebase-service';
-import { FirebaseListObservable } from 'angularfire2/database';
+import { AngularFireList } from 'angularfire2/database';
 import { AuthService } from '../../providers/auth-service';
 import { CreateCoursePage } from './create_course';
 import {Observable} from 'rxjs/Observable';
@@ -21,7 +21,7 @@ import { PendingRequestPage } from '../pendingrequest/pendingrequest';
 
 export class CoursesPage {
 
-    courses: FirebaseListObservable<any[]>;
+    courses: AngularFireList<any[]>;
     displayName: string;
     currentUser: User;
     empty: boolean=false;
@@ -42,7 +42,7 @@ export class CoursesPage {
     initializeCourses(){
       let that = this;
       this.firebaseService.getMembersCourses(this.displayName).then(function(memberCourses){
-        that.courses = memberCourses as FirebaseListObservable<any[]>;
+        that.courses = memberCourses as AngularFireList<any[]>;
         //keep track whether or nto there are any courses
         let size = that.courses.map(x => {
           return x.length;
