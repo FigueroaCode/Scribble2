@@ -540,6 +540,9 @@ export class FirebaseService {
   }
 
   removeChapter(id, courseKey: string){
+    //remove all private notes for this chapter
+    //remove votes in session for this chapter
+    //remove chapter
     this.fireDB.list('/courseChapters/'+courseKey).remove(id);
   }
 

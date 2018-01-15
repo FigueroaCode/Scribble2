@@ -362,6 +362,10 @@ export class NotesPage {
       }
     }
 
+    deleteChapter(){
+      
+    }
+
     //-----------------------Mobile----------------//
     sendToNotes(chapterName, chapterKey){
       let data = {'chapterName': chapterName, 'chapterKey': chapterKey, 'courseKey': this.courseKey};
