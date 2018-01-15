@@ -18,37 +18,40 @@ export class MergeHandler{
   constructor(privateNoteText: string, publicNoteText: string, chapterKey: string,courseKey:string,isMerging: boolean, fireDB: FirebaseService){
     this.changeLog = Array<Change>();
 
-    let text = privateNoteText.trim();
-    let length = text.length;
+    if(privateNoteText != publicNoteText){
+      let text = privateNoteText.trim();
+      let length = text.length;
 
-    if( text[length-1] != "." && text[length-1] != "?" && text[length-1] != "!"){
-      text += "\n";
-    }
-    this.privateNoteText = text;
+      if( text[length-1] != "." && text[length-1] != "?" && text[length-1] != "!"){
+        text += "\n";
+      }
+      this.privateNoteText = text;
 
-    text = publicNoteText.trim();
-    length = text.length;
-    if( text[length-1] != "." && text[length-1] != "?" && text[length-1] != "!"){
-      text += "\n";
-    }
-    this.publicNoteText = text;
+      text = publicNoteText.trim();
+      length = text.length;
+      if( text[length-1] != "." && text[length-1] != "?" && text[length-1] != "!"){
+        text += "\n";
+      }
+      this.publicNoteText = text;
 
-    this.oPrivateNS = this.separateSentences(this.privateNoteText);
-    this.oPublicNS = this.separateSentences(this.publicNoteText);
-    this.ePrivateNS = this.filterSentences(this.oPrivateNS);
-    this.ePublicNS = this.filterSentences(this.oPublicNS);
-    this.publicSentences = this.breakIntoSentences(this.publicNoteText);
-    this.privateSentences = this.breakIntoSentences(this.privateNoteText);
+      this.oPrivateNS = this.separateSentences(this.privateNoteText);
+      this.oPublicNS = this.separateSentences(this.publicNoteText);
+      this.ePrivateNS = this.filterSentences(this.oPrivateNS);
+      this.ePublicNS = this.filterSentences(this.oPublicNS);
+      this.publicSentences = this.breakIntoSentences(this.publicNoteText);
+      this.privateSentences = this.breakIntoSentences(this.privateNoteText);
 
-    //Only do this if not trying to merge already.
-    if( !isMerging){
-      this.findDifferences();
+      //Only do this if not trying to merge already.
+      if( !isMerging){
+        this.findDifferences();
 
-      for(let i = 0; i < this.changeLog.length; i++){
-        fireDB.addChange(chapterKey, this.changeLog[i]);
+        for(let i = 0; i < this.changeLog.length; i++){
+          fireDB.addChange(chapterKey, this.changeLog[i]);
+        }
+
+        fireDB.queueChangeLog(chapterKey,courseKey);
       }
 
-      fireDB.queueChangeLog(chapterKey,courseKey);
     }
 
   }

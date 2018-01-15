@@ -180,7 +180,8 @@ export class NotesPage {
                     });
                   }
                   this.currentChapterKey = chapterKey;
-                  this.updateNoteText();
+                  this.updatePrivateNoteText();
+                  this.updatePublicNoteText();
                   this.dropDownTitle = newChapter.getName();
                   this.changeVoteState(this.currentChapterKey);
                 }
@@ -200,28 +201,39 @@ export class NotesPage {
 
       alert.present();
     }
-    updateNoteText(){
+    updatePublicNoteText(){
         let that = this;
         if((this.currentChapterKey == null || this.currentChapterKey == '') && this.courseKey != null && this.privateText != null){
             //needs to be done in order for the promise to recognize which object 'this' is referring
             this.getFirstChapterKey.then(function(firstKey){
                 //default chapter is the first one
-                that.firebaseService.getNoteText(that.displayName,that.courseKey,firstKey, that.inPublicNote)
+                that.firebaseService.getNoteText(that.displayName,that.courseKey,firstKey, true)
                 .then(function(noteText){
-                  if(that.inPublicNote)
                     that.setPublicNoteText(noteText);
-                  else
+                });
+            });
+        }else if(this.courseKey != null && this.privateText != null && this.currentChapterKey != ''){
+            that.firebaseService.getNoteText(that.displayName,that.courseKey,that.currentChapterKey, true)
+            .then(function(noteText){
+                that.setPublicNoteText(noteText);
+            });
+        }
+    }
+    updatePrivateNoteText(){
+        let that = this;
+        if((this.currentChapterKey == null || this.currentChapterKey == '') && this.courseKey != null && this.privateText != null){
+            //needs to be done in order for the promise to recognize which object 'this' is referring
+            this.getFirstChapterKey.then(function(firstKey){
+                //default chapter is the first one
+                that.firebaseService.getNoteText(that.displayName,that.courseKey,firstKey, false)
+                .then(function(noteText){
                     that.setPrivateNoteText(noteText);
                 });
             });
         }else if(this.courseKey != null && this.privateText != null && this.currentChapterKey != ''){
-            this.firebaseService.getNoteText(this.displayName,this.courseKey,this.currentChapterKey, this.inPublicNote)
+            that.firebaseService.getNoteText(that.displayName,that.courseKey,that.currentChapterKey, false)
             .then(function(noteText){
-              if(that.inPublicNote)
-                that.setPublicNoteText(noteText);
-              else{
                 that.setPrivateNoteText(noteText);
-              }
             });
         }
     }
@@ -237,7 +249,8 @@ export class NotesPage {
           });
         }
         this.currentChapterKey = chapterKey;
-        this.updateNoteText();
+        this.updatePrivateNoteText();
+        this.updatePublicNoteText();
         this.dropDownTitle = chapterName;
         this.changeVoteState(this.currentChapterKey);
     }
@@ -258,12 +271,12 @@ export class NotesPage {
     //Switching Between Notes
     publicNoteClicked(){
         this.inPublicNote = true;
-        this.updateNoteText();
+        //this.updateNoteText();
     }
 
     privateNoteClicked(){
         this.inPublicNote = false;
-        this.updateNoteText();
+        //this.updateNoteText();
     }
 
     toggleDropDown() {
@@ -306,9 +319,10 @@ export class NotesPage {
               that.firebaseService.saveNotes(that.displayName, that.courseKey,firstKey, that.privateText, false);
               if(that.publicText == null || that.publicText == ''){
                 that.firebaseService.saveNotes(that.displayName,that.courseKey,firstKey, that.privateText, true);
+                that.updatePublicNoteText();
               }else{
                 that.firebaseService.isVoteInProgress(firstKey).then(function(state){
-                  if(!state){
+                  if(!state && that.privateText != that.publicText){
                     let mergeHandler = new MergeHandler(that.privateText, that.publicText,firstKey,that.courseKey, false, that.firebaseService);
                   }else{
                     //tell user that a vote is in progress, and maybe how much time is left on it
@@ -320,9 +334,10 @@ export class NotesPage {
           this.firebaseService.saveNotes(this.displayName,this.courseKey,this.currentChapterKey, this.privateText, false);
           if(this.publicText == null || this.publicText == ''){
             this.firebaseService.saveNotes(this.displayName,this.courseKey,this.currentChapterKey, this.privateText, true);
+            this.updatePublicNoteText();
           }else{
             this.firebaseService.isVoteInProgress(this.currentChapterKey).then(function(state){
-              if(!state || state != null){
+              if(!state || state != null && that.privateText != that.publicText){
                 let mergeHandler = new MergeHandler(that.privateText, that.publicText,that.currentChapterKey,that.courseKey, false, that.firebaseService);
               }else{
                 //tell user that a vote is in progress, and maybe how much time is left on it
