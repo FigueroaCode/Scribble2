@@ -297,6 +297,16 @@ export class FirebaseService {
     return membersToVote;
   }
 
+  decrementMemberCount(courseKey: string){
+    let that = this;
+
+    that.fireDB.object('/courses/'+courseKey).$ref.once('value').then(function(snapshot){
+      let memberCount = snapshot.val().memberCount;
+      memberCount--;
+      that.fireDB.object('/course/'+courseKey+'/memberCount').$ref.set(memberCount);
+    });
+  }
+
   incrementMemberCount(courseKey: string){
     //find all the chapter keys, then look for them in the ChangeLogQueue,
     //then incrementMemberCount for the ones that exist
@@ -466,7 +476,7 @@ export class FirebaseService {
     //take it away from their courses
     let that = this;
     this.getCurrentUserID(username).then(function(userID){
-      //that.fireDB.list('/Users/'+userID+'/courses/').remove(courseKey);
+      that.fireDB.list('/Users/'+userID+'/courses/').remove(courseKey);
     });
     //remove their private notes
     //get all the chapters they belong to
@@ -478,10 +488,29 @@ export class FirebaseService {
           equalTo: username
         }});
 
-        userNotes.remove('/');
+        userNotes.forEach(function(notes){
+          if(notes[0] != null){
+            that.fireDB.list('/PrivateNotes/'+chapters[i].$key).remove(notes[0].$key);
+          }
+
+        });
+        //if there is a vote in progress and if they havent voted, then decrement membersToVote
+        //check if there is a vote in progress
+        that.isVoteInProgress(chapters[i].$key).then(function(state){
+          if(state){
+            that.hasUserVoted(chapters[i].$key,username).then(function(voted){
+              if(!voted){
+                //decrementMemberCount
+                that.updateMemberCount(chapters[i].$key);
+              }
+            });
+          }
+        });
       }
     });
-    //decrement member count on course, and on vote if there is a vote in progress if they havent voted
+
+    //decrement member count on course
+    this.decrementMemberCount(courseKey);
   }
 
   removeCourse(id, username: string){
