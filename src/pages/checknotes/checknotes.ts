@@ -80,7 +80,7 @@ export class CheckNotesPage {
     }
 
     initializeChapters(){
-        this.chapters = this.firebaseService.getChapters(this.courseKey);
+        //this.chapters = this.firebaseService.getChapters(this.courseKey);
     }
 
     setPublicNoteText(newText: string){

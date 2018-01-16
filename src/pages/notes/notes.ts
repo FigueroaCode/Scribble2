@@ -108,17 +108,20 @@ export class NotesPage {
     }
 
     initializeChapters(){
-        //this.chapters = this.firebaseService.getChapters(this.courseKey);
+      let that = this;
+      this.firebaseService.getChapters(this.courseKey).then(function(chapterList){
+        that.chapters = chapterList as AngularFireList<any[]>;
+      });
     }
 
     turnOffVoteListener(chapterKey: string){
-      //this.firebaseService.getDB().object('/ChangeLogQueue/'+chapterKey).$ref.off();
+      //this.firebaseService.getDB().database.ref('/ChangeLogQueue/'+chapterKey).off();
     }
 
     changeVoteState(chapterKey: string){
       //constantly check if there is a vote in progress
-      let that = this;
-      // this.firebaseService.getDB().object('/ChangeLogQueue/'+chapterKey).$ref.on('value', function(snapshot){
+      // let that = this;
+      // this.firebaseService.getDB().database.ref('/ChangeLogQueue/'+chapterKey).on('value', function(snapshot){
       //   if(snapshot.val() != null && snapshot.val().state){
       //     that.voteInProgress = true;
       //     //check if there is a vote in session
@@ -245,6 +248,7 @@ export class NotesPage {
 
     showNote(chapterKey, chapterName){
         //turn off old chapter vote listener
+        console.log('chapter', chapterKey)
         if(this.currentChapterKey != null || this.currentChapterKey != ''){
           this.turnOffVoteListener(this.currentChapterKey);
         }else{

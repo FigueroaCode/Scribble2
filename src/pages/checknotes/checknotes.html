@@ -9,7 +9,7 @@
 <ion-content class="background">
     <ion-grid *ngIf="isApp">
       <ion-list>
-        <ion-item *ngFor="let chapter of chapters | async" (click)="sendToNotes(chapter.chapterName, chapter.$key)" >
+        <ion-item *ngFor="let chapter of chapters | async" (click)="sendToNotes(chapter.chapterName, chapter.key)" >
           {{ chapter.chapterName }}
           <ion-icon name="ios-exit-outline" item-end></ion-icon>
         </ion-item>
@@ -27,7 +27,7 @@
             <ion-col>
               <button ion-button (click)="toggleDropDown()" class="dropbutton">{{this.dropDownTitle}}</button>
               <div id="chapterDropdown" class="chapter-dropdown-content">
-                <button (click)="showNote(chapter.$key, chapter.chapterName)" color="danger" ion-button full *ngFor="let chapter of chapters | async">
+                <button (click)="showNote(chapter.key, chapter.chapterName)" color="danger" ion-button full *ngFor="let chapter of chapters | async">
                     {{ chapter.chapterName }}
                 </button>
               </div>

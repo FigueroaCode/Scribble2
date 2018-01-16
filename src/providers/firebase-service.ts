@@ -53,7 +53,12 @@ export class FirebaseService {
   }
 
   getChapters(courseKey: string){
-      return this.fireDB.list('/courseChapters/'+courseKey);
+    let that = this;
+      let chapters = new Promise(function(resolve,reject){
+        resolve(that.fireDB.list('/courseChapters/'+courseKey).valueChanges());
+      });
+
+    return chapters;
   }
 
   getPendingRequest(courseKey: string){
@@ -63,25 +68,25 @@ export class FirebaseService {
   getNoteText(owner: string,courseKey: string, chapterKey: string, isPublic: boolean): Promise<any>{
       let that = this;
       let textPromise = new Promise(function(resolve, reject){
-          // if(isPublic){
-          //     that.fireDB.object('/courseChapters/'+courseKey+'/'+chapterKey).$ref.once('value')
-          //     .then(function(snapshot){
-          //         resolve(snapshot.val().publicNoteText);
-          //     });
-          // }else{
-          //   //is Private
-          //   //get just the notes for this owner
-          //     that.fireDB.object('/PrivateNotes/'+chapterKey).$ref.orderByChild('owner').equalTo(owner).once('value').then(function(snapshot){
-          //       if(snapshot.val() != undefined && snapshot.val() != null){
-          //         snapshot.forEach(function(child){
-          //             resolve(child.val().privateNoteText);
-          //         });
-          //       }else{
-          //         //create a private note for this user if it doesnt exist
-          //         that.fireDB.list('/PrivateNotes/'+chapterKey).push({'owner': owner, 'privateNoteText': '', 'dateUpdated': new Date().toString()});
-          //       }
-          //     });
-          // }
+          if(isPublic){
+              that.fireDB.database.ref('/courseChapters/'+courseKey+'/'+chapterKey).once('value')
+              .then(function(snapshot){
+                  resolve(snapshot.val().publicNoteText);
+              });
+          }else{
+            //is Private
+            //get just the notes for this owner
+              that.fireDB.database.ref('/PrivateNotes/'+chapterKey).orderByChild('owner').equalTo(owner).once('value').then(function(snapshot){
+                if(snapshot.val() != undefined && snapshot.val() != null){
+                  snapshot.forEach(function(child){
+                      resolve(child.val().privateNoteText);
+                  });
+                }else{
+                  //create a private note for this user if it doesnt exist
+                  that.fireDB.list('/PrivateNotes/'+chapterKey).push({'owner': owner, 'privateNoteText': '', 'dateUpdated': new Date().toString()});
+                }
+              });
+          }
       });
       return textPromise;
   }
@@ -99,16 +104,20 @@ export class FirebaseService {
     //return this.fireDB.list('/ChangeLog/'+chapterKey);
     let that = this;
     let changeLog = new Promise(function(resolve,reject){
-      // let changes = that.fireDB.list('/ChangeLog/'+chapterKey).forEach(function(change){
-      //   resolve(change)
-      // });
+      let changes = that.fireDB.list('/ChangeLog/'+chapterKey).valueChanges().subscribe(function(snapshot){
+        console.log('changelog', snapshot)
+      });
     });
 
     return changeLog;
   }
 
   getChangeLogAsync(chapterKey: string){
-    return this.fireDB.list('/ChangeLog/'+chapterKey);
+    let that = this;
+    let changelog = new Promise(function(resolve,reject){
+      resolve(that.fireDB.list('/ChangeLog/'+chapterKey).valueChanges());
+    });
+    return changelog;
   }
 
   getFirebaseAsArray(username: string){
@@ -182,6 +191,7 @@ export class FirebaseService {
   addChapter(chapter: Chapter, courseKey: string, privateNote){
     //create public chapter
      let chapterKey = this.fireDB.list('/courseChapters/'+ courseKey).push(chapter).key;
+     this.fireDB.list('/courseChapters/'+ courseKey).set(chapterKey,{'key': chapterKey});
      //create private note for the user for that chapter
      //private note has an owner, text, and dateUpdated property
      this.fireDB.list('/PrivateNotes/'+chapterKey).push(privateNote);
@@ -216,9 +226,9 @@ export class FirebaseService {
   getMemberCount(chapterKey){
     let that = this;
     let memberCount = new Promise(function(resolve,reject){
-      // that.fireDB.object('/ChangeLogQueue/'+chapterKey).$ref.once('value').then(function(snapshot){
-      //   resolve(snapshot.val().membersToVote);
-      // });
+      that.fireDB.database.ref('/ChangeLogQueue/'+chapterKey).once('value').then(function(snapshot){
+        resolve(snapshot.val().membersToVote);
+      });
     });
 
     return memberCount;
@@ -227,15 +237,16 @@ export class FirebaseService {
   hasUserVoted(chapterKey: string, username: string){
     let that = this;
     let voted = new Promise(function(resolve,reject){
-      let usersVoted = that.fireDB.list('/Voted/'+chapterKey);
-      // usersVoted.forEach(function(user){
-      //   for(let i = 0; i < user.length; i++){
-      //     if(user[i].name == username){
-      //       resolve(true);
-      //     }
-      //   }
-      //   resolve(false);
-      // });
+      let usersVoted = that.fireDB.list('/Voted/'+chapterKey).snapshotChanges(['child_added']);
+      usersVoted.subscribe(function(snapshot){
+        snapshot.forEach(function(users){
+          console.log('hasUserVoted', users.payload.val())
+          if(users.payload.val() == username){
+            resolve(true)
+          }
+        });
+      });
+      resolve(false);
     });
 
     return voted;
@@ -249,24 +260,24 @@ export class FirebaseService {
     //get current time and time vote was started to see how much time has passed
     let that = this;
     let withinTime = new Promise(function(resolve,reject){
-      // that.fireDB.object('/ChangeLogQueue/'+chapterKey).$ref.once('value').then(function(snapshot){
-      //   let startTime = new Date(snapshot.val().startedAt);
-      //   //to get current date, need to send a timestamp to db, then retreive it and convert it to a Date
-      //   that.fireDB.object('/CurrentTime/').$ref.set({'time':firebase.database.ServerValue.TIMESTAMP});
-      //   that.fireDB.object('/CurrentTime/').$ref.once('value').then(function(snapshot){
-      //     let currentTime = new Date(snapshot.val().time);
-      //     let timeDiff = currentTime.getTime() - startTime.getTime();
-      //     //convert from milliseconds to hours
-      //     timeDiff = timeDiff / (3.6 * Math.pow(10,6));
-      //     if(timeDiff >= timeLimit){
-      //       resolve(false);
-      //     }else{
-      //       resolve(true);
-      //     }
-      //   });
-      //   //delete the currentTime
-      //    that.fireDB.list('/').remove('CurrentTime/');
-      // });
+      that.fireDB.database.ref('/ChangeLogQueue/'+chapterKey).once('value').then(function(snapshot){
+        let startTime = new Date(snapshot.val().startedAt);
+        //to get current date, need to send a timestamp to db, then retreive it and convert it to a Date
+        that.fireDB.list('').set('/CurrentTime/',{'time':firebase.database.ServerValue.TIMESTAMP});
+        that.fireDB.database.ref('/CurrentTime/').once('value').then(function(snapshot){
+          let currentTime = new Date(snapshot.val().time);
+          let timeDiff = currentTime.getTime() - startTime.getTime();
+          //convert from milliseconds to hours
+          timeDiff = timeDiff / (3.6 * Math.pow(10,6));
+          if(timeDiff >= timeLimit){
+            resolve(false);
+          }else{
+            resolve(true);
+          }
+        });
+        //delete the currentTime
+         that.fireDB.list('/').remove('CurrentTime/');
+      });
     });
 
     return withinTime;
@@ -277,27 +288,27 @@ export class FirebaseService {
     this.getMembersCount(courseKey).then(function(memberCount){
       let state = {'startedAt': firebase.database.ServerValue.TIMESTAMP,'membersToVote':memberCount as number, 'state': true};
 
-      //that.fireDB.object('/ChangeLogQueue/'+chapterKey).$ref.set(state);
+      that.fireDB.database.ref('/ChangeLogQueue/'+chapterKey).set(state);
     });
   }
 
   updateVoteCount(chapterKey: string, change: Change){
     let changeKey = change.key;
-    //this.fireDB.object('/ChangeLog/'+chapterKey+'/'+changeKey).$ref.update(change);
+    this.fireDB.database.ref('/ChangeLog/'+chapterKey+'/'+changeKey).update(change);
   }
 
   updateMemberCount(chapterKey: string){
     let that = this;
 
     let membersToVote = new Promise(function(resolve,reject){
-      // that.fireDB.object('/ChangeLogQueue/'+chapterKey).$ref.once('value').then(function(snapshot){
-      //   let memberCount = snapshot.val().membersToVote;
-      //   memberCount--;
-      //   //update on db
-      //   that.fireDB.object('/ChangeLogQueue/'+chapterKey+'/membersToVote/').$ref.set(memberCount);
-      //   //return value in case its needed
-      //   resolve(memberCount);
-      // });
+      that.fireDB.database.ref('/ChangeLogQueue/'+chapterKey).once('value').then(function(snapshot){
+        let memberCount = snapshot.val().membersToVote;
+        memberCount--;
+        //update on db
+        that.fireDB.database.ref('/ChangeLogQueue/'+chapterKey+'/membersToVote/').set(memberCount);
+        //return value in case its needed
+        resolve(memberCount);
+      });
     });
 
     return membersToVote;
@@ -306,11 +317,11 @@ export class FirebaseService {
   decrementMemberCount(courseKey: string){
     let that = this;
 
-    // that.fireDB.object('/courses/'+courseKey).$ref.once('value').then(function(snapshot){
-    //   let memberCount = snapshot.val().memberCount;
-    //   memberCount--;
-    //   that.fireDB.object('/course/'+courseKey+'/memberCount').$ref.set(memberCount);
-    // });
+    that.fireDB.database.ref('/courses/'+courseKey).once('value').then(function(snapshot){
+      let memberCount = snapshot.val().memberCount;
+      memberCount--;
+      that.fireDB.database.ref('/course/'+courseKey+'/memberCount').set(memberCount);
+    });
   }
 
   incrementMemberCount(courseKey: string){
@@ -339,13 +350,13 @@ export class FirebaseService {
   isVoteInProgress(chapterKey: string){
     let that = this;
     let state = new Promise(function(resolve, reject){
-      // that.fireDB.object('/ChangeLogQueue/'+chapterKey).$ref.once('value').then(function(snapshot){
-      //   if(snapshot.val() == null){
-      //     resolve(false);
-      //   }else{
-      //     resolve(snapshot.val().state);
-      //   }
-      // });
+      that.fireDB.database.ref('/ChangeLogQueue/'+chapterKey).once('value').then(function(snapshot){
+        if(snapshot.val() == null){
+          resolve(false);
+        }else{
+          resolve(snapshot.val().state);
+        }
+      });
     });
 
     return state;
@@ -357,44 +368,44 @@ export class FirebaseService {
 
   sendJoinRequest(courseKey: string, username: string, owner: string){
       let that = this;
-      // this.fireDB.object('/courses/'+courseKey).$ref.once('value').then(function(snapshot){
-      //     let currentCount = snapshot.val().requestCounter;
-      //     let ownerName = snapshot.val().owner;
-      //     //check to see if person already exists and they arent the owner
-      //     if(ownerName != username){
-      //         that.fireDB.object('/courseJoinRequest/'+courseKey).$ref.once('value').then(function(snapshot2){
-      //             let exist = false;
-      //
-      //             snapshot2.forEach(function(child){
-      //                 if(child.val().name == username){
-      //                     exist = true;
-      //                 }
-      //             });
-      //
-      //             if(!exist){
-      //                 //increase request count
-      //                 currentCount++;
-      //                 //update the course
-      //                 that.fireDB.object('/courses/'+courseKey+'/requestCounter/').$ref.set(currentCount);
-      //                 that.getCurrentUserID(owner).then(function(userID){
-      //                   that.fireDB.object('/Users/'+userID+'/courses/'+courseKey+'/requestCounter/').$ref.set(currentCount);
-      //                 });
-      //
-      //                 that.fireDB.list('/courseJoinRequest/'+courseKey).push({'name': username});
-      //             }
-      //         });
-      //     }
-      //
-      // });
+      this.fireDB.database.ref('/courses/'+courseKey).once('value').then(function(snapshot){
+          let currentCount = snapshot.val().requestCounter;
+          let ownerName = snapshot.val().owner;
+          //check to see if person already exists and they arent the owner
+          if(ownerName != username){
+              that.fireDB.database.ref('/courseJoinRequest/'+courseKey).once('value').then(function(snapshot2){
+                  let exist = false;
+
+                  snapshot2.forEach(function(child){
+                      if(child.val().name == username){
+                          exist = true;
+                      }
+                  });
+
+                  if(!exist){
+                      //increase request count
+                      currentCount++;
+                      //update the course
+                      that.fireDB.database.ref('/courses/'+courseKey+'/requestCounter/').set(currentCount);
+                      that.getCurrentUserID(owner).then(function(userID){
+                        that.fireDB.database.ref('/Users/'+userID+'/courses/'+courseKey+'/requestCounter/').set(currentCount);
+                      });
+
+                      that.fireDB.list('/courseJoinRequest/'+courseKey).push({'name': username});
+                  }
+              });
+          }
+
+      });
   }
 
   getMembersCount(courseID: string){
     let that = this;
 
     let memberCount = new Promise(function(resolve,reject){
-      // that.fireDB.object('/courses/'+courseID+'/memberCount/').$ref.once('value').then(function(snapshot){
-      //     resolve(snapshot.val());
-      // });
+      that.fireDB.database.ref('/courses/'+courseID+'/memberCount/').once('value').then(function(snapshot){
+          resolve(snapshot.val());
+      });
     });
 
     return memberCount;
@@ -403,75 +414,72 @@ export class FirebaseService {
   joinCourse(courseID: string, username: string){
       let that = this;
       //check that they arent already in the course, check that they arent the owner
-      // this.getCurrentUserID(username).then(function(userID){
-      //   that.fireDB.object('/Users/'+userID+'/courses/').$ref.once('value').then(function(snapshot){
-      //     let exists = false;
-      //     //check all the course keys
-      //     snapshot.forEach(function(course){
-      //       if(course.key == courseID){
-      //         exists = true;
-      //       }
-      //     });
-      //
-      //     if(!exists){
-      //       //increment member count
-      //       that.getMembersCount(courseID).then(function(count){
-      //         let newCount = count as number;
-      //         newCount++;
-      //         that.fireDB.object('/courses/'+courseID+'/memberCount/').$ref.set(newCount);
-      //       });
-      //       //get the course and make another one in this user
-      //       that.fireDB.object('/courses/').$ref.once('value').then(function(snapshot){
-      //         snapshot.forEach(function(child){
-      //           //find the current course that is to be added to the pending user
-      //           if(child.val().key == courseID){
-      //             //add that course to his/her courses
-      //             that.fireDB.object('/Users/'+userID+'/courses/'+child.val().key).$ref.set(child.val());
-      //           }
-      //         });
-      //
-      //       });
-      //
-      //     }
-      //
-      //   });
-      //
-      // });
+      this.getCurrentUserID(username).then(function(userID){
+        that.fireDB.database.ref('/Users/'+userID+'/courses/').once('value').then(function(snapshot){
+          let exists = false;
+          //check all the course keys
+          snapshot.forEach(function(course){
+            if(course.key == courseID){
+              exists = true;
+            }
+          });
+
+          if(!exists){
+            //increment member count
+            that.getMembersCount(courseID).then(function(count){
+              let newCount = count as number;
+              newCount++;
+              that.fireDB.database.ref('/courses/'+courseID+'/memberCount/').set(newCount);
+            });
+            //get the course and make another one in this user
+            that.fireDB.database.ref('/courses/').once('value').then(function(snapshot){
+              snapshot.forEach(function(child){
+                //find the current course that is to be added to the pending user
+                if(child.val().key == courseID){
+                  //add that course to his/her courses
+                  that.fireDB.database.ref('/Users/'+userID+'/courses/'+child.val().key).set(child.val());
+                }
+              });
+
+            });
+
+          }
+
+        });
+
+      });
 
   }
 
 
   saveNotes(owner: string,courseKey: string,chapterKey: string,text: string,isPublic: boolean){
-    // if(isPublic){
-    //     this.fireDB.object('/courseChapters/'+courseKey+'/').$ref.child(chapterKey).child('publicNoteText').set(text);
-    // }else{
-    //   let that = this;
-    //   //get just the notes for this owner
-    //     let privateNotes = this.fireDB.list('/PrivateNotes/'+chapterKey, { query: {
-    //       orderByChild: 'owner',
-    //       equalTo: owner
-    //     }});
-    //     let noteKey = null;
-    //     privateNotes.forEach(function(snapshot){
-    //       for(let i = 0; i < snapshot.length; i++){
-    //         if(snapshot[i].owner == owner){
-    //           noteKey = snapshot[i].$key;
-    //           if(text != undefined && text != null && text != "" && noteKey != null){
-    //             that.fireDB.object('/PrivateNotes/'+chapterKey+'/'+noteKey+'/privateNoteText/').$ref.set(text);
-    //           }
-    //         }
-    //       }
-    //       if(noteKey == null){
-    //         that.fireDB.list('/PrivateNotes/'+chapterKey).push({'owner': owner, 'privateNoteText': '', 'dateUpdated': new Date().toString()});
-    //       }
-    //     });
-    // }
+    if(isPublic){
+        this.fireDB.database.ref('/courseChapters/'+courseKey+'/').child(chapterKey).child('publicNoteText').set(text);
+    }else{
+      let that = this;
+      //get just the notes for this owner
+        // let privateNotes = this.fireDB.list('/PrivateNotes/'+chapterKey, ref => ref.orderByChild('owner').equalTo(owner));
+        // let noteKey = null;
+        // privateNotes.forEach(function(snapshot){
+        //   for(let i = 0; i < snapshot.length; i++){
+        //     if(snapshot[i].owner == owner){
+        //       noteKey = snapshot[i].$key;
+        //       if(text != undefined && text != null && text != "" && noteKey != null){
+        //         that.fireDB.object('/PrivateNotes/'+chapterKey+'/'+noteKey+'/privateNoteText/').$ref.set(text);
+        //       }
+        //     }
+        //   }
+        //   if(noteKey == null){
+        //     that.fireDB.list('/PrivateNotes/'+chapterKey).push({'owner': owner, 'privateNoteText': '', 'dateUpdated': new Date().toString()});
+        //   }
+        // });
+    }
   }
 
   favoriteCourse(course, username){
     //need to be sorted by person that favorited it
     let key = this.fireDB.list('/FavoriteCourses/').push(course).key;
-    //this.fireDB.object('/FavoriteCourses/'+key).$ref.update({'favUser': username});
+    this.fireDB.list('/FavoriteCourses/').update(key,{'favUser': username});
   }
 
   clearChangeLog(chapterKey: string){
@@ -522,26 +530,26 @@ export class FirebaseService {
   removeCourse(id, username: string){
     let that = this;
     //check if they are the owner to permanently delete it
-    // this.fireDB.object('/courses/'+id).$ref.once('value').then(function(snapshot){
-    //   let owner = snapshot.val().owner;
-    //   if(username == owner){
-    //     //delete the course completely
-    //     that.fireDB.list('/courses/').remove(id);
-    //     //delete its chapters and requests
-    //     that.fireDB.list('/courseChapters/').remove(id);
-    //     that.fireDB.list('/courseJoinRequest/').remove(id);
-    //     that.getCurrentUserID(username).then(function(userID){
-    //     that.fireDB.list('/Users/'+userID+'/courses/').remove(id);
-    //     });
-    //   }else{
-    //     let that = this;
-    //     //only delete it from the courses they are a part of
-    //     that.getCurrentUserID(username).then(function(userID){
-    //       that.fireDB.list('/Users/'+userID+'/courses/').remove(id);
-    //     });
-    //   }
-    //
-    // });
+    this.fireDB.database.ref('/courses/'+id).once('value').then(function(snapshot){
+      let owner = snapshot.val().owner;
+      if(username == owner){
+        //delete the course completely
+        that.fireDB.list('/courses/').remove(id);
+        //delete its chapters and requests
+        that.fireDB.list('/courseChapters/').remove(id);
+        that.fireDB.list('/courseJoinRequest/').remove(id);
+        that.getCurrentUserID(username).then(function(userID){
+        that.fireDB.list('/Users/'+userID+'/courses/').remove(id);
+        });
+      }else{
+        let that = this;
+        //only delete it from the courses they are a part of
+        that.getCurrentUserID(username).then(function(userID){
+          that.fireDB.list('/Users/'+userID+'/courses/').remove(id);
+        });
+      }
+
+    });
 
   }
 
@@ -559,18 +567,18 @@ export class FirebaseService {
   removePendingRequest(id, courseKey: string){
     //decrement request counter
     let that = this;
-    // this.fireDB.object('/courses/'+courseKey).$ref.once('value').then(function(snapshot){
-    //     let counter = snapshot.val().requestCounter;
-    //     let owner = snapshot.val().owner;
-    //     if(counter > 0){
-    //       counter--;
-    //       //update it on the database
-    //       that.fireDB.object('/courses/'+courseKey+'/requestCounter/').$ref.set(counter);
-    //       that.getCurrentUserID(owner).then(function(userID){
-    //         that.fireDB.object('/Users/'+userID+'/courses/'+courseKey+'/requestCounter/').$ref.set(counter);
-    //       });
-    //       that.fireDB.list('/courseJoinRequest/'+courseKey).remove(id);
-    //     }
-    // });
+    this.fireDB.database.ref('/courses/'+courseKey).once('value').then(function(snapshot){
+        let counter = snapshot.val().requestCounter;
+        let owner = snapshot.val().owner;
+        if(counter > 0){
+          counter--;
+          //update it on the database
+          that.fireDB.database.ref('/courses/'+courseKey+'/requestCounter/').set(counter);
+          that.getCurrentUserID(owner).then(function(userID){
+            that.fireDB.database.ref('/Users/'+userID+'/courses/'+courseKey+'/requestCounter/').set(counter);
+          });
+          that.fireDB.list('/courseJoinRequest/'+courseKey).remove(id);
+        }
+    });
   }
 }
