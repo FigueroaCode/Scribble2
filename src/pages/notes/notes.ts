@@ -72,20 +72,25 @@ export class NotesPage {
         this.initializeChapters();
         //set the first chapter as the default
         this.getFirstChapterKey =  new Promise(function(resolve, reject){
-            // getCourseKey.then(function(courseKey){
-            //     firebaseService.getDB().object('/courseChapters/'+courseKey).$ref.once('value').then(function(snapshot){
-            //              snapshot.forEach(function(childsnapshot){
-            //                  resolve(childsnapshot.key);
-            //                 }
-            //             );
-            //         });
-            // });
+            getCourseKey.then(function(courseKey){
+                firebaseService.getDB().list('/courseChapters/'+courseKey).snapshotChanges(['child_added']).subscribe(function(snapshot){
+                         snapshot.forEach(function(childsnapshot){
+                             resolve(childsnapshot.key);
+                            }
+                        );
+                    });
+            });
         });
         //Set the textbox to the text of the first chapter
         this.getFirstChapterKey.then(function(chapterKey){
-            // firebaseService.getDB().object('/courseChapters/' + that.courseKey + '/' + chapterKey).$ref.once('value').then(function(getChapterName){
-            //   that.dropDownTitle = getChapterName.val().chapterName;
-            // });
+            firebaseService.getDB().list('/courseChapters/' + that.courseKey + '/' + chapterKey).snapshotChanges(['child_added'])
+            .subscribe(function(getChapterName){
+              getChapterName.forEach(function(chapter){
+                if(chapter.key == 'chapterName'){
+                  that.dropDownTitle = chapter.payload.val();
+                }
+              })
+            });
             firebaseService.getNoteText(that.displayName,that.courseKey, chapterKey, true)
             .then(function(noteText){
                 that.setPublicNoteText(noteText);
@@ -103,7 +108,7 @@ export class NotesPage {
     }
 
     initializeChapters(){
-        this.chapters = this.firebaseService.getChapters(this.courseKey);
+        //this.chapters = this.firebaseService.getChapters(this.courseKey);
     }
 
     turnOffVoteListener(chapterKey: string){

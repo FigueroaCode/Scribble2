@@ -163,19 +163,20 @@ export class FirebaseService {
   addCourse(course: Course, currentUserID){
       //add a course object to the database
 
-    // let key = this.fireDB.list('/courses/').push(course).key;
-    // this.fireDB.object('/courses/'+key).$ref.update({'key': key});
-    //
-    // //Make Dir for holding course chapter
-    // this.fireDB.object('/courseChapters/'+key).$ref.set('');
-    //
-    // //Add the course to the list of courses the user is in
-    // this.fireDB.object('/Users/'+currentUserID+'/courses/'+key).$ref.set(course);
-    // this.fireDB.object('/Users/'+currentUserID+'/courses/'+key).$ref.update({'key': key});
-    // //this.fireDB.database.ref('/courseMembers/'+key).push({'name': course.getOwner()});
-    //
-    // //Make Dir for holding course requests
-    // this.fireDB.object('/courseJoinRequest/'+key).$ref.set('');
+    let key = this.fireDB.list('/courses/').push(course).key;
+
+    this.fireDB.list('/courses/').update(key,{'key': key});
+
+    //Make Dir for holding course chapter
+    this.fireDB.list('/courseChapters/').set(key,'');
+
+    //Add the course to the list of courses the user is in
+    this.fireDB.list('/Users/'+currentUserID+'/courses/').set(key,course);
+    this.fireDB.list('/Users/'+currentUserID+'/courses/').update(key,{'key': key});
+    //this.fireDB.database.ref('/courseMembers/'+key).push({'name': course.getOwner()});
+
+    //Make Dir for holding course requests
+    this.fireDB.list('/courseJoinRequest/').set(key,'');
   }
 
   addChapter(chapter: Chapter, courseKey: string, privateNote){
@@ -191,15 +192,19 @@ export class FirebaseService {
     //add a change to the changelog for this chapters log
     let key = this.fireDB.list('/ChangeLog/'+chapterKey).push(change).key;
     //save the generated key
-    //this.fireDB.object('/ChangeLog/'+chapterKey+'/'+key).$ref.update({'key': key});
+    this.fireDB.list('/ChangeLog/'+chapterKey+'/').update(key,{'key': key});
   }
 
   getTimeLimit(courseKey: string){
     let that = this;
     let timeLimit = new Promise(function(resolve,reject){
-      // that.fireDB.object('/courses/'+courseKey).$ref.once('value').then(function(snapshot){
-      //   resolve(snapshot.val().timeLimit);
-      // });
+      that.fireDB.list('/courses/'+courseKey).snapshotChanges(['child_added']).subscribe(function(snapshot){
+        snapshot.forEach(function(course){
+          if(course.key == 'timeLimit'){
+            resolve(course.payload.val());
+          }
+        });
+      });
     });
     return timeLimit;
   }
