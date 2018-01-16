@@ -28,7 +28,7 @@ export class Minsize implements OnInit{
         textarea.style.height = 'auto';
 
         textarea.style.height = (textarea.scrollHeight + 10) + "rem";
-        console.log(textarea.scrollHeight);
+        //console.log(textarea.scrollHeight);
 
         //Dont let the user change the size of the textarea
         textarea.style.fontSize = '20px';

@@ -72,20 +72,20 @@ export class NotesPage {
         this.initializeChapters();
         //set the first chapter as the default
         this.getFirstChapterKey =  new Promise(function(resolve, reject){
-            getCourseKey.then(function(courseKey){
-                firebaseService.getDB().object('/courseChapters/'+courseKey).$ref.once('value').then(function(snapshot){
-                         snapshot.forEach(function(childsnapshot){
-                             resolve(childsnapshot.key);
-                            }
-                        );
-                    });
-            });
+            // getCourseKey.then(function(courseKey){
+            //     firebaseService.getDB().object('/courseChapters/'+courseKey).$ref.once('value').then(function(snapshot){
+            //              snapshot.forEach(function(childsnapshot){
+            //                  resolve(childsnapshot.key);
+            //                 }
+            //             );
+            //         });
+            // });
         });
         //Set the textbox to the text of the first chapter
         this.getFirstChapterKey.then(function(chapterKey){
-            firebaseService.getDB().object('/courseChapters/' + that.courseKey + '/' + chapterKey).$ref.once('value').then(function(getChapterName){
-              that.dropDownTitle = getChapterName.val().chapterName;
-            });
+            // firebaseService.getDB().object('/courseChapters/' + that.courseKey + '/' + chapterKey).$ref.once('value').then(function(getChapterName){
+            //   that.dropDownTitle = getChapterName.val().chapterName;
+            // });
             firebaseService.getNoteText(that.displayName,that.courseKey, chapterKey, true)
             .then(function(noteText){
                 that.setPublicNoteText(noteText);
@@ -107,33 +107,33 @@ export class NotesPage {
     }
 
     turnOffVoteListener(chapterKey: string){
-      this.firebaseService.getDB().object('/ChangeLogQueue/'+chapterKey).$ref.off();
+      //this.firebaseService.getDB().object('/ChangeLogQueue/'+chapterKey).$ref.off();
     }
 
     changeVoteState(chapterKey: string){
       //constantly check if there is a vote in progress
       let that = this;
-      this.firebaseService.getDB().object('/ChangeLogQueue/'+chapterKey).$ref.on('value', function(snapshot){
-        if(snapshot.val() != null && snapshot.val().state){
-          that.voteInProgress = true;
-          //check if there is a vote in session
-          //if there is then check if its still within the timeLimit
-          //if its not then start merge
-          if(that.voteInProgress){
-            that.firebaseService.withinTimeLimit(that.timeLimit,chapterKey).then(function(state){
-              if(!state){
-                //start merging process
-                console.log('do some merge magic');
-                that.firebaseService.clearChangeLog(chapterKey);
-                that.firebaseService.setVoteStatus(chapterKey,false);
-                that.firebaseService.removeUserVoted(chapterKey);
-              }
-            });
-          }
-        }else{
-          that.voteInProgress = false;
-        }
-      });
+      // this.firebaseService.getDB().object('/ChangeLogQueue/'+chapterKey).$ref.on('value', function(snapshot){
+      //   if(snapshot.val() != null && snapshot.val().state){
+      //     that.voteInProgress = true;
+      //     //check if there is a vote in session
+      //     //if there is then check if its still within the timeLimit
+      //     //if its not then start merge
+      //     if(that.voteInProgress){
+      //       that.firebaseService.withinTimeLimit(that.timeLimit,chapterKey).then(function(state){
+      //         if(!state){
+      //           //start merging process
+      //           console.log('do some merge magic');
+      //           that.firebaseService.clearChangeLog(chapterKey);
+      //           that.firebaseService.setVoteStatus(chapterKey,false);
+      //           that.firebaseService.removeUserVoted(chapterKey);
+      //         }
+      //       });
+      //     }
+      //   }else{
+      //     that.voteInProgress = false;
+      //   }
+      // });
     }
 
     setPublicNoteText(newText: string){

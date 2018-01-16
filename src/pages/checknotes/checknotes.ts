@@ -55,25 +55,25 @@ export class CheckNotesPage {
         this.initializeChapters();
         //set the first chapter as the default
         this.getFirstChapterKey =  new Promise(function(resolve, reject){
-            getCourseKey.then(function(courseKey){
-                firebaseService.getDB().object('/courseChapters/'+courseKey).$ref.once('value').then(function(snapshot){
-                         snapshot.forEach(function(childsnapshot){
-                             resolve(childsnapshot.key);
-                            }
-                        );
-                    });
-            });
+            // getCourseKey.then(function(courseKey){
+            //     firebaseService.getDB().object('/courseChapters/'+courseKey).$ref.once('value').then(function(snapshot){
+            //              snapshot.forEach(function(childsnapshot){
+            //                  resolve(childsnapshot.key);
+            //                 }
+            //             );
+            //         });
+            // });
         });
         //Set the textbox to the text of the first chapter
         let that = this;
         this.getFirstChapterKey.then(function(chapterKey){
-            firebaseService.getDB().object('/courseChapters/' + that.courseKey + '/' + chapterKey).$ref.once('value').then(function(getChapterName){
-              that.dropDownTitle = getChapterName.val().chapterName;
-            });
-            firebaseService.getNoteText(that.displayName,that.courseKey, chapterKey, true)
-            .then(function(noteText){
-                that.setPublicNoteText(noteText);
-            });
+            // firebaseService.getDB().object('/courseChapters/' + that.courseKey + '/' + chapterKey).$ref.once('value').then(function(getChapterName){
+            //   that.dropDownTitle = getChapterName.val().chapterName;
+            // });
+            // firebaseService.getNoteText(that.displayName,that.courseKey, chapterKey, true)
+            // .then(function(noteText){
+            //     that.setPublicNoteText(noteText);
+            // });
         });
 
         this.dropDownTitle = "No Chapters Exist";

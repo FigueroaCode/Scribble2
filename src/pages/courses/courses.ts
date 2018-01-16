@@ -43,8 +43,9 @@ export class CoursesPage {
       let that = this;
       this.firebaseService.getMembersCourses(this.displayName).then(function(memberCourses){
         that.courses = memberCourses as AngularFireList<any[]>;
-        //keep track whether or nto there are any courses
-        let size = that.courses.map(x => {
+        //keep track whether or no there are any courses
+        let object = memberCourses as Observable<{}[]>;
+        let size = object.map(x => {
           return x.length;
         });
           size.subscribe(function(val){
@@ -104,13 +105,12 @@ export class CoursesPage {
         val = val.toLowerCase();
         let that = this;
           this.firebaseService.getCurrentUserID(this.displayName).then(function(userID){
-            that.courses = that.firebaseService.getDB().list('/Users/'+userID+'/courses', {
-                query:
-                {
-                    orderByChild: 'searchTitle',
-                    equalTo: val
-
-                }
+            let filteredList = new Promise(function(resolve,reject){
+              resolve(that.firebaseService.getDB().list('/Users/'+userID+'/courses',
+               ref => ref.orderByChild('searchTitle').equalTo(val)).valueChanges());
+            });
+            filteredList.then(function(filteredCourses){
+              that.courses = filteredCourses as AngularFireList<any[]>;
             });
           });
       }else{

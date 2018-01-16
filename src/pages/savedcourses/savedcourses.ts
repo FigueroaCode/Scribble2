@@ -28,7 +28,7 @@ export class SavedCoursesPage {
       }
 
       initializeCourses(){
-          this.courses = this.firebaseService.getFavoriteCourses(this.displayName);
+          //this.courses = this.firebaseService.getFavoriteCourses(this.displayName);
       }
 
       //Joining a course

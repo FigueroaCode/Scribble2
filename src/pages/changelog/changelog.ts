@@ -53,13 +53,13 @@ export class ChangesPage {
         this.initializeChangeLogAsync();
         //TODO: this needs testing
         let that = this;
-        firebaseService.getDB().object('/ChangeLog/'+this.chapterKey).$ref.on('value', function(snapshot){
-          if(snapshot.val() == null){
-            if(that.changeLog.length > 0){
-              that.changeLog.splice(0,that.changeLog.length);
-            }
-          }
-        });
+        // firebaseService.getDB().object('/ChangeLog/'+this.chapterKey).$ref.on('value', function(snapshot){
+        //   if(snapshot.val() == null){
+        //     if(that.changeLog.length > 0){
+        //       that.changeLog.splice(0,that.changeLog.length);
+        //     }
+        //   }
+        // });
     }
 
     initializeChangeLogAsync(){
