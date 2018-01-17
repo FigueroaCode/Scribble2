@@ -115,33 +115,33 @@ export class NotesPage {
     }
 
     turnOffVoteListener(chapterKey: string){
-      //this.firebaseService.getDB().database.ref('/ChangeLogQueue/'+chapterKey).off();
+      this.firebaseService.getDB().database.ref('/ChangeLogQueue/'+chapterKey).off();
     }
 
     changeVoteState(chapterKey: string){
       //constantly check if there is a vote in progress
-      // let that = this;
-      // this.firebaseService.getDB().database.ref('/ChangeLogQueue/'+chapterKey).on('value', function(snapshot){
-      //   if(snapshot.val() != null && snapshot.val().state){
-      //     that.voteInProgress = true;
-      //     //check if there is a vote in session
-      //     //if there is then check if its still within the timeLimit
-      //     //if its not then start merge
-      //     if(that.voteInProgress){
-      //       that.firebaseService.withinTimeLimit(that.timeLimit,chapterKey).then(function(state){
-      //         if(!state){
-      //           //start merging process
-      //           console.log('do some merge magic');
-      //           that.firebaseService.clearChangeLog(chapterKey);
-      //           that.firebaseService.setVoteStatus(chapterKey,false);
-      //           that.firebaseService.removeUserVoted(chapterKey);
-      //         }
-      //       });
-      //     }
-      //   }else{
-      //     that.voteInProgress = false;
-      //   }
-      // });
+      let that = this;
+      this.firebaseService.getDB().database.ref('/ChangeLogQueue/'+chapterKey).on('value', function(snapshot){
+        if(snapshot.val() != null && snapshot.val().state){
+          that.voteInProgress = true;
+          //check if there is a vote in session
+          //if there is then check if its still within the timeLimit
+          //if its not then start merge
+          if(that.voteInProgress){
+            that.firebaseService.withinTimeLimit(that.timeLimit,chapterKey).then(function(state){
+              if(!state){
+                //start merging process
+                console.log('do some merge magic');
+                that.firebaseService.clearChangeLog(chapterKey);
+                that.firebaseService.setVoteStatus(chapterKey,false);
+                that.firebaseService.removeUserVoted(chapterKey);
+              }
+            });
+          }
+        }else{
+          that.voteInProgress = false;
+        }
+      });
     }
 
     setPublicNoteText(newText: string){
@@ -248,7 +248,6 @@ export class NotesPage {
 
     showNote(chapterKey, chapterName){
         //turn off old chapter vote listener
-        console.log('chapter', chapterKey)
         if(this.currentChapterKey != null || this.currentChapterKey != ''){
           this.turnOffVoteListener(this.currentChapterKey);
         }else{

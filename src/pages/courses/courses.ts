@@ -107,7 +107,7 @@ export class CoursesPage {
           this.firebaseService.getCurrentUserID(this.displayName).then(function(userID){
             let filteredList = new Promise(function(resolve,reject){
               resolve(that.firebaseService.getDB().list('/Users/'+userID+'/courses',
-               ref => ref.orderByChild('searchTitle').equalTo(val)).valueChanges());
+               ref => ref.orderByChild('searchTitle').equalTo(val)).snapshotChanges());
             });
             filteredList.then(function(filteredCourses){
               that.courses = filteredCourses as AngularFireList<any[]>;

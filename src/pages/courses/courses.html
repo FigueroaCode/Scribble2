@@ -29,18 +29,18 @@
                         <ion-row>
                             <!-- Course Title -->
                             <ion-col id="cardTitle">
-                                {{ course.title }}
+                                {{ course.payload.val().title }}
                             </ion-col>
                         </ion-row>
                         <!-- Content -->
                         <ion-row>
                             <ion-col col-lg-9>
-                                <b>Description:</b> {{ course.description }}
+                                <b>Description:</b> {{ course.payload.val().description }}
                             </ion-col>
                             <ion-col col-lg-3 align="left">
-                                <p><b>Course ID:</b> {{ course.courseID }}</p>
-                                <p><b>Professor:</b> {{ course.professor }}</p>
-                                <p><b>University:</b> {{ course.university }}</p>
+                                <p><b>Course ID:</b> {{ course.payload.val().courseID }}</p>
+                                <p><b>Professor:</b> {{ course.payload.val().professor }}</p>
+                                <p><b>University:</b> {{ course.payload.val().university }}</p>
                             </ion-col>
                         </ion-row>
                         <!-- Footer -->

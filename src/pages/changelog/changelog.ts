@@ -63,7 +63,7 @@ export class ChangesPage {
     }
 
     initializeChangeLogAsync(){
-      this.changeLogAsync = this.firebaseService.getChangeLogAsync(this.chapterKey);
+      //this.changeLogAsync = this.firebaseService.getChangeLogAsync(this.chapterKey);
     }
 
     initializeChangeLog(){

@@ -45,7 +45,7 @@ export class FirebaseService {
     //grab the users key in order to access their courses
     let coursesPromise = new Promise(function(resolve, reject){
       that.getCurrentUserID(username).then(function(userID){
-         resolve(that.fireDB.list('/Users/'+userID+'/courses/').valueChanges());
+         resolve(that.fireDB.list('/Users/'+userID+'/courses/').snapshotChanges());
       });
     });
 
@@ -55,7 +55,7 @@ export class FirebaseService {
   getChapters(courseKey: string){
     let that = this;
       let chapters = new Promise(function(resolve,reject){
-        resolve(that.fireDB.list('/courseChapters/'+courseKey).valueChanges());
+        resolve(that.fireDB.list('/courseChapters/'+courseKey).snapshotChanges());
       });
 
     return chapters;
@@ -83,7 +83,7 @@ export class FirebaseService {
                   });
                 }else{
                   //create a private note for this user if it doesnt exist
-                  that.fireDB.list('/PrivateNotes/'+chapterKey).push({'owner': owner, 'privateNoteText': '', 'dateUpdated': new Date().toString()});
+                  that.fireDB.list('/PrivateNotes/'+chapterKey).push({'owner': owner, 'privateNoteText': '', 'dateUpdated': firebase.database.ServerValue.TIMESTAMP});
                 }
               });
           }
@@ -91,6 +91,30 @@ export class FirebaseService {
       return textPromise;
   }
 
+  saveNotes(owner: string,courseKey: string,chapterKey: string,text: string,isPublic: boolean){
+    if(isPublic){
+        this.fireDB.database.ref('/courseChapters/'+courseKey+'/').child(chapterKey).child('publicNoteText').set(text);
+    }else{
+      let that = this;
+      //get just the notes for this owner
+        let privateNotes = this.fireDB.list('/PrivateNotes/'+chapterKey, ref => ref.orderByChild('owner').equalTo(owner)).snapshotChanges();
+        let noteKey = null;
+        privateNotes.subscribe(function(snapshot){
+          snapshot.forEach(function(notes){
+            if(notes.payload.val().owner == owner){
+              noteKey = notes.key;
+              if(text != undefined && text != null && text != "" && noteKey != null){
+                that.fireDB.database.ref('/PrivateNotes/'+chapterKey+'/'+noteKey+'/privateNoteText/').set(text);
+              }
+            }
+          });
+          if(noteKey == null){
+            that.fireDB.list('/PrivateNotes/'+chapterKey).push({'owner': owner, 'privateNoteText': '', 'dateUpdated': firebase.database.ServerValue.TIMESTAMP});
+          }
+        });
+    }
+  }
+  //TODO
   getFavoriteCourses(username){
     // return this.fireDB.list('/FavoriteCourses/', {
     //   query: {
@@ -105,7 +129,7 @@ export class FirebaseService {
     let that = this;
     let changeLog = new Promise(function(resolve,reject){
       let changes = that.fireDB.list('/ChangeLog/'+chapterKey).valueChanges().subscribe(function(snapshot){
-        console.log('changelog', snapshot)
+        resolve(snapshot)
       });
     });
 
@@ -115,11 +139,11 @@ export class FirebaseService {
   getChangeLogAsync(chapterKey: string){
     let that = this;
     let changelog = new Promise(function(resolve,reject){
-      resolve(that.fireDB.list('/ChangeLog/'+chapterKey).valueChanges());
+      resolve(that.fireDB.list('/ChangeLog/'+chapterKey).snapshotChanges());
     });
     return changelog;
   }
-
+  //TODO
   getFirebaseAsArray(username: string){
     let that = this;
     //get the users current courses
@@ -191,7 +215,7 @@ export class FirebaseService {
   addChapter(chapter: Chapter, courseKey: string, privateNote){
     //create public chapter
      let chapterKey = this.fireDB.list('/courseChapters/'+ courseKey).push(chapter).key;
-     this.fireDB.list('/courseChapters/'+ courseKey).set(chapterKey,{'key': chapterKey});
+     //this.fireDB.list('/courseChapters/'+ courseKey).set(chapterKey,{'key': chapterKey});
      //create private note for the user for that chapter
      //private note has an owner, text, and dateUpdated property
      this.fireDB.list('/PrivateNotes/'+chapterKey).push(privateNote);
@@ -328,23 +352,23 @@ export class FirebaseService {
     //find all the chapter keys, then look for them in the ChangeLogQueue,
     //then incrementMemberCount for the ones that exist
     let that = this;
-    let chapters = this.fireDB.list('/courseChapters/'+courseKey);
-    // chapters.forEach(function(snapshot){
-    //   let queue = that.fireDB.list('/ChangeLogQueue/');
-    //   queue.forEach(function(snapshot2){
-    //     for(let i = 0; i < snapshot.length; i++){
-    //       for(let j = 0; j < snapshot2.length; j++){
-    //         if(snapshot[i].$key == snapshot2[j].$key){
-    //           //increment its memberCount of snapshot2 if there is a vote in progress
-    //           if(snapshot2[j].state){
-    //             let memberCount = snapshot2[j].membersToVote += 1;
-    //             that.fireDB.object('/ChangeLogQueue/'+snapshot2[j].$key+'/membersToVote').$ref.set(memberCount);
-    //           }
-    //         }
-    //       }
-    //     }
-    //   });
-    // });
+    let chapters = this.fireDB.list('/courseChapters/'+courseKey).snapshotChanges();
+    chapters.subscribe(function(snapshot){
+      snapshot.forEach(function(chapter){
+        let queue = that.fireDB.list('/ChangeLogQueue/').snapshotChanges();
+        queue.subscribe(function(snapshot2){
+          snapshot2.forEach(function(change){
+            if(chapter.key == change.key){
+              //increment its memberCount of snapshot2 if there is a vote in progress
+              if(change.payload.val().state){
+                let memberCount = change.payload.val().membersToVote += 1;
+                that.fireDB.database.ref('/ChangeLogQueue/'+change.key+'/membersToVote').set(memberCount);
+              }
+            }
+          });
+        });
+      });
+    });
   }
 
   isVoteInProgress(chapterKey: string){
@@ -449,31 +473,6 @@ export class FirebaseService {
 
       });
 
-  }
-
-
-  saveNotes(owner: string,courseKey: string,chapterKey: string,text: string,isPublic: boolean){
-    if(isPublic){
-        this.fireDB.database.ref('/courseChapters/'+courseKey+'/').child(chapterKey).child('publicNoteText').set(text);
-    }else{
-      let that = this;
-      //get just the notes for this owner
-        // let privateNotes = this.fireDB.list('/PrivateNotes/'+chapterKey, ref => ref.orderByChild('owner').equalTo(owner));
-        // let noteKey = null;
-        // privateNotes.forEach(function(snapshot){
-        //   for(let i = 0; i < snapshot.length; i++){
-        //     if(snapshot[i].owner == owner){
-        //       noteKey = snapshot[i].$key;
-        //       if(text != undefined && text != null && text != "" && noteKey != null){
-        //         that.fireDB.object('/PrivateNotes/'+chapterKey+'/'+noteKey+'/privateNoteText/').$ref.set(text);
-        //       }
-        //     }
-        //   }
-        //   if(noteKey == null){
-        //     that.fireDB.list('/PrivateNotes/'+chapterKey).push({'owner': owner, 'privateNoteText': '', 'dateUpdated': new Date().toString()});
-        //   }
-        // });
-    }
   }
 
   favoriteCourse(course, username){
